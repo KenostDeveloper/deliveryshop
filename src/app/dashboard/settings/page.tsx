@@ -19,7 +19,11 @@ export default function Settings() {
     const {data: session, update} = useSession();
 
     const [isEdit, setIsEdit] = useState(false);
-    const [profile, setProfile] = useState<any>();
+    const [profile, setProfile] = useState<any>({
+        image: "",
+        nameShop: "",
+        description: ""
+    });
 
     const [selectedFile, setSelectedFile] = useState<File>();
 
@@ -179,7 +183,7 @@ export default function Settings() {
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
                 <div className={styles.profile}>
-                    <img onClick={ hendlerInput } className={styles.profile__image} src={session.user.image == null ? "/quickshopimage.png" : `/users/` + session.user.image} alt="" />
+                    <img onClick={ hendlerInput } className={styles.profile__image} src={profile.image == null ? "/quickshopimage.png" : `/users/` + profile.image} alt="" />
                     <div className={styles.profile__text}>
                         {!isEdit?
                             <>
