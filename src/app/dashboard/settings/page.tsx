@@ -179,7 +179,7 @@ export default function Settings() {
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
                 <div className={styles.profile}>
-                    <img onClick={ hendlerInput } className={styles.profile__image} src={profile.image == null ? "/quickshopimage.png" : `/users/` + profile.image} alt="" />
+                    <img onClick={ hendlerInput } className={styles.profile__image} src={session.user.image == null ? "/quickshopimage.png" : `/users/` + session.user.image} alt="" />
                     <div className={styles.profile__text}>
                         {!isEdit?
                             <>
