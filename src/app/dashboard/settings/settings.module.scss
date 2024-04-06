@@ -1,0 +1,90 @@
+.profile{
+    width: 100%;
+    border-radius: 8px;
+    background: var(--main-window);
+    padding: 50px;
+    margin-top: 40px;
+    display: flex;
+    gap: 32px;
+
+    &__image{
+        width: 240px;
+        height: 280px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    &__text{
+        margin-top: 12px;
+        width: calc(100% - 272px);
+    }
+
+    &__name{
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+    }
+
+    &__desc{
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--text-color);
+        line-height: 1.2;
+    }
+
+    i{
+        margin-left: 10px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: all 0.4s;
+
+        &:hover{
+            color: var(--accent-color);
+        }
+    }
+}
+
+.container{
+
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.shops{
+    width: 100%;
+    border-radius: 8px;
+    background: var(--main-window);
+    padding: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+
+    &__el{
+        display: flex;
+        gap: 10px;
+    }
+
+    &__el + &__el{
+        margin-top: 10px;
+    }
+
+    &__button{
+        border-radius: 8px;
+        background: var(--my-background);
+        width: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+}
+

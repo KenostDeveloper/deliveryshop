@@ -1,0 +1,84 @@
+.advantages {
+    display: grid;
+    grid-template: 1fr / repeat(4, 1fr);
+    gap: 15px;
+}
+
+.advantages-item {
+    height: 220px;
+    position: relative;
+
+    border-radius: var(--border-radius);
+
+    &:nth-child(1) {
+        background: linear-gradient(180deg, var(--green-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+
+        p {
+            top: 15px;
+            left: 50%;
+        }
+
+        img {
+            bottom: 20px;
+            left: 40px;
+        }
+    }
+
+    &:nth-child(2) {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--red-light-color) 100%);
+
+        p {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        img {
+            top: 10px;
+            right: 20px;
+        }
+    }
+
+    &:nth-child(3) {
+        background: linear-gradient(180deg, var(--blue-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+
+        p {
+            top: 20px;
+            left: 20px;
+        }
+
+        img {
+            bottom: 20px;
+            right: 50px;
+        }
+    }
+
+    &:nth-child(4) {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--orange-light-color) 100%);
+
+        p {
+            bottom: 20px;
+            left: 30px;
+        }
+
+        img {
+            top: 30px;
+            right: 45px;
+        }
+    }
+}
+
+.advantages-item__title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 1.1;
+    
+    position: absolute;
+
+    width: 70%;
+}
+
+.advantages-item__image {
+    height: 120px;
+
+    position: absolute;
+}

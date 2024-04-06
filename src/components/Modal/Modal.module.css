@@ -1,0 +1,46 @@
+.modal{
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: all 0.5s;
+    pointer-events: none;
+}
+
+.modal.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal__content{
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--main-window);
+    transform: scale(0.5);
+    transition: 0.4s all;
+    position: relative;
+    /*width: 50vw;*/
+}
+
+.modal.active .modal__content{
+    transform: scale(1);
+}
+
+.modal__close{
+    transform: rotate(45deg);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+
+}
+
+.modal__close:hover svg path{
+    fill: var(--accent-color);
+}

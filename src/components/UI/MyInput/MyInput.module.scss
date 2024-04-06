@@ -1,0 +1,89 @@
+.MyInput{
+    display: flex;
+    width: 290px;
+    height: 40px;
+    padding: 10px 20px;
+    align-items: center;
+    border-radius: 8px;
+    background: var(--my-background);
+    caret-color: var(--border-color);
+    outline-color: var(--border-color);
+    transition: all 0.5s;
+    margin-top: 8px;
+    color: var(--my-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.MyTextArea{
+    display: flex;
+    width: 100%;
+    height: 150px;
+    padding: 10px 20px;
+    align-items: center;
+    border-radius: 8px;
+    background: var(--my-background);
+    caret-color: var(--border-color);
+    outline-color: var(--border-color);
+    transition: all 0.5s;
+    margin-top: 8px;
+    color: var(--my-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.MyInput:focus{
+    background: var(--my-background);
+}
+
+.MyInputError{
+    color: var(--accent-color);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.MyInput + .MyInputError{
+    margin-top: 3px;
+    margin-bottom: 13px;
+}
+
+.MyInput:not(:placeholder-shown) {
+    background: var(--my-background);
+}
+
+.MyButton{
+    display: flex;
+    width: fit-content;
+    height: 40px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: var(--accent-color);
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 16px;
+    transition: all 0.5s;
+    opacity: 1;
+}
+
+.MyButton:hover{
+    opacity: 0.8;
+}
+
+.MyButton:disabled{
+    background: #FDB5C6;
+}
+
+.MyButton:disabled:hover{
+    opacity: 1;
+}

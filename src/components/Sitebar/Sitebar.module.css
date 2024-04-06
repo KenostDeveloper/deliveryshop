@@ -1,0 +1,96 @@
+.Sitebar{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    pointer-events: none;
+    transition: all 0.5s;
+    z-index: 100;
+}
+
+.Sitebar.active{
+    pointer-events: all;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.SitebarContent{
+    width: 300px;
+    position: fixed;
+    height: 100vh;
+    background: #FFF;
+    left: 0;
+    transform: translateX(-100%);
+    transition: all 0.6s;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.SitebarContent.active{
+    transform: translateX(0%);
+}
+
+.logo{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.menu{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu a{
+    padding: 12px 30px;
+    color: #02121C;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.4s;
+}
+
+.menu a.active{
+    background: #eeeef1;
+}
+
+.menu a:hover{
+    color: #02121C;
+    background: #eeeef1;
+}
+
+.menu a img{
+    width: 20px;
+    height: 20px;   
+}
+
+.close{
+    position: absolute;
+    bottom: 50px;
+    cursor: pointer;
+}
+
+
+.logositebar{
+    margin: 0;
+    color: var(--secondary-color);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    animation: loading 2s linear infinite;
+}
+
+.logositebar span{
+    color: var(--accent-color);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}

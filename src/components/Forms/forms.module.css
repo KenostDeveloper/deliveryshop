@@ -1,0 +1,88 @@
+.ModalAuth{
+    padding: 30px;
+}
+
+.notAccount{
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 16px;
+}
+
+.notAccount span{
+    color: #468EFC;
+    cursor: pointer;
+}
+
+.agreement{
+    color: var(--border-color);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 350px;
+    margin-top: 12px;
+}
+
+.agreement a{
+    text-decoration: underline;
+}
+
+
+.MpInput{
+    display: flex;
+    width: 350px;
+    height: 48px;
+    padding: 10px 20px;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--background-color-input);
+    caret-color: var(--border-color);
+    outline-color: var(--border-color);
+    transition: all 0.5s;
+    margin-top: 8px;
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.MpInput:focus{
+    background: var(--main-window);
+}
+
+.MpInputErrorBorder{
+    border-color: var(--accent-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+}
+
+.MpInputError{
+    color: var(--accent-color);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.MpInput + .MpInputError{
+    margin-top: 3px;
+    margin-bottom: 13px;
+}
+
+.MpInput:not(:placeholder-shown) {
+    background: var(--main-window);
+}
+
+.ModalAuth__title{
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}

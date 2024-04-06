@@ -1,0 +1,30 @@
+.MpButton{
+    display: flex;
+    width: 350px;
+    height: 48px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: var(--accent-color);
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 16px;
+    transition: all 0.5s;
+    opacity: 1;
+}
+
+.MpButton:hover{
+    opacity: 0.8;
+}
+
+.MpButton:disabled{
+    background: #FDB5C6;
+}
+
+.MpButton:disabled:hover{
+    opacity: 1;
+}

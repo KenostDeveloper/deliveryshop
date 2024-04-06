@@ -1,0 +1,60 @@
+.CardPost{
+    display: flex;
+    width: 690px;
+    padding: 15px 0px;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    row-gap: 15px;
+    flex-wrap: wrap;
+    border-radius: 15px;
+    background: var(--main-window);
+    margin-bottom: 24px;
+}
+
+.CardPost__control{
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: var(--secondary-color);
+}
+
+.user img{
+    border-radius: 50%;
+}
+
+.CardPost__add{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.CardPost__add span{
+    font-size: 14px;
+    color: var(--other-color);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.CardPost__add svg{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.CardPost__add svg:hover path{
+    fill: var(--accent-color);
+}

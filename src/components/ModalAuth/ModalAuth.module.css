@@ -1,0 +1,41 @@
+.ModalAuth{
+    padding: 30px;
+}
+
+.ModalAuth__el{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 350px;
+    height: 48px;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.ModalAuth__discord{
+    background: #99A2FF;
+    border: none;
+    color: #FFF;
+}
+
+.ModalAuth__inputs{
+    padding: 30px;
+}
+
+.ModalAuth__title{
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
