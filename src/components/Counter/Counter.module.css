@@ -1,0 +1,22 @@
+.Counter{
+    display: flex;
+    align-items: center;
+    background: #F8F7F5;
+    padding: 0 24px;
+    width: fit-content;
+    gap: 16px;
+    height: 42px;
+    border-radius: 8px;
+}
+
+.click{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.count{
+    width: 10px;
+    text-align: center;
+}

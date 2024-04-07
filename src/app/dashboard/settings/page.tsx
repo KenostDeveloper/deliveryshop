@@ -11,6 +11,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { InputPicker } from 'rsuite';
 import { v4 as uuidv4 } from 'uuid';
+import NotFound from '@/components/NotFound/NotFound';
 
 
 export default function Settings() {
@@ -96,9 +97,12 @@ export default function Settings() {
         });
 
         axios.get(`/api/profile/points`).then((res) => {
-            if(res.data?.points.length != 0){
-                setShopSelected(res.data?.points);
+            if(res.data.success){
+                if(res.data?.points.length != 0){
+                    setShopSelected(res.data?.points);
+                }
             }
+           
         });
 
         axios.get(`/api/profile/city`).then((res) => {
@@ -159,7 +163,7 @@ export default function Settings() {
 
     if(session == null){
         return (
-            <div>Вы не авторизированы</div>
+            <NotFound/>
         )
     }
 

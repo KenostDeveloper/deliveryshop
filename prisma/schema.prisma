@@ -124,14 +124,14 @@ model SellerCityProducts {
 
 model Product {
     id Int    @id @default(autoincrement())
-    name String?
+    name String? @db.Text
     image String?
     price Float? 
     length Decimal?
     width Decimal?
     height Decimal?
     weight Decimal?
-    description String?
+    description String? @db.Text
     status Boolean?
     category   Category  @relation(fields: [idCategory], references: [id])
     idCategory Int

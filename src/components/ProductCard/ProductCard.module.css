@@ -30,7 +30,7 @@
     color: #02121C;
     margin-top: 16px;
     margin-bottom: 12px;
-    height: 57px;
+    height: 52px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;  
@@ -43,10 +43,11 @@
 }
 
 .ProductCardText button{
-    color: #FFF;
-    background: #02121C;
+    background: var(--accent-color);
+    color: var(--text-color);
     padding: 6px 16px;
     border-radius: 8px;
+    font-weight: 600;
     width: fit-content;
 }
 
