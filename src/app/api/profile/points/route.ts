@@ -9,7 +9,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     try{
 
         const session = await getServerSession(authOptions)
-        if(!session){
+        if(!session || session.user.role != "SELLER"){
             return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
 
@@ -71,11 +71,24 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
 
-        const points = await db.sellerCity.findMany({
+        let count = req.nextUrl.searchParams.get('count') as string
+
+    
+        let points:any = await db.sellerCity.findMany({
             where: {
                 idUser: Number(session.user.id)
+            },
+            include: {
+                city: true
             }
         })
+
+
+        if(count){
+            for(let i = 0; i < points.length; i++){
+                points[i].count = 0;
+            }
+        }
 
         return NextResponse.json({points});
 

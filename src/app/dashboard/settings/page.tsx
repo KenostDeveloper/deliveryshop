@@ -73,21 +73,6 @@ export default function Settings() {
         setList(nextShapes);
     }
 
-    // function updateCharcteristicsValue(id: string, value: any, list: any, setList: any) {
-    //     const nextShapes = list.map((characteristic: any) => {
-    //         if (characteristic.id != id) {
-    //         // No change
-    //         return characteristic;
-    //         } else {
-    //         // Return a new circle 50px below
-    //         return {
-    //         ...characteristic,
-    //         value: value,
-    //         };
-    //         }
-    //     });
-    //     setList(nextShapes);
-    // }
 
     const inputFile = useRef<any>(null);
 
@@ -129,7 +114,6 @@ export default function Settings() {
         console.log(session)
     })
 
-    //Создание продукта
     const createProduct = async () => {
         const formData = new FormData();
         if(selectedFile){
