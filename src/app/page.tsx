@@ -11,6 +11,7 @@ import Loading from "@/components/Helps/Loading";
 import Title from '@/components/UI/Title.components';
 import Catalog from "@/components/Catalog/Catalog";
 import Advantages from '@/components/Advantages/Advantages';
+import NotFound from '@/components/NotFound/NotFound';
 
 
 export default function Home() {
