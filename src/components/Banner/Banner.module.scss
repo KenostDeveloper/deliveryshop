@@ -1,138 +1,201 @@
 .banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    width: 100%;
+	width: 100%;
 }
 
 .banner__container {
-    display: flex;
-    gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .banner__img-container {
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: column;    
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: column;
 
-    background-color: #fff;
-    border-radius: var(--border-radius);
+	background-color: #fff;
+	border-radius: var(--border-radius);
 
-    height: 100%;
-    position: relative;
+	height: 100%;
+	position: relative;
 
-    overflow: hidden;
+	overflow: hidden;
 
-    &--primary {
-        width: 800px;
-        height: 440px;
-        padding: 0 0 40px 40px;
-    }
+	&--primary {
+		width: 800px;
+		height: 440px;
+		padding: 0 0 40px 40px;
+	}
 
-    &--secondary {
-        width: 400px;
-        // height: 225px;
-        padding: 16px 0 0 20px;
+	&--secondary {
+		width: 400px;
+		// height: 225px;
+		padding: 16px 0 0 20px;
 
-        justify-content: flex-start;
+		justify-content: flex-start;
 
-        img {
-            position: absolute;
-            right: 0;
-            bottom: 0;
+		img {
+			position: absolute;
+			right: 0;
+			bottom: 0;
 
-            width: 280px;
-        }
+			width: 280px;
+		}
 
-        h2 {
-            font-size: 24px;
-        }
-    }
+		h2 {
+			font-size: 24px;
+		}
+	}
 }
 
 .banner__img-group {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    position: absolute;
-    top: 0;
-    right: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	&--column {
+		flex-direction: column;
+	}
+
+	&--hand {
+		position: relative;
+
+		width: 400px;
+		height: 400px;
+	}
 }
 
 .banner__img-container-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .banner__img {
-    &--primary {
-        &--first {
-            height: 300px;
-        }
-        &--second {
-            height: 400px;
-        }
-    }
+	&--primary {
+		&--first {
+			height: 300px;
+		}
+		&--second {
+			height: 400px;
+		}
+	}
+
+	&--hand {
+		position: absolute;
+
+		animation-name: hand;
+		animation-iteration-count: infinite;
+
+		transform-origin: 100% 50%;
+
+		z-index: 1;
+
+		&:nth-child(1) {
+			top: 0;
+
+			animation-duration: 3s;
+			animation-timing-function: ease-in-out;
+		}
+
+		&:nth-child(2) {
+			top: 50%;
+			right: 0;
+			translate: 0 -50%;
+
+			animation-duration: 5s;
+			animation-timing-function: ease-in;
+		}
+
+		&:nth-child(3) {
+			bottom: 0;
+
+			animation-duration: 4s;
+			animation-timing-function: ease-out;
+		}
+	}
+
+	&--line {
+		position: absolute;
+
+		top: 50%;
+		left: 0;
+		translate: 0 -50%;
+
+		animation-name: line;
+		animation-duration: 5s;
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+	}
 }
 
 .banner__text-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .banner__title {
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 30px;
-    z-index: 1;
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 30px;
+	z-index: 1;
 }
 
 .banner__text {
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 24px;
-    z-index: 1;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 24px;
+	z-index: 1;
 }
-
 
 // Animations
 .money-icon {
-    animation-name: money;
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
+	animation-name: money;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
 }
 
 @keyframes money {
-    0% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(-100px);
-    }
-    100% {
-        transform: translateX(0);
-    }
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-150px);
+	}
+	100% {
+		transform: translateX(0);
+	}
 }
 
-.hands-icon {
-    animation-name: hands;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-
-    transform-origin: 100% 50%;
+@keyframes hand {
+	0% {
+		transform: rotate(0);
+	}
+	50% {
+		transform: rotate(10deg);
+	}
+	100% {
+		transform: rotate(0);
+	}
 }
 
-@keyframes hands {
-    0% {
-        transform: rotate(0);
-    }
-    50% {
-        transform: rotate(15deg);
-    }
-    100% {
-        transform: rotate(0);
-    }
+@keyframes line {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-75px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
 }

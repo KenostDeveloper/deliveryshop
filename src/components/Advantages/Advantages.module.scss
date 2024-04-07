@@ -1,84 +1,126 @@
 .advantages {
-    display: grid;
-    grid-template: 1fr / repeat(4, 1fr);
-    gap: 15px;
+	display: grid;
+	grid-template: 1fr / repeat(4, 1fr);
+	gap: 15px;
 }
 
 .advantages-item {
-    height: 220px;
-    position: relative;
+	height: 220px;
+	position: relative;
 
-    border-radius: var(--border-radius);
+	border-radius: var(--border-radius);
 
-    &:nth-child(1) {
-        background: linear-gradient(180deg, var(--green-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+	transition: all linear 0.3s;
 
-        p {
-            top: 15px;
-            left: 50%;
-        }
+	&:nth-child(1) {
+		background: linear-gradient(180deg, var(--green-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
 
-        img {
-            bottom: 20px;
-            left: 40px;
-        }
-    }
+		&:hover {
+			box-shadow: 0 0 50px 10px var(--green-light-color);
 
-    &:nth-child(2) {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--red-light-color) 100%);
+			img {
+				scale: 1.1;
+				rotate: -15deg;
+				translate: 25px -25px;
+			}
+		}
 
-        p {
-            bottom: 20px;
-            left: 20px;
-        }
+		p {
+			top: 15px;
+			left: 50%;
+		}
 
-        img {
-            top: 10px;
-            right: 20px;
-        }
-    }
+		img {
+			bottom: 20px;
+			left: 40px;
+		}
+	}
 
-    &:nth-child(3) {
-        background: linear-gradient(180deg, var(--blue-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+	&:nth-child(2) {
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--red-light-color) 100%);
 
-        p {
-            top: 20px;
-            left: 20px;
-        }
+		&:hover {
+			box-shadow: 0 0 50px 10px var(--red-light-color);
 
-        img {
-            bottom: 20px;
-            right: 50px;
-        }
-    }
+			img {
+				scale: 1.1;
+				rotate: 15deg;
+				translate: -10px -10px;
+			}
+		}
 
-    &:nth-child(4) {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--orange-light-color) 100%);
+		p {
+			bottom: 20px;
+			left: 20px;
+		}
 
-        p {
-            bottom: 20px;
-            left: 30px;
-        }
+		img {
+			top: 10px;
+			right: 20px;
+		}
+	}
 
-        img {
-            top: 30px;
-            right: 45px;
-        }
-    }
+	&:nth-child(3) {
+		background: linear-gradient(180deg, var(--blue-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+
+		&:hover {
+			box-shadow: 0 0 50px 10px var(--blue-light-color);
+
+			img {
+				scale: 1.1;
+				rotate: 10deg;
+			}
+		}
+
+		p {
+			top: 20px;
+			left: 20px;
+		}
+
+		img {
+			bottom: 20px;
+			right: 50px;
+		}
+	}
+
+	&:nth-child(4) {
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--orange-light-color) 100%);
+
+		&:hover {
+			box-shadow: 0 0 50px 10px var(--orange-light-color);
+
+			img {
+				scale: 1.1;
+				rotate: -15deg;
+				translate: -25px 5px;
+			}
+		}
+
+		p {
+			bottom: 20px;
+			left: 30px;
+		}
+
+		img {
+			top: 30px;
+			right: 45px;
+		}
+	}
 }
 
 .advantages-item__title {
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 1.1;
-    
-    position: absolute;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 1.1;
 
-    width: 70%;
+	position: absolute;
+
+	width: 70%;
 }
 
 .advantages-item__image {
-    height: 120px;
+	height: 120px;
 
-    position: absolute;
+	position: absolute;
+	transition: all linear 0.3s;
 }

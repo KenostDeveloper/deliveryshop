@@ -12,11 +12,12 @@
     border-radius: 25px;
 
     position: relative;
+	overflow: hidden;
 
     transition: all linear 0.3s;
 
     &:hover {
-        box-shadow: 0 0 15px var(--accent-color);
+        box-shadow: 0 0 30px 10px var(--accent-light-color);
 
         img {
             scale: 1.05;

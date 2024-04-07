@@ -9,7 +9,12 @@ const Banner = () => {
                 <div className={`${styles["banner__img-container"]} ${styles["banner__img-container--primary"]}`}>
                     <div className={`${styles["banner__img-group"]}`}>
                         <img src="/money.svg" alt="banner img" className={`${styles["banner__img"]} ${styles["banner__img--primary--first"]} ${styles["money-icon"]}`} />
-                        <img src="/Group 2087325263.svg" alt="banner img" className={`${styles["banner__img"]} ${styles["banner__img--primary--second"]} ${styles["hands-icon"]}`} />
+                        <div className={`${styles["banner__img-group"]} ${styles["banner__img-group--column"]} ${styles["banner__img-group--hand"]}`}>
+							<img src="/banner/hand1.svg" alt="hand image" className={`${styles["banner__img"]} ${styles["banner__img--hand"]}`} />
+							<img src="/banner/hand2.svg" alt="hand image" className={`${styles["banner__img"]} ${styles["banner__img--hand"]}`} />
+							<img src="/banner/hand3.svg" alt="hand image" className={`${styles["banner__img"]} ${styles["banner__img--hand"]}`} />
+							<img src="/banner/hand-lines.svg" alt="hand lines image" className={`${styles["banner__img"]} ${styles["banner__img--line"]}`} />
+						</div>
                     </div>
                     <div className={`${styles["banner__text-container"]}`}>
                         <h2 className={`${styles["banner__title"]}`}>Лучший сервис доставки</h2>
