@@ -7,7 +7,7 @@
     align-items: center;
     border-radius: 10px;
     background: var(--accent-color);
-    color: #FFF;
+    color: var(--text-color);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;

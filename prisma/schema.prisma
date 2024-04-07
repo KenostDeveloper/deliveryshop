@@ -74,6 +74,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   sellerSity     SellerCity[]
+  products Product[]
+  forgorPassword ForgotPassword[]
 }
 
 model VerificationToken {
@@ -124,11 +126,30 @@ model Product{
   id Int    @id @default(autoincrement())
   name String?
   image String?
-  price Decimal?
+  price Float? 
   length Decimal?
   width Decimal?
   height Decimal?
   weight Decimal?
-  description Decimal?
+  description String?
+  status Boolean?
+  category   Category  @relation(fields: [idCategory], references: [id])
+  idCategory Int
+  user   User  @relation(fields: [idUser], references: [id])
+  idUser Int
   sellerCityProducts SellerCityProducts[]
+}
+
+model Category {
+  id Int    @id @default(autoincrement())
+  name String //Название
+  product Product[]
+}
+
+
+model ForgotPassword{
+  id Int    @id @default(autoincrement())
+  token String?
+  user   User  @relation(fields: [idUser], references: [id])
+  idUser Int
 }
