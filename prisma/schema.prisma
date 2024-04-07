@@ -76,6 +76,7 @@ model User {
     sellerSity     SellerCity[]
     products       Product[]
     forgorPassword ForgotPassword[]
+    orders Orders[]
 }
 
 model VerificationToken {
@@ -140,6 +141,7 @@ model Product {
     sellerCityProducts SellerCityProducts[]
     count              Int?
     basket             Basket[]
+    orderProducts OrderProducts[]
 }
 
 model Category {
@@ -170,4 +172,24 @@ model Basket {
     token      BasketToken @relation(fields: [id_token], references: [id])
     id_token   Int
     quantity   Int
+}
+
+model Orders{
+    id         Int         @id @default(autoincrement())
+    user               User                 @relation(fields: [idUser], references: [id])
+    idUser             Int
+    status String?
+    date DateTime?
+    cost Float?
+    orderProducts OrderProducts[]
+}
+
+model OrderProducts{
+    id         Int         @id @default(autoincrement())
+    order               Orders                 @relation(fields: [idOrder], references: [id])
+    idOrder             Int
+    product               Product                 @relation(fields: [idProduct], references: [id])
+    idProduct             Int
+    price Int?
+    count Int?
 }
