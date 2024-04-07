@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaLogin } from "@/validations/userSchema";
-import style from "@/components/Forms/forms.module.css";
+import style from "@/components/Forms/forms.module.scss";
 import MyButton from "@/components/UI/MyButton/MyButton";
 import Link from "next/link";
 import { signIn } from "next-auth/react";

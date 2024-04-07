@@ -86,3 +86,29 @@
     font-weight: 600;
     line-height: normal;
 }
+
+
+
+/* Форма смены пароля */
+.change-form {
+    background-color: white;
+
+    border-radius: var(--border-radius);
+
+    margin-top: 100px;
+    width: 100%;
+
+    h2 {
+        margin-top: 0;
+    }
+
+    button {
+        width: fit-content;
+        font-weight: bold;
+    }
+}
+.change-form__label {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+}

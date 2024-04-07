@@ -1,16 +1,16 @@
+"use client";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaFogotPassword } from "@/validations/userSchema";
-import style from "@/components/Forms/forms.module.css";
+import style from "@/components/Forms/forms.module.scss";
 import MyButton from "@/components/UI/MyButton/MyButton";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/router";
 import axios from "axios";
 
-const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
+const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
     const {
         register,
         handleSubmit,
@@ -19,31 +19,23 @@ const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
         resolver: zodResolver(schemaFogotPassword),
     });
 
-    const handleSubmitLogin = async (data: any) => {
-        // const res = await signIn('credentials', {
-        //     usernameOrEmail: data.usernameOrEmail,
-        //     password: data.password,
-        //     redirect: true
-        // })
-
-        // if(res?.error){
-        //     toast.error(res?.error)
-        // }else{
-        //     setModalActive(false)
-        //     toast.success("Успешная авторизация!")
-        // }
-
-        console.log("as;dlkasd;l");
-
+    const handleSubmitForgot = async (data: any) => {         
         // Отправка сообщения со сгенерированным кодом
-        const res = await axios.post("/auth/fogot", data);
+        const res = await axios.post("/api/auth/fogot", {
+            email: data.email,
+        });
 
         if (res?.status !== 200) {
+            toast.error(res.statusText);
+        } else {
+            toast.success("Код отправлен");
+
+            setModalActive(false);
         }
     };
 
     return (
-        <form className={style.ModalAuth} onSubmit={handleSubmit(handleSubmitLogin)}>
+        <form className={style.ModalAuth} onSubmit={handleSubmit(handleSubmitForgot)}>
             <div className={style.ModalAuth__title}>Восстановление пароля</div>
 
             <div>
@@ -65,4 +57,4 @@ const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
     );
 };
 
-export default ChangePassword;
+export default ForgotPasswordForm;
