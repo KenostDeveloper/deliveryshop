@@ -50,12 +50,6 @@ const ProductsSwiper = ({products}:any) => {
             {products?.map((product: any) => (
                 <SwiperSlide key={product.id}>
                     <ProductCard slider={true} item={product}/>
-                    {/* <div className={styles.slidePortfilio}>
-                        <img className={styles.slidePortfilioImg} src={`/portfolio/${port.image}`} alt="" />
-                        <svg className={styles.slidePortfilioPlay} width="73" height="77" viewBox="0 0 73 77" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M65.0888 23.2731C73.5123 27.065 74.6722 38.5536 67.1766 43.9526L24.904 74.4015C17.4084 79.8005 6.87901 75.0607 5.95109 65.8698L0.717935 14.0362C-0.209983 4.84534 9.15949 -1.90348 17.583 1.88836L65.0888 23.2731Z"/>
-                        </svg>
-                    </div> */}
                 </SwiperSlide>
             ))}
         </Swiper>

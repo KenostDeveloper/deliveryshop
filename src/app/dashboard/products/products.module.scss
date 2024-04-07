@@ -1,5 +1,54 @@
 .addProduct{
+    display: flex;
+    gap: 20px;
+
+
     &Left{
+        width: 500px;
+    }
+
+    &Right{
+
+    }
+    
+    .label{
+        margin-bottom: 8px;
+    }
+
+    &Flex{
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
         
+        &El{
+            width: 100%;
+        }
+
+        button{
+            margin: 0;
+        }
+    }
+
+    .marginTop{
+        margin-top: 8px;
+    }
+
+    &Image{
+        width: 150px;
+        height: 150px;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 2px dotted var(--other-color);
+        cursor: pointer;
+
+
+        i{
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+        }
     }
 }
