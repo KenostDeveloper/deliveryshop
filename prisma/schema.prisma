@@ -138,6 +138,7 @@ model Product{
   user   User  @relation(fields: [idUser], references: [id])
   idUser Int
   sellerCityProducts SellerCityProducts[]
+  count Int?
 }
 
 model Category {
