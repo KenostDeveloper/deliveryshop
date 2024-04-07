@@ -1,0 +1,131 @@
+.main{
+    padding-top: 60px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    min-height: 100vh;
+}
+
+
+.contnent{
+    width: calc(100% - 316px);
+    background: #FFFFFF;
+    padding: 24px 40px;
+    border-radius: 8px;
+}
+
+.container{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 100px;
+}
+
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.title h1{
+    font-size: 20px;
+    color: #02121C;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.titleInfo{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.titleInfo p{
+    margin: 0;
+}
+
+.catalog{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 10px;
+}
+
+.menu p::before{
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    background-image: url('/list.svg');
+    width: 10px;
+    height: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: translate(0, -50%) rotate(180deg);
+    transition: all 0.4s;
+}
+
+.filter{
+    position: relative;
+}
+
+.filterName{
+    position: relative;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+.filterName::before{
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    background-image: url('/list.svg');
+    width: 10px;
+    height: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: translate(0, -50%) rotate(180deg);
+    transition: all 0.4s;
+}
+
+.filterMenu{
+    position: absolute;
+    background: #FFF;
+    box-shadow: -1px -1px 11px 2px rgb(123 123 123 / 50%);
+    padding: 12px;
+    top: 30px;
+    z-index: 10;
+    border-radius: 8px;
+    width: 180px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.filterMenu.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.filterMenu p{
+    padding: 8px 0;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.filterMenu p:hover{
+    color: #747474;
+}
+
+.loadingCatalogEl{
+    width: calc(calc(100% - 20px) / 3) !important;
+    height: 380px !important;
+    border-radius: 8px;
+}
+
+.loadingCatalog{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 10px;
+}
