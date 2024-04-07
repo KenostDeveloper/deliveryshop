@@ -48,3 +48,18 @@ export const schemaChangePassword = z
         message: "Пароли не совпадают",
         path: ["confirmPassword"], // path of error
     });
+
+export const schemaRate = z.object({
+    advantages: z
+        .string()
+        .min(10, "Длина должна быть от 10 до 500 символов")
+        .max(500, "Длина должна быть от 10 до 500 символов"),
+    disAdvantages: z
+        .string()
+        .min(10, "Длина должна быть от 10 до 500 символов")
+        .max(500, "Длина должна быть от 10 до 500 символов"),
+    comment: z
+        .string()
+        .min(10, "Длина должна быть от 10 до 500 символов")
+        .max(500, "Длина должна быть от 10 до 500 символов"),
+});

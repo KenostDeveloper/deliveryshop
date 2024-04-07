@@ -9,6 +9,7 @@ import RegisterForm from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
 import {signIn} from "next-auth/react";
 import ChangePassword from '../Forms/ForgotPasswordForm';
+import RateForm from '../Forms/RateForm';
 
 const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) => {
     const searchParams = useSearchParams();
@@ -46,7 +47,10 @@ const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) 
                 authEmail == 2?
                 <RegisterForm authEmail={authEmail} setAuthEmail={setAuthEmail}/>
                 :
+                authEmail == 3?
                 <ChangePassword authEmail={authEmail} setAuthEmail={setAuthEmail} setModalActive={setModalActive} />
+                :
+                <RateForm />
             }
         </Modal>
     );

@@ -1,8 +1,8 @@
-.ModalAuth{
+.ModalAuth {
     padding: 30px;
 }
 
-.notAccount{
+.notAccount {
     color: var(--secondary-color);
     font-size: 16px;
     font-style: normal;
@@ -11,12 +11,12 @@
     margin-top: 16px;
 }
 
-.notAccount span{
-    color: #468EFC;
+.notAccount span {
+    color: #468efc;
     cursor: pointer;
 }
 
-.agreement{
+.agreement {
     color: var(--border-color);
     font-size: 11px;
     font-style: normal;
@@ -26,12 +26,11 @@
     margin-top: 12px;
 }
 
-.agreement a{
+.agreement a {
     text-decoration: underline;
 }
 
-
-.MpInput{
+.MpInput {
     display: flex;
     width: 350px;
     height: 48px;
@@ -51,17 +50,17 @@
     line-height: normal;
 }
 
-.MpInput:focus{
+.MpInput:focus {
     background: var(--main-window);
 }
 
-.MpInputErrorBorder{
+.MpInputErrorBorder {
     border-color: var(--accent-color);
     color: var(--secondary-color);
     font-size: 16px;
 }
 
-.MpInputError{
+.MpInputError {
     color: var(--accent-color);
     font-size: 14px;
     font-style: normal;
@@ -69,7 +68,7 @@
     line-height: normal;
 }
 
-.MpInput + .MpInputError{
+.MpInput + .MpInputError {
     margin-top: 3px;
     margin-bottom: 13px;
 }
@@ -78,7 +77,7 @@
     background: var(--main-window);
 }
 
-.ModalAuth__title{
+.ModalAuth__title {
     color: var(--secondary-color);
     margin-bottom: 20px;
     font-size: 22px;
@@ -86,8 +85,6 @@
     font-weight: 600;
     line-height: normal;
 }
-
-
 
 /* Форма смены пароля */
 .change-form {
@@ -111,4 +108,58 @@
     font-size: 15px;
     font-weight: 600;
     line-height: 18px;
+}
+
+// Форма отзыва
+.rate-form {
+    display: flex;
+    flex-direction: column;
+    // gap: 10px;
+
+    background-color: white;
+
+    width: 530px;
+    padding: 20px 30px;
+    
+    h2 {
+        font-size: 32px;
+    }
+
+    textarea,
+    button {
+        width: 100%;
+    }
+}
+
+.title {
+    margin: 0;
+}
+
+.input-rate-container {
+    display: flex;
+    // gap: 10px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px 0;
+
+    &--rate {
+        padding: 15px 0;
+        gap: 10px;
+    }
+}
+
+.input-rate {
+    display: none;
+}
+
+.label-rate {
+    cursor: pointer;
+}
+
+.input {
+    width: 100%;
 }
