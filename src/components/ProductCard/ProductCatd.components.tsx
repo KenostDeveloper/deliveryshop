@@ -53,12 +53,12 @@ const ProductCard = ({item, slider}: any) => {
 
     return (
         <div className={slider == true? `${style.width} ${style.ProductCard}` : `${style.ProductCard}`}>
-            <Link href={`/product/${item.id}`}>
-                <img src="/" alt="" />
+            <Link className={style.ProductCardImage} href={`/product/${item.id}`}>
+                <img src={`/products/${item.image}`} alt="" />
             </Link>
 
             <div className={style.ProductCardText}>
-                <Link href={`/product/${item.id}`}><p>{item?.card?.category?.name} {item?.card?.company?.name} {item?.card?.name} {item?.size?.name}, «{item?.color?.name}»</p></Link>
+                <Link href={`/product/${item.id}`}><p>{item?.name}</p></Link>
                 <b>{(item?.price).toLocaleString()}₽</b>
                 {!isBasket? 
                 <button onClick={() => addToBasket()}>В корзину</button>

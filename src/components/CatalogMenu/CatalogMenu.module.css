@@ -1,0 +1,21 @@
+
+.menu{
+    width: 300px;
+    margin-right: 16px;
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 8px;
+    /* position: sticky;
+    top: 80px; */
+}
+
+.menu ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu ul li + li{
+    margin-top: 15px;
+}
+
