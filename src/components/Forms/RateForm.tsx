@@ -119,13 +119,14 @@ const RateForm = () => {
                                     fill={rateFixed >= 4 || rate >= 4 ? "#FFF500" : "#F2F2F2"}
                                 />
                             </svg>
-                            <input
-                                type="radio"
-                                id="rate4"
-                                onChange={(e) => setRateFixed(4)}
-                                className={`${styles["input-rate"]} ${styles["input-rate--4"]}`}
-                            />
                         </label>
+                        <input
+                            type="radio"
+                            id="rate4"
+                            onChange={(e) => setRateFixed(4)}
+                            className={`${styles["input-rate"]} ${styles["input-rate--4"]}`}
+                        />
+                        
                         <label
                             htmlFor="rate5"
                             onMouseEnter={() => setRate(5)}
