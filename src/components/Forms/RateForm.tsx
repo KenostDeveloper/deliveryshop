@@ -55,6 +55,7 @@ const RateForm = () => {
                             onChange={(e) => setRateFixed(1)}
                             className={`${styles["input-rate"]} ${styles["input-rate--1"]}`}
                         />
+
                         <label
                             htmlFor="rate2"
                             onMouseEnter={() => setRate(2)}
@@ -79,6 +80,7 @@ const RateForm = () => {
                             onChange={(e) => setRateFixed(2)}
                             className={`${styles["input-rate"]} ${styles["input-rate--2"]}`}
                         />
+
                         <label
                             htmlFor="rate3"
                             onMouseEnter={() => setRate(3)}
@@ -103,6 +105,7 @@ const RateForm = () => {
                             onChange={(e) => setRateFixed(3)}
                             className={`${styles["input-rate"]} ${styles["input-rate--3"]}`}
                         />
+
                         <label
                             htmlFor="rate4"
                             onMouseEnter={() => setRate(4)}
@@ -122,6 +125,7 @@ const RateForm = () => {
                         </label>
                         <input
                             type="radio"
+                            name="rate"
                             id="rate4"
                             onChange={(e) => setRateFixed(4)}
                             className={`${styles["input-rate"]} ${styles["input-rate--4"]}`}
