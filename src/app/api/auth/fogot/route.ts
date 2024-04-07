@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
             to: body.email as string, // list of receivers "email1, email2"
             subject: "Восстановление пароля", // Subject line
             text: `Recover password`, // plain text body
-            html: `Перейдите по <a href="http://127.0.0.1:3000/fogot/${hash_id}">ссылке</a>, чтобы восстановить пароль`, // html body
+            html: `Перейдите по <a href="${process.env.NEXTAUTH_BASIC_URL}/fogot/${hash_id}">ссылке</a>, чтобы восстановить пароль`, // html body
         });
 
         console.log("Message sent: %s", info.messageId);
