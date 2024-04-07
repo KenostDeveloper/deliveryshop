@@ -12,6 +12,7 @@ import Title from '@/components/UI/Title.components';
 import Catalog from "@/components/Catalog/Catalog";
 import Advantages from '@/components/Advantages/Advantages';
 import NotFound from '@/components/NotFound/NotFound';
+import RateForm from '@/components/Forms/RateForm';
 
 
 export default function Home() {

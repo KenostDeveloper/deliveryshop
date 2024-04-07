@@ -43,6 +43,12 @@ const Navbar = () => {
         )
     }
 
+
+    const openRate = () => {
+        setModalActive(true)
+        setAuthEmail(4);
+    }
+
     return (
         <nav className={styles.nav}>
             <Sitebar active={sitebar} setActive={setSitebar}/>
@@ -67,7 +73,7 @@ const Navbar = () => {
                 </div>
 
                 <div className={`${styles["nav__buttons-container"]}`}>
-                    <button className={`${styles.nav__button} ${styles.nav__catalog}`}>
+                    <button className={`${styles.nav__button} ${styles.nav__catalog}`} onClick={() => openRate()}>
                         <i className={`${styles["nav__catalog-icon"]} pi pi-th-large`}></i>
                         <p className={`${styles.nav__text}`}>каталог</p>
                     </button>
