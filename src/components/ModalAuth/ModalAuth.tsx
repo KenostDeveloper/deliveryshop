@@ -8,7 +8,7 @@ import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import RegisterForm from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
 import {signIn} from "next-auth/react";
-import ChangePassword from '../Forms/ChangePassword';
+import ChangePassword from '../Forms/ForgotPassword';
 
 const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) => {
     const searchParams = useSearchParams();
