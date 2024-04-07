@@ -123,28 +123,29 @@ model SellerCityProducts {
 }
 
 model Product {
-    id Int    @id @default(autoincrement())
-    name String?
-    image String?
-    price Float? 
-    length Decimal?
-    width Decimal?
-    height Decimal?
-    weight Decimal?
-    description String?
-    status Boolean?
-    category   Category  @relation(fields: [idCategory], references: [id])
-    idCategory Int
-    user   User  @relation(fields: [idUser], references: [id])
-    idUser Int
+    id                 Int                  @id @default(autoincrement())
+    name               String?              @db.Text
+    image              String?
+    price              Float?
+    length             Decimal?
+    width              Decimal?
+    height             Decimal?
+    weight             Decimal?
+    description        String?              @db.Text
+    status             Boolean?
+    category           Category             @relation(fields: [idCategory], references: [id])
+    idCategory         Int
+    user               User                 @relation(fields: [idUser], references: [id])
+    idUser             Int
     sellerCityProducts SellerCityProducts[]
-    count Int?
+    count              Int?
+    basket             Basket[]
 }
 
 model Category {
     id      Int       @id @default(autoincrement())
     name    String //Название
-    icon String?
+    icon    String?
     product Product[]
 }
 
@@ -153,4 +154,20 @@ model ForgotPassword {
     token  String?
     user   User    @relation(fields: [idUser], references: [id])
     idUser Int
+}
+
+model BasketToken {
+    id      Int      @id @default(autoincrement())
+    token   String
+    expires DateTime
+    basket  Basket[]
+}
+
+model Basket {
+    id         Int         @id @default(autoincrement())
+    product    Product     @relation(fields: [id_product], references: [id])
+    id_product Int
+    token      BasketToken @relation(fields: [id_token], references: [id])
+    id_token   Int
+    quantity   Int
 }

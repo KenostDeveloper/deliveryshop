@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import style from './ProductCard.module.css'
 import Link from 'next/link';
 import axios from 'axios';
+import { useBasketContext } from '../Helps/GlobalBasket';
 
 
 const ProductCard = ({item, slider}: any) => {
@@ -10,7 +11,7 @@ const ProductCard = ({item, slider}: any) => {
     const [loading, setLoading] = useState(true);
     const [isBasket, setIsBasket] = useState(false);
 
-    // const {basket, setBasket} = useBasketContext();
+    const {basket, setBasket} = useBasketContext();
 
 
     // useEffect(() => {
@@ -21,21 +22,21 @@ const ProductCard = ({item, slider}: any) => {
     //     setLoading(false)
     // }, [])
 
-    // useEffect(() => {
-    //     //Проверка товара в корзине пользователя
-    //     let temp = false;
-    //     for(let i = 0; i<basket?.length; i++){
-    //         if(basket[i].id_product == item.id){
-    //             temp = true;
-    //             break;
-    //         }
-    //     }
-    //     if(temp){
-    //         setIsBasket(true)
-    //     }else{
-    //         setIsBasket(false)
-    //     }
-    // }, [basket])
+    useEffect(() => {
+        //Проверка товара в корзине пользователя
+        let temp = false;
+        for(let i = 0; i<basket?.length; i++){
+            if(basket[i].id_product == item.id){
+                temp = true;
+                break;
+            }
+        }
+        if(temp){
+            setIsBasket(true)
+        }else{
+            setIsBasket(false)
+        }
+    }, [basket])
 
     //Добавление в корзину
     const addToBasket = async () => {

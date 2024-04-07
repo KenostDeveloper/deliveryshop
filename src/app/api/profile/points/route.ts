@@ -67,7 +67,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest) {
     try{
         const session = await getServerSession(authOptions)
-        if(!session){
+        if(!session || session.user.role != "SELLER"){
             return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
 

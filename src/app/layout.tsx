@@ -8,6 +8,7 @@ import Footer from "@/components/Footer/Footer.components";
 import Provider from "@/components/Helps/Provider";
 import React from "react";
 import { Toaster } from "react-hot-toast";
+import { GlobalContextProvider } from "@/components/Helps/GlobalBasket";
 import { CustomProvider } from "rsuite";
 const montserrat = Montserrat({ subsets: ["latin"] });
 import "primeicons/primeicons.css";
@@ -22,20 +23,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={montserrat.className}>
-                <CustomProvider>
-                    <Provider>
-                        <Toaster position="bottom-right" reverseOrder={false} />
-                        <header>
-                            <Navbar />
-                        </header>
-                        {/* Сменил justify-between на justify-center */}
-                        <main className="flex justify-center">
-                            {/* <Sitebar/> */}
-                            {children}
-                        </main>
-                        <Footer />
-                    </Provider>
-                </CustomProvider>
+                <GlobalContextProvider>
+                    <CustomProvider>
+                        <Provider>
+                            <Toaster position="bottom-right" reverseOrder={false} />
+                            <header>
+                                <Navbar />
+                            </header>
+                            {/* Сменил justify-between на justify-center */}
+                            <main className="flex justify-center">
+                                {/* <Sitebar/> */}
+                                {children}
+                            </main>
+                            <Footer />
+                        </Provider>
+                    </CustomProvider>
+                </GlobalContextProvider>
             </body>
         </html>
     );
