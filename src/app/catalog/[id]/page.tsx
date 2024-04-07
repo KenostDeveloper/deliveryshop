@@ -9,6 +9,7 @@ import axios from "axios";
 // import CatalogMenu from "@/components/CatalogMenu/CatalogMenu.components";
 import { Placeholder } from "rsuite";
 import CatalogMenu from "@/components/CatalogMenu/CatalogMenu.components";
+import { useBasketContext } from "@/components/Helps/GlobalBasket";
 
 export default function Catalog({params}:any) {
 
@@ -25,6 +26,15 @@ export default function Catalog({params}:any) {
   const [totalCount, setTotalCount] = useState(1);
   const [fetching, setFetching] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const {basket, setBasket} = useBasketContext();
+    
+  useEffect(() => {
+    axios.get(`/api/basket`).then((res) => {
+        // setBasketItems(res.data?.basket);
+        setBasket(res.data?.basket)
+    });
+  }, [])
 
   //Подгрузка по скроллу
   const scrollHander = (e: any) => {

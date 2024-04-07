@@ -52,8 +52,8 @@
 }
 
 .btnActive{
-    background: #00CEF2 !important;
-    color: #FFF !important;
+    background: var(--color-active) !important;
+    color: var(--text-color)!important;
 }
 
 .ProductCardImage{

@@ -78,9 +78,9 @@ const Navbar = () => {
                         noUser()
                     }
 
-                    <button className={`${styles.nav__button} ${styles["nav__button--transparent"]} ${styles.nav__cart}`}>
+                    <Link href="/checkout" className={`${styles.nav__button} ${styles.nav__basket} ${styles["nav__button--transparent"]} ${styles.nav__cart}`}>
                         <i className={`${styles["nav__cart-icon"]} pi pi-shopping-cart`}></i>
-                    </button>
+                    </Link>
                 </div>
 
                 

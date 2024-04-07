@@ -2,28 +2,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 'use client'
-import Link from "next/link";
+
 import styles from "./product.module.css";
-// import CatalogMenuItem from "@/components/CatalogMenuItem/CatalogMenuItem.component";
-import ProductCard from "@/components/ProductCard/ProductCatd.components";
+
 // import Counter from "@/components/Counter/Counter.components";
 import { useEffect, useState } from "react";
+import { useBasketContext } from '@/components/Helps/GlobalBasket';
 
 
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-
-// import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import axios from "axios";
-import Loading from "@/components/Helps/Loading";
-// import { useBasketContext } from "@/components/Helps/GlobalBasket";
 import Title from "@/components/UI/Title.components";
 import ProductsSwiper from "@/components/ProductsSwiper/ProductsSwiper.components";
 import { Placeholder } from "rsuite";
@@ -39,6 +26,76 @@ export default function Catalog({params}:any) {
   const [isBasket, setIsBasket] = useState(false);
   const [newProducts, setNewProducts] = useState([]);
 
+  const {basket, setBasket} = useBasketContext();
+    
+  useEffect(() => {
+    axios.get(`/api/basket`).then((res) => {
+        // setBasketItems(res.data?.basket);
+        setBasket(res.data?.basket)
+    });
+  }, [])
+
+  const changeCount = async (countValue: number) => {
+    if(countValue != 0){
+        const formData = new FormData();
+        formData.append("id_product", params.id);
+        formData.append("quantity", `${countValue}`);
+
+        axios.post(`/api/basket`, formData).then((res) => {
+            if (res.data.success) {
+                setCount(countValue)
+                const updateBasket = basket.map((basket: any) => {
+                    if (basket.id_product != params.id) {
+                      // No change
+                      return basket;
+                    } else {
+                      // Return a new circle 50px below
+                      return {
+                        ...basket,
+                        quantity: countValue,
+                      };
+                    }
+                });
+                setBasket(updateBasket);
+            }
+        });
+    }else{
+      deleteProductBasket(params.id)
+    }
+    axios.get(`/api/basket`).then((res) => {
+      setBasket(res.data?.basket)
+    });
+  }
+
+  useEffect(() => {
+    //Проверка товара в корзине пользователя
+    let temp = false;
+    let countTemp;
+    for(let i = 0; i<basket?.length; i++){
+      if(basket[i].id_product == params.id){
+        temp = true;
+        countTemp = basket[i]?.quantity;
+        break;
+      }
+    }
+    if(temp){
+      setIsBasket(true)
+      setCount(countTemp)
+    }else{
+      setIsBasket(false)
+    }
+  }, [basket])
+
+  const deleteProductBasket = async (id: number) => {
+    axios.delete(`/api/basket?id=${id}`).then((res) => {
+        if (res.data.success) {
+            // deleteProduct
+            setBasket(
+                basket.filter((bask: any) => bask?.id_product !== id)
+            );
+        }
+    });
+  }
 
   useEffect(() => {
     axios.get(`/api/products?id=${params.id}`).then((res) => {
@@ -49,9 +106,21 @@ export default function Catalog({params}:any) {
   //swiper
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
+  //Добавление в корзину
+  const addToBasket = async () => {
+    const formData = new FormData();
+    formData.append("id_product", params.id);
+    formData.append("quantity", `${count}`);
+
+    axios.post(`/api/basket`, formData).then((res) => {
+        if (res.data.success) {
+          setIsBasket(true)
+          axios.get(`/api/basket`).then((res) => {
+            setBasket(res.data?.basket)
+          });
+        }
+    });
+  };
 
   if(!product){
     return (
@@ -76,11 +145,12 @@ export default function Catalog({params}:any) {
             {!isBasket? 
             <>
             <Counter count={count} setCount={setCount}/>
-            <button className={styles.button}>В корзину</button>
+            <button className={styles.button} onClick={() => addToBasket()}>В корзину</button>
             </>
             :
             <>
             {/* {!loading? <Counter count={count} setCount={changeCount}/> : <Placeholder.Graph active style={{ height: 42, width: 114, borderRadius: 8}} />} */}
+            <Counter count={count} setCount={changeCount}/>
             <button className={`${styles.button} ${styles.btnActive}`}>В корзине</button>
             </>
             }

@@ -328,11 +328,12 @@ export default function Products() {
                             </div>
                             <p className={`${styles.label} ${styles.marginTop}`}>Описание</p>
                             <Input 
-                            as="textarea"
-                            rows={3} 
-                            placeholder="Описание вашего товара"
-                            value={newProduct.description}
-                            onChange={(value, e) => setNewProduct({...newProduct, description: value})} />
+                                as="textarea"
+                                rows={3} 
+                                placeholder="Описание вашего товара"
+                                value={newProduct.description}
+                                onChange={(value, e) => setNewProduct({...newProduct, description: value})}
+                            />
                             {warehouse.map((item:any) => 
                                 item.typePoint == "Warehouse" ? 
                                     <div key={item.id} className={styles.addProductFlex}>
