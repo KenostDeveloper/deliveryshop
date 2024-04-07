@@ -4,7 +4,7 @@ import "rsuite/dist/rsuite-no-reset.min.css";
 import "./globals.scss";
 import Navbar from "@/components/Navbar/Navbar";
 import Sitebar from "@/components/Sitebar/Sitebar.components";
-import Footer from "@/components/Footer copy/Footer.components";
+import Footer from "@/components/Footer/Footer.components";
 import Provider from "@/components/Helps/Provider";
 import React from "react";
 import { Toaster } from "react-hot-toast";
