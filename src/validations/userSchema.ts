@@ -13,4 +13,8 @@ export const schemaRegistr = z.object({
 export const schemaLogin = z.object({
     usernameOrEmail: z.string().min(5, "Длина должна быть не менее 5 символов"),
     password: z.string().min(5, "Длина пароля должна быть от 5 до 50 символов").max(50, "Длина пароля должна быть от 5 до 50 символов")
-})
+});
+
+export const schemaFogotPassword = z.object({
+    email: z.string().email("Пожалуйста, введите корректный email-адрес"),
+});
