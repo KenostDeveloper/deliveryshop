@@ -6,6 +6,7 @@ import { schemaRegistr } from "@/validations/userSchema";
 import nodemailer from "nodemailer";
 import { env } from "process";
 import { v4 as uuidv4 } from "uuid";
+import { getChangePasswordPattern } from "@/components/EmailPatterns/ChangePasswordPattern";
 
 export async function POST(req: NextRequest) {
     try {
@@ -24,12 +25,14 @@ export async function POST(req: NextRequest) {
         // Генерация уникального ключа для восстановления пароля
         const hash_id = uuidv4();
 
+        const pattern = getChangePasswordPattern(`${process.env.NEXTAUTH_BASIC_URL}/fogot/${hash_id}`);        
+
         const info = await transporter.sendMail({
             from: env.EMAIL_LOGIN, // sender address
             to: body.email as string, // list of receivers "email1, email2"
             subject: "Восстановление пароля", // Subject line
             text: `Recover password`, // plain text body
-            html: `Перейдите по <a href="${process.env.NEXTAUTH_BASIC_URL}/fogot/${hash_id}">ссылке</a>, чтобы восстановить пароль`, // html body
+            html: pattern, // html body
         });
 
         console.log("Message sent: %s", info.messageId);

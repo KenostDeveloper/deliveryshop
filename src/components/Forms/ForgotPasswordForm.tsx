@@ -9,6 +9,7 @@ import MyButton from "@/components/UI/MyButton/MyButton";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { isDirty } from "zod";
 
 const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
     const {
@@ -19,7 +20,13 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
         resolver: zodResolver(schemaFogotPassword),
     });
 
-    const handleSubmitForgot = async (data: any) => {         
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [buttonText, setButtonText] = useState("Получить код");
+
+    const handleSubmitForgot = async (data: any) => {
+        setIsButtonDisabled(true);
+        setButtonText("Отправляем код...");
+        
         // Отправка сообщения со сгенерированным кодом
         const res = await axios.post("/api/auth/fogot", {
             email: data.email,
@@ -32,6 +39,9 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
 
             setModalActive(false);
         }
+
+        setIsButtonDisabled(false);
+        setButtonText("Получить код");
     };
 
     return (
@@ -52,7 +62,7 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
                 <p className={style.MpInputError}>{errors.email?.message?.toString()}</p>
             </div>
 
-            <MyButton type="submit">Получить код</MyButton>
+            <MyButton type="submit" disabled={isButtonDisabled}>{buttonText}</MyButton>
         </form>
     );
 };
