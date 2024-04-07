@@ -152,3 +152,4 @@ model ForgotPassword {
     user   User    @relation(fields: [idUser], references: [id])
     idUser Int
 }
+8

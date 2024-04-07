@@ -1,14 +1,16 @@
+"use client";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaFogotPassword } from "@/validations/userSchema";
-import style from "@/components/Forms/forms.module.css";
+import style from "@/components/Forms/forms.module.scss";
 import MyButton from "@/components/UI/MyButton/MyButton";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
+const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
     const {
         register,
         handleSubmit,
@@ -27,6 +29,8 @@ const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
             toast.error(res.statusText);
         } else {
             toast.success("Код отправлен");
+
+            setModalActive(false);
         }
     };
 
@@ -53,4 +57,4 @@ const ChangePassword = ({ authEmail, setAuthEmail, setModalActive }: any) => {
     );
 };
 
-export default ChangePassword;
+export default ForgotPasswordForm;

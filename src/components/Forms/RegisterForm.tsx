@@ -4,7 +4,7 @@ import Link from "next/link";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {schemaRegistr} from "@/validations/userSchema";
-import style from './forms.module.css'
+import style from './forms.module.scss'
 import {toast} from 'react-hot-toast'
 import { RadioButton } from 'primereact/radiobutton';
 
