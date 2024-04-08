@@ -5,6 +5,7 @@ import Title from "../UI/Title.components";
 import styles from "./OrdersList.module.scss";
 import { OrderType } from "./types";
 import Product from "./Product";
+import Link from "next/link";
 
 const Order = ({ order }: { order: OrderType }) => {
     const router = useRouter();
@@ -23,11 +24,13 @@ const Order = ({ order }: { order: OrderType }) => {
         <section className={`${styles["order"]} container`}>
             <div className={`${styles["order__top-side"]}`}>
                 <div className={`${styles["order__top-side-block"]}`}>
-                    <button onClick={() => router.back()} className={`${styles["order__button"]}`}>
-                        <img src="/arrow-right.svg" alt="arrow image" />
-                    </button>
                     <div className={`${styles["order__title-container"]}`}>
-                        <h1 className={`${styles["order__title"]}`}>Заказ #{order.number}</h1>
+                        <h1 className={`${styles["order__title"]}`}>
+                            <Link href="/orders" className={`${styles["arrow"]}`}>
+                                <i className="pi pi-angle-left"></i>
+                            </Link>
+                            Заказ #{order.number}
+                        </h1>
                         <p className={`${styles["order__date"]}`}>от {dateFormated}</p>
                     </div>
                 </div>
@@ -63,6 +66,14 @@ const Order = ({ order }: { order: OrderType }) => {
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Адрес</p>
                     <p className={`${styles["order__info-text"]}`}>{order.address}</p>
+                </div>
+                <div className={`${styles["order__info"]}`}>
+                    <p className={`${styles["order__info-label"]}`}>Действия</p>
+                    <div className={`${styles["order__buttons-container"]}`}>
+                        <button className={`${styles["order__button"]} ${styles["order__button--green"]}`}>Принять заказ</button>
+                        <span className={`${styles["order__info-label"]}`}>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                        <button className={`${styles["order__button"]} ${styles["order__button--red"]}`}>Отменить заказ</button>
+                    </div>
                 </div>
             </div>
             <div className={`${styles["order__price-container"]}`}>

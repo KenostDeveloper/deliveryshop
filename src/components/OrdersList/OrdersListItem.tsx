@@ -7,7 +7,6 @@ import { OrderType } from "./types";
 import Link from "next/link";
 
 const OrdersListItem = ({ order }: { order: OrderType }) => {
-
     const router = useRouter();
 
     const dateFormated = new Intl.DateTimeFormat("ru-RU", {
@@ -16,13 +15,17 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
         year: "numeric",
         hour: "numeric",
         minute: "numeric",
-    }).format(order.date);
+    })?.format(new Date(order.date));
 
     return (
-        <article className={`${styles["orders__item"]}`}>
+        <article
+            className={`${styles["orders__item"]}`}
+            onClick={() => router.push(`/orders/${order.number}`)}>
             <div className={`${styles["orders__info"]}`}>
                 <div className={`${styles["orders__info-block"]}`}>
-                    <Link href={`/orders/${order.number}`} className={`${styles["orders__info-title"]}`}>
+                    <Link
+                        href={`/orders/${order.number}`}
+                        className={`${styles["orders__info-title"]}`}>
                         Заказ от {dateFormated}{" "}
                         <span className={`${styles["orders__info-number"]}`}># {order.number}</span>
                     </Link>
@@ -36,7 +39,37 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                 </div>
             </div>
             <div className={`${styles["orders__products"]}`}>
+                {/* {order.products.length > 5
+                    ? `${order.products.map((product, index) => {
+                          if (index >= 5) return;
+                          return (
+                              <article className={`${styles["orders__product"]}`} key={index}>
+                                  <img
+                                      src={product.image}
+                                      alt="product image"
+                                      className={`${styles["orders__product-img"]}`}
+                                  />
+                              </article>
+                          );
+                      })}
+                      ${<article className={`${styles["orders__more"]}`}>{order.products.length - 5}</article>}
+                      `
+                    : order.products.map((product, index) => {
+                          return (
+                              <article className={`${styles["orders__product"]}`} key={index}>
+                                  <img
+                                      src={product.image}
+                                      alt="product image"
+                                      className={`${styles["orders__product-img"]}`}
+                                  />
+                                  <p className={`${styles["orders__product-text"]}`}>
+                                      {product.name}
+                                  </p>
+                              </article>
+                          );
+                      })} */}
                 {order.products.map((product, index) => {
+                    if (index >= 5) return;
                     return (
                         <article className={`${styles["orders__product"]}`} key={index}>
                             <img
