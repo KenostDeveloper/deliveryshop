@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './checkout.module.css'
 import axios from 'axios';
 import { useBasketContext } from '@/components/Helps/GlobalBasket';
+import toast from 'react-hot-toast';
 
 
 export default function Checkout() {
@@ -11,6 +12,7 @@ export default function Checkout() {
 
   const {basket, setBasket} = useBasketContext();
   const [amount, setAmount] = useState(0);
+  const [load, setLoad] = useState(false);
 
 
   useEffect(() => {
@@ -31,7 +33,16 @@ export default function Checkout() {
     });
   }, [])
 
-
+  function placeOrder() {
+    setLoad(true)
+    axios.post(`/api/orders`).then((res) => {
+      if (res.data.success) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    }).finally(() => setLoad(false));
+  }
 
   return (
     <main className={styles.main}>
@@ -110,7 +121,7 @@ export default function Checkout() {
                 <p>{amount?.toLocaleString()}₽</p>
               </div>
 
-              <button className={styles.buttonOrder}>Оформить заказ</button>
+              <button onClick={() => placeOrder()} className={styles.buttonOrder}>{!load? "Оформить заказ" : <i className='pi pi-spin pi-spinner'></i>}</button>
               
 
             </div>

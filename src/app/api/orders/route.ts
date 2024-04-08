@@ -80,7 +80,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 })
 
                 //Удаляем всё содержимое корзины
-                await axios.delete(`/api/basket?id=${basket[i].product.id}`);
+                const deleteProduct = await db.basket.deleteMany({
+                    where: {
+                        id_token: getToken?.id,
+                        id_product: basket[i].product.id
+                    }
+                })
             }
 
             
@@ -96,56 +101,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest) {
     try{
-        let id = req.nextUrl.searchParams.get('id') as string
-        let user_id = req.nextUrl.searchParams.get('user_id') as string
-        let category_id = req.nextUrl.searchParams.get('category_id') as string
-
-        let page = req.nextUrl.searchParams.get('page') as string
-        let limit = req.nextUrl.searchParams.get('limit') as string
-        let tag = req.nextUrl.searchParams.get('tag') as string
-
-        let getPage = Number(page) || 1;
-        let getLimit = Number(limit) || 9;
-        let offset = getPage * getLimit - getLimit;
-
-
-        if(user_id){
-
-            const session = await getServerSession(authOptions)
-
-            const count = await db.product.count();
-            const product = await db.product.findMany({
-                where: {
-                    idUser: session?.user.id
-                },
-                take: getLimit,
-                skip: offset,
-            });
-
-            return NextResponse.json({count, product});
+        const session = await getServerSession(authOptions)
+        if(!session){
+            return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
-
-        if(!id){
-            const count = await db.product.count();
-
-            const product = await db.product.findMany({
-                take: getLimit,
-                skip: offset,
-            });
-
-            return NextResponse.json({count, product});
-
-        }else{
-            const product = await db.product.findUnique({
-                where: {
-                    id: Number(id)
-                }
-            });
-
-            return NextResponse.json({product});
-        }
-
-
+        
+        const orders = await db.orders.findMany({
+            where: {
+                idUser: session.user.id
+            }
+        })
+        
+        return NextResponse.json({success: true, orders});
 
     }catch(e){
         return NextResponse.json({success: false, message: "Произошла неизвестная ошибка, попробуйте снова :(", e});
