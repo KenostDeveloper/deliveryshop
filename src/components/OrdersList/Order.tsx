@@ -29,7 +29,7 @@ const Order = ({ order }: { order: OrderType }) => {
                             <Link href="/orders" className={`${styles["arrow"]}`}>
                                 <i className="pi pi-angle-left"></i>
                             </Link>
-                            Заказ #{order.number}
+                            Заказ #{order.id}
                         </h1>
                         <p className={`${styles["order__date"]}`}>от {dateFormated}</p>
                     </div>

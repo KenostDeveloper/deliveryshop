@@ -39,9 +39,14 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                 </div>
             </div>
             <div className={`${styles["orders__products"]}`}>
-                {/* {order.products.length > 5
-                    ? `${order.products.map((product, index) => {
-                          if (index >= 5) return;
+                {order.products.length > 5
+                    ? order.products.map((product, index) => {
+                          if (index >= 5)
+                              return (
+                                  <article className={`${styles["orders__more"]}`}>
+                                      +{order.products.length - 5}
+                                  </article>
+                              );
                           return (
                               <article className={`${styles["orders__product"]}`} key={index}>
                                   <img
@@ -51,9 +56,7 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                                   />
                               </article>
                           );
-                      })}
-                      ${<article className={`${styles["orders__more"]}`}>{order.products.length - 5}</article>}
-                      `
+                      })
                     : order.products.map((product, index) => {
                           return (
                               <article className={`${styles["orders__product"]}`} key={index}>
@@ -67,19 +70,7 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                                   </p>
                               </article>
                           );
-                      })} */}
-                {order.products.map((product, index) => {
-                    if (index >= 5) return;
-                    return (
-                        <article className={`${styles["orders__product"]}`} key={index}>
-                            <img
-                                src={product.image}
-                                alt="product image"
-                                className={`${styles["orders__product-img"]}`}
-                            />
-                        </article>
-                    );
-                })}
+                      })}
             </div>
         </article>
     );

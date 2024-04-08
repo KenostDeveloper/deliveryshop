@@ -36,7 +36,7 @@
     cursor: pointer;
 
     &:hover {
-        box-shadow: 0 0 15px 5px rgba(119, 119, 119, 0.5);
+        box-shadow: 0 0 15px px rgba(119, 119, 119, 0.5);
     }
 }
 
@@ -275,9 +275,15 @@
     opacity: 1;
 }
 
-.orders__morer {
+.orders__more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: var(--background-color);
-    
-    height: 50%;
+    border-radius: var(--border-radius);
+
+    height: 35%;
     aspect-ratio: 0.5;
+    padding: 0 10px;
 }
