@@ -18,7 +18,7 @@ const CatalogMenu = (params: any) => {
     return (
         <div className={styles.menu}>
           <ul>
-            {category.map((item:any) => <Link key={item.id} href={`/catalog/${item.id}`}>{item.name}</Link>)}
+            {category.map((item:any) => <Link key={item.id} href={`/catalog/${item.id}`}><img src={`/catalogMenu/${item.id}.svg`} alt="" />{item.name}</Link>)}
           </ul>
         </div>
     );

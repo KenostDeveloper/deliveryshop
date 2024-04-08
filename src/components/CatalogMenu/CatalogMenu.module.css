@@ -15,6 +15,17 @@
     gap: 10px;
 }
 
+.menu ul a{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+}
+
+.menu ul a img{
+    height: 24px;
+}
+
 .menu ul li + li{
     margin-top: 15px;
 }
