@@ -28,17 +28,35 @@ export async function POST(req: NextRequest, res: NextResponse) {
             }
         })
 
+        if (!basketToken) {
+            return NextResponse.json({
+                success: false,
+                message: "Корзина не найдена!",
+            });
+        }
+
         // Удалить содержимое корзины, если есть
         if (!isBasketNull) {
             await db.basket.deleteMany({
                 where: {
                     id_token: basketToken?.id
                 },
-            })
+            })            
         }
 
         // Добавление новых товаров в корзину
-        const basket = db.basket.createMany({
+        // products.forEach(async (product: any) => {
+        //     await db.basket.create({
+        //         data: {
+        //             id_token: Number(basketToken?.id),
+        //             id_product: product?.product?.id,
+        //             quantity: product?.count
+        //         }
+        //     })
+        //     console.log("Продукт добавлен", product);
+            
+        // })
+        const basket = await db.basket.createMany({
             data: products.map((product: any) => ({
                 id_token: basketToken?.id,
                 id_product: product?.product?.id,
@@ -46,7 +64,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             })),
         })
 
-        return NextResponse.json({ success: true, message: "Корзина пересоздана!", basket});
+        return NextResponse.json({ success: true, message: "Корзина пересоздана!", basket });
     } catch (e) {
         return NextResponse.json({
             success: false,
