@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -48,7 +49,7 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                                   </article>
                               );
                           return (
-                              <article className={`${styles["orders__product"]}`} key={index}>
+                              <article className={`${styles["orders__product"]}`} key={product.id}>
                                   <img
                                       src={product.image}
                                       alt="product image"
@@ -59,7 +60,7 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
                       })
                     : order.products.map((product, index) => {
                           return (
-                              <article className={`${styles["orders__product"]}`} key={index}>
+                              <article className={`${styles["orders__product"]}`} key={product.id}>
                                   <img
                                       src={product.image}
                                       alt="product image"

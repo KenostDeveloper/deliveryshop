@@ -14,7 +14,7 @@ const OrdersList = ({
 
             <div className={`${styles["orders__container"]}`}>
                 {orders?.map((order, index) => {
-                    return <OrdersListItem key={index} order={order} />;
+                    return <OrdersListItem key={order.id} order={order} />;
                 })}
             </div>
         </section>

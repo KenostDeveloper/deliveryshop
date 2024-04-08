@@ -100,8 +100,8 @@ const Order = ({ order }: { order: any }) => {
                 </div>
             </div>
             <div className={`${styles["order__products-container"]}`}>
-                {order?.products?.map((product, index) => {
-                    return <Product key={index} product={product} />;
+                {order?.products?.map((product: any, index: number) => {
+                    return <Product key={product.id} product={product} />;
                 })}
             </div>
         </section>
