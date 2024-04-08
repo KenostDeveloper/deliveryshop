@@ -131,10 +131,10 @@ model Product {
     name               String?              @db.Text
     image              String?
     price              Float?
-    length             Decimal?
-    width              Decimal?
-    height             Decimal?
-    weight             Decimal?
+    length             Float?
+    width              Float?
+    height             Float?
+    weight             Float?
     description        String?              @db.Text
     status             Boolean?
     category           Category             @relation(fields: [idCategory], references: [id])
