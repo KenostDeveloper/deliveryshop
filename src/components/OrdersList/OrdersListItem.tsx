@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Title from "../UI/Title.components";
 import styles from "./OrdersList.module.scss";
 import { OrderType } from "./types";
+import Link from "next/link";
 
 const OrdersListItem = ({ order }: { order: OrderType }) => {
 
@@ -18,13 +19,13 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
     }).format(order.date);
 
     return (
-        <article className={`${styles["orders__item"]}`} onClick={() => router.push(`/orders/${order.number}`)}>
+        <article className={`${styles["orders__item"]}`}>
             <div className={`${styles["orders__info"]}`}>
                 <div className={`${styles["orders__info-block"]}`}>
-                    <p className={`${styles["orders__info-title"]}`}>
+                    <Link href={`/orders/${order.number}`} className={`${styles["orders__info-title"]}`}>
                         Заказ от {dateFormated}{" "}
                         <span className={`${styles["orders__info-number"]}`}># {order.number}</span>
-                    </p>
+                    </Link>
                     <p className={`${styles["orders__info-title"]}`}>
                         {order.products.reduce((acc, item) => (acc += item.price), 0)}₽
                     </p>

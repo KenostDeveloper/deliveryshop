@@ -32,12 +32,11 @@
     padding: 20px 30px;
     width: 100%;
 
-    cursor: pointer;
-    transition: all 0.3s linear;
+    // transition: all 0.3s linear;
 
-    &:hover {
-        box-shadow: 0 0 15px 5px rgba(119, 119, 119, 0.5);
-    }
+    // &:hover {
+    //     box-shadow: 0 0 15px 5px rgba(119, 119, 119, 0.5);
+    // }
 }
 
 .orders__info {
@@ -54,6 +53,27 @@
 .orders__info-title {
     font-size: 20px;
     font-weight: 600;
+
+    position: relative;
+
+    &::before {
+        content: "";
+
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: all .3s linear;
+    }
+
+    &:hover {
+        &::before {
+            width: 100%;
+        }
+    }
 }
 
 .orders__info-number {
