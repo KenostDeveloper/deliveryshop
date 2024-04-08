@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import { useEffect, useState } from 'react';
 import styles from './checkout.module.css'
@@ -9,7 +10,20 @@ export default function Checkout() {
   const [methodDelivert, setMetodDelivery] = useState(0);
 
   const {basket, setBasket} = useBasketContext();
-    
+  const [amount, setAmount] = useState(0);
+
+
+  useEffect(() => {
+    if(basket){
+        let temp = 0;
+
+        for(let i = 0; i < basket?.length; i++){
+            temp = temp + basket[i]?.quantity * basket[i]?.product?.price;
+        }
+        setAmount(temp);
+    }
+  }, [basket])
+
   useEffect(() => {
     axios.get(`/api/basket`).then((res) => {
         // setBasketItems(res.data?.basket);
@@ -55,10 +69,10 @@ export default function Checkout() {
               <div className={styles.products}>
                 {basket.map((item:any) => 
                   <div key={item.id} className={styles.item}>
-                    {item?.image ?
-                        <img src={`/product/${item?.image}`} alt={`${item?.name}`} />
+                    {item?.product?.image != null ?
+                        <img src={`/products/${item?.product?.image}`} alt={`${item?.product?.name}`} />
                     :
-                        <img src="/quickshopimage.png" alt={`${item?.card?.category?.name} ${item?.product?.card?.company?.name} ${item?.product?.card?.name}`} />
+                        <img src="/quickshopimage.png" alt={`${item?.product?.name}`} />
                     }
                     <div className={styles.itemText}>
                       <div className={styles.itemTextTitle}>
@@ -75,7 +89,7 @@ export default function Checkout() {
               <div className={styles.sale}>
                   <div className={styles.saleEl}>
                     <p>Стоимость товаров</p>
-                    <p>260 000₽</p>
+                    <p>{amount?.toLocaleString()}₽</p>
                   </div>
                   <div className={styles.saleEl}>
                     <p>Доставка</p>
@@ -93,7 +107,7 @@ export default function Checkout() {
 
               <div className={styles.itog}>
                 <p>Итого</p>
-                <p>260 000₽</p>
+                <p>{amount?.toLocaleString()}₽</p>
               </div>
 
               <button className={styles.buttonOrder}>Оформить заказ</button>
