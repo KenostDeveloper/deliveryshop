@@ -1,6 +1,6 @@
 export type OrderType = {
     id: number;
-    date: Date;
+    date: string;
     status: string;
     deliveryMethod: string;
     user: string,

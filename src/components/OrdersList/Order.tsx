@@ -10,15 +10,7 @@ import Link from "next/link";
 const Order = ({ order }: { order: OrderType }) => {
     const router = useRouter();
 
-    // const dateFormated = new Intl.DateTimeFormat("ru-RU", {
-    //     day: "numeric",
-    //     month: "numeric",
-    //     year: "numeric",
-    //     hour: "numeric",
-    //     minute: "numeric",
-    // }).format(new Date(order?.date));
-
-    // const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
+    const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
 
     return (
         <section className={`${styles["order"]} container`}>
@@ -31,11 +23,8 @@ const Order = ({ order }: { order: OrderType }) => {
                             </Link>
                             Заказ #{order?.id}
                         </h1>
-                        <p className={`${styles["order__date"]}`}>от {order.date}</p>
+                        <p className={`${styles["order__date"]}`}>от {order?.date}</p>
                     </div>
-                </div>
-                <div className={`${styles["order__top-side-block"]}`}>
-                    <button className={`${styles["order__button"]}`}>Отменить заказ</button>
                 </div>
             </div>
             <div className={`${styles["order__info-container"]}`}>
@@ -94,7 +83,7 @@ const Order = ({ order }: { order: OrderType }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {order.deliveryPrice}₽
+                        {order?.deliveryPrice}₽
                     </p>
                 </div>
                 <div className={`${styles["order__info"]}`}>
@@ -104,7 +93,7 @@ const Order = ({ order }: { order: OrderType }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {/* {productsPrice + order.deliveryPrice}₽ */}
+                        {productsPrice + order?.deliveryPrice}₽
                     </p>
                 </div>
             </div>
