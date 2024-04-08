@@ -65,5 +65,6 @@ export default function OrderPage({params}:any) {
         });
     }, [])
 
-    return <Order order={order} />;
+    return <div></div>
+    // return <Order order={order} />;
 }
