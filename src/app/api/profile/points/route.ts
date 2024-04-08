@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        return NextResponse.json({points});
+        return NextResponse.json({success: true, points});
 
 
     }catch(e){

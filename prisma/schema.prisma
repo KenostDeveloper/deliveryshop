@@ -102,6 +102,8 @@ model City {
     id         Int          @id @default(autoincrement())
     name       String
     sellerCity SellerCity[]
+    city1 CityWay[]  @relation("city1")
+    player2Matches CityWay[]  @relation("city2")
 }
 
 model SellerCity {
@@ -192,4 +194,23 @@ model OrderProducts{
     idProduct             Int
     price Int?
     count Int?
+}
+
+model CityWay{
+    id         Int         @id @default(autoincrement())
+    city1     City     @relation(fields: [idCity1], references: [id], name: "city1")
+    idCity1   Int
+    city2     City     @relation(fields: [idCity2], references: [id], name: "city2")
+    idCity2   Int
+    duration Float ? //Длительность
+    cost Float ? //Стоимость
+    length Float ? //Протяжённость
+    transport               Transport                 @relation(fields: [idTransport], references: [id])
+    idTransport             Int
+} 
+
+model Transport {
+    id         Int         @id @default(autoincrement())
+    name String
+    cityWay CityWay[]
 }

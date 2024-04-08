@@ -158,7 +158,7 @@ export async function GET(req: NextRequest) {
 
                 const productsOrder = await db.orderProducts.findMany({
                     where: {
-                        idOrder: orders.id
+                        idOrder: orders[i].id
                     },
                     include: {
                         product: true
