@@ -20,14 +20,14 @@ const OrdersListItem = ({ order }: { order: OrderType }) => {
     return (
         <article
             className={`${styles["orders__item"]}`}
-            onClick={() => router.push(`/orders/${order.number}`)}>
+            onClick={() => router.push(`/orders/${order.id}`)}>
             <div className={`${styles["orders__info"]}`}>
                 <div className={`${styles["orders__info-block"]}`}>
                     <Link
-                        href={`/orders/${order.number}`}
+                        href={`/orders/${order.id}`}
                         className={`${styles["orders__info-title"]}`}>
                         Заказ от {dateFormated}{" "}
-                        <span className={`${styles["orders__info-number"]}`}># {order.number}</span>
+                        <span className={`${styles["orders__info-number"]}`}>#{order.id}</span>
                     </Link>
                     <p className={`${styles["orders__info-title"]}`}>
                         {order.products.reduce((acc, item) => (acc += item.price), 0)}₽

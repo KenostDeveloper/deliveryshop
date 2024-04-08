@@ -70,7 +70,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
             //Добавляем товары в заказ
             for(let i = 0; i < basket.length; i++){
-                const orderProduct = db.orderProducts.create({
+                const orderProduct = await db.orderProducts.create({
                     data: {
                         idOrder: order.id,
                         idProduct: basket[i].product.id,
@@ -106,11 +106,21 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
         
-        const orders = await db.orders.findMany({
+        let orders:any = await db.orders.findMany({
             where: {
                 idUser: session.user.id
-            }
+            },
         })
+
+        for(let i = 0; i < orders.length; i++){
+            const productsOrder = await db.orderProducts.findMany({
+                where: {
+                    idOrder: orders.id
+                }
+            })
+
+            orders[i]['products'] = productsOrder;
+        }
         
         return NextResponse.json({success: true, orders});
 
