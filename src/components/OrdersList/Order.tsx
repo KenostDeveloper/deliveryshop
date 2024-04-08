@@ -73,7 +73,7 @@ const Order = ({ order }: { order: OrderType }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {productsPrice}₽
+                        {/* {productsPrice}₽ */}
                     </p>
                 </div>
                 <div className={`${styles["order__info"]}`}>

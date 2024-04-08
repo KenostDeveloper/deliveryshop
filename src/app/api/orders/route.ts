@@ -114,6 +114,16 @@ export async function GET(req: NextRequest) {
                     id: Number(id)
                 },
             })
+
+            const dateFormated = new Intl.DateTimeFormat("ru-RU", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+            }).format(new Date(order.date));
+
+            order['date'] = dateFormated;
     
             const productsOrder = await db.orderProducts.findMany({
                 where: {
@@ -131,6 +141,16 @@ export async function GET(req: NextRequest) {
                 idUser: session.user.id
             },
         })
+
+        const dateFormated = new Intl.DateTimeFormat("ru-RU", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+        }).format(new Date(orders.date));
+
+        orders['date'] = dateFormated;
 
         for(let i = 0; i < orders.length; i++){
             const productsOrder = await db.orderProducts.findMany({
