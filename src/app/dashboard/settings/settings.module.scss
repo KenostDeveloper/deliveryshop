@@ -88,3 +88,23 @@
     }
 }
 
+
+
+.sityWay{
+    &Add{
+        border-radius: 8px;
+        background: var(--my-background);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 36px;
+        width: fit-content;
+        padding: 0 10px;
+        cursor: pointer;
+    }
+
+    &Flex{
+        display: flex;
+        gap: 10px;
+    }
+}

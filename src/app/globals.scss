@@ -96,3 +96,12 @@ body {
 .rs-picker{
   width: 100%;
 }
+
+.rs-btn-primary{
+  background: var(--accent-color) !important;
+  color: var(--text-color) !important;
+
+  &:hover{
+    color: var(--text-color) !important;
+  }
+}

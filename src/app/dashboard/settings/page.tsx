@@ -12,18 +12,19 @@ import toast from 'react-hot-toast';
 import { InputPicker } from 'rsuite';
 import { v4 as uuidv4 } from 'uuid';
 import NotFound from '@/components/NotFound/NotFound';
+import { Modal, ButtonToolbar, Button, RadioGroup, Radio, Placeholder } from 'rsuite';
 
 
 export default function Settings() {
 
     const [loading, setLoading] = useState(true)
     const {data: session, update} = useSession();
-
+    const [open, setOpen] = React.useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [profile, setProfile] = useState<any>({
         image: "",
-        nameShop: "",
-        description: ""
+        nameShop: "QuickShop",
+        description: "Описание вашего магазина ещё нет :( Исправте это!"
     });
 
     const [selectedFile, setSelectedFile] = useState<File>();
@@ -31,6 +32,8 @@ export default function Settings() {
     const [shopSelected, setShopSelected] = useState([
         {}
     ]);
+
+    const [sityWay, setSityWay] = useState([{}]);
 
     const [city, setCity] = useState([]);
 
@@ -102,7 +105,6 @@ export default function Settings() {
                     setShopSelected(res.data?.points);
                 }
             }
-           
         });
 
         axios.get(`/api/profile/city`).then((res) => {
@@ -156,6 +158,12 @@ export default function Settings() {
   const hendlerInput = () => {
     inputFile.current.click();
   };
+
+    //Добавление нового маршрута
+    const [newCityWay, setNewCityWay] = useState({
+        city1: "",
+        city2: ""
+    })
 
     if(loading){
         return <Loading/>
@@ -223,8 +231,44 @@ export default function Settings() {
                         </div>
                     )}
                     <MyButton onClick={() => createShops()}>Сохранить</MyButton>
-                    
                 </div>
+
+                <div className='kenost-window'>
+                    <div className="kenost-title">Мои маршруты</div>
+                    <div className={styles.sityWayAdd} onClick={() => setOpen(true)}><i className='pi pi-plus'></i> Добавить</div>
+                </div>
+
+                <Modal keyboard={false} open={open} onClose={() => setOpen(false)}>
+                    <Modal.Header>
+                        <Modal.Title>Добавить маршрут</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <div className={styles.sityWayFlex}>
+                            <InputPicker
+                                data={city}
+                                value={newCityWay.city1}
+                                onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
+                                placeholder="Выберите город"
+                            />
+                            <InputPicker
+                                data={city}
+                                value={newCityWay.city2}
+                                onChange={(value) => setNewCityWay({...newCityWay, city2: value})}
+                                placeholder="Выберите город"
+                            />
+                        </div>
+                        
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button onClick={() => setOpen(false)} appearance="primary">
+                        Сохранить
+                    </Button>
+                    <Button onClick={() => setOpen(false)} appearance="subtle">
+                        Отменить
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </div>
     )

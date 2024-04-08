@@ -75,7 +75,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         idOrder: order.id,
                         idProduct: basket[i].product.id,
                         price: basket[i].product.price,
-                        count: basket[i].product.count
+                        count: basket[i].quantity
                     }
                 })
 
