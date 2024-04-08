@@ -171,12 +171,12 @@ export default function Settings() {
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
                 <div className={styles.profile}>
-                    <img onClick={ hendlerInput } className={styles.profile__image} src={profile.image == null ? "/quickshopimage.png" : `/users/` + profile.image} alt="" />
+                    <img onClick={ hendlerInput } className={styles.profile__image} src={profile?.image == null ? "/quickshopimage.png" : `/users/` + profile.image} alt="" />
                     <div className={styles.profile__text}>
                         {!isEdit?
                             <>
-                                <b className={styles.profile__name}>{profile.nameShop  == null || "" ? "QuickShop" : profile?.nameShop}<i className='pi pi-pen-to-square' onClick={() => setIsEdit(!isEdit)}></i></b>
-                                <p className={styles.profile__desc}>{profile.description == null || "" ? "Описание вашего магазина ещё нет :( Исправте это!" : profile?.description}</p>
+                                <b className={styles.profile__name}>{profile?.nameShop  == null || "" ? "QuickShop" : profile?.nameShop}<i className='pi pi-pen-to-square' onClick={() => setIsEdit(!isEdit)}></i></b>
+                                <p className={styles.profile__desc}>{profile?.description == null || "" ? "Описание вашего магазина ещё нет :( Исправте это!" : profile?.description}</p>
                             </>
                             :
                             <>
