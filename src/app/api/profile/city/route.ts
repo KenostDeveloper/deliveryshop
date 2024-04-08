@@ -29,10 +29,10 @@ export async function GET(req: NextRequest) {
                 return o;
             }, []);
 
-            return NextResponse.json({city: res});
+            return NextResponse.json({success: true, city: res});
         }else{
             const city = await db.city.findMany()
-            return NextResponse.json({city});
+            return NextResponse.json({success: true, city});
         }
         
     }catch(e){
