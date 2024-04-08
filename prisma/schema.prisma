@@ -76,9 +76,10 @@ model User {
     sellerSity     SellerCity[]
     products       Product[]
     forgorPassword ForgotPassword[]
-    orders Orders[]
-    cityWay CityWay[]
-    productRating ProductRating[]
+    orders         Orders[]
+    cityWay        CityWay[]
+    productRating  ProductRating[]
+    orderCancells OrderCancells[]
 }
 
 model VerificationToken {
@@ -101,11 +102,11 @@ enum TypePoint {
 }
 
 model City {
-    id         Int          @id @default(autoincrement())
-    name       String
-    sellerCity SellerCity[]
-    city1 CityWay[]  @relation("city1")
-    player2Matches CityWay[]  @relation("city2")
+    id             Int          @id @default(autoincrement())
+    name           String
+    sellerCity     SellerCity[]
+    city1          CityWay[]    @relation("city1")
+    player2Matches CityWay[]    @relation("city2")
 }
 
 model SellerCity {
@@ -145,8 +146,8 @@ model Product {
     sellerCityProducts SellerCityProducts[]
     count              Int?
     basket             Basket[]
-    orderProducts OrderProducts[]
-    productRating ProductRating[]
+    orderProducts      OrderProducts[]
+    productRating      ProductRating[]
 }
 
 model Category {
@@ -179,55 +180,72 @@ model Basket {
     quantity   Int
 }
 
-model Orders{
-    id         Int         @id @default(autoincrement())
-    user               User                 @relation(fields: [idUser], references: [id])
-    idUser             Int
-    status String?
-    date DateTime?
-    cost Float?
+model Orders {
+    id            Int             @id @default(autoincrement())
+    user          User            @relation(fields: [idUser], references: [id])
+    idUser        Int
+    status        OrderStatus     @relation(fields: [idStatus], references: [id])
+    idStatus      Int
+    date          DateTime?
+    cost          Float?
     orderProducts OrderProducts[]
+    orderCancells OrderCancells[]
 }
 
-model OrderProducts{
-    id         Int         @id @default(autoincrement())
-    order               Orders                 @relation(fields: [idOrder], references: [id])
-    idOrder             Int
-    product               Product                 @relation(fields: [idProduct], references: [id])
-    idProduct             Int
-    price Int?
-    count Int?
+model OrderProducts {
+    id        Int     @id @default(autoincrement())
+    order     Orders  @relation(fields: [idOrder], references: [id])
+    idOrder   Int
+    product   Product @relation(fields: [idProduct], references: [id])
+    idProduct Int
+    price     Int?
+    count     Int?
 }
 
-model CityWay{
-    id         Int         @id @default(autoincrement())
-    city1     City     @relation(fields: [idCity1], references: [id], name: "city1")
-    idCity1   Int
-    city2     City     @relation(fields: [idCity2], references: [id], name: "city2")
-    idCity2   Int
-    user   User    @relation(fields: [idUser], references: [id])
-    idUser Int
-    duration Float ? //Длительность
-    cost Float ? //Стоимость
-    length Float ? //Протяжённость
-    transport               Transport                 @relation(fields: [idTransport], references: [id])
-    idTransport             Int
-} 
+model CityWay {
+    id          Int       @id @default(autoincrement())
+    city1       City      @relation(fields: [idCity1], references: [id], name: "city1")
+    idCity1     Int
+    city2       City      @relation(fields: [idCity2], references: [id], name: "city2")
+    idCity2     Int
+    user        User      @relation(fields: [idUser], references: [id])
+    idUser      Int
+    duration    Float? //Длительность
+    cost        Float? //Стоимость
+    length      Float? //Протяжённость
+    transport   Transport @relation(fields: [idTransport], references: [id])
+    idTransport Int
+}
 
 model Transport {
-    id         Int         @id @default(autoincrement())
-    name String
+    id      Int       @id @default(autoincrement())
+    name    String
     cityWay CityWay[]
 }
 
-model ProductRating{
-    id         Int         @id @default(autoincrement())
-    product               Product                 @relation(fields: [idProduct], references: [id])
-    idProduct             Int
-    rate Int
-    Dignities String?
+model ProductRating {
+    id            Int     @id @default(autoincrement())
+    product       Product @relation(fields: [idProduct], references: [id])
+    idProduct     Int
+    rate          Int
+    Dignities     String?
     Disadvantages String?
-    Comment String?
-    user               User                 @relation(fields: [idUser], references: [id])
-    idUser             Int
+    Comment       String?
+    user          User    @relation(fields: [idUser], references: [id])
+    idUser        Int
+}
+
+model OrderStatus {
+    id     Int      @id @default(autoincrement())
+    name   String
+    orders Orders[]
+}
+
+model OrderCancells {
+    id      Int    @id @default(autoincrement())
+    order   Orders @relation(fields: [idOrder], references: [id])
+    idOrder Int
+    user User @relation(fields: [idUser], references: [id])
+    idUser Int
+    message String
 }

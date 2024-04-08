@@ -63,3 +63,10 @@ export const schemaRate = z.object({
         .min(10, "Длина должна быть от 10 до 500 символов")
         .max(500, "Длина должна быть от 10 до 500 символов"),
 });
+
+export const schemaCancelOrder = z.object({
+    message: z
+        .string()
+        .min(10, "Длина должна быть от 10 до 500 символов")
+        .max(500, "Длина должна быть от 10 до 500 символов"),
+});

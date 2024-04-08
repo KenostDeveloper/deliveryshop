@@ -11,13 +11,12 @@ import MyButton from "../UI/MyInput/MyButton";
 import Modal from "../Modal/Modal";
 import RateForm from "../Forms/RateForm";
 
-const Product = ({ product, setOrder }: { product: any, setOrder: any }) => {
+const Product = ({ product, setOrder }: { product: any; setOrder: any }) => {
     const [modalActive, setModalActive] = useState<boolean>(false);
 
     const router = useRouter();
 
     const getStars = (rate: number): ReactNode => {
-
         const stars: ReactNode[] = [];
 
         for (let i = 1; i <= 5; i++) {
@@ -62,7 +61,12 @@ const Product = ({ product, setOrder }: { product: any, setOrder: any }) => {
             <p className={`${styles["order__info-text"]}`}>{product?.price?.toLocaleString()} ₽</p>
 
             <Modal active={modalActive} setActive={setModalActive}>
-                <RateForm productId={product?.product?.id} setActive={setModalActive} setOrder={setOrder} orderId={product?.idOrder}/>
+                <RateForm
+                    productId={product?.product?.id}
+                    setActive={setModalActive}
+                    setOrder={setOrder}
+                    orderId={product?.idOrder}
+                />
             </Modal>
         </article>
     );

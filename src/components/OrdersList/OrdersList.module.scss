@@ -188,6 +188,13 @@
         color: black;
         font-weight: bold;
     }
+
+    &--green {
+        color: var(--green-color);
+    }
+    &--red {
+        color: var(--red-color);
+    }
 }
 
 .order__info-text {
@@ -247,7 +254,7 @@
 }
 
 .order__buttons-container {
-    width: 50%;
+    width: 75%;
 }
 
 .order__button {
@@ -259,6 +266,10 @@
 
     &--red {
         color: var(--red-color);
+    }
+
+    &--yellow {
+        color: var(--accent-color);
     }
 }
 

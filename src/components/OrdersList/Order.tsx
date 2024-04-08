@@ -6,9 +6,47 @@ import styles from "./OrdersList.module.scss";
 import { OrderType } from "./types";
 import Product from "./Product";
 import Link from "next/link";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
+import CancelOrderForm from "../Forms/CancelOrderForm";
+import MyButton from "../UI/MyInput/MyButton";
 
 const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
+    const [modalActive, setModalActive] = useState<boolean>(false);
+
     const router = useRouter();
+
+    const updateOrderStatus = async (status: string) => {
+        const res = await axios.put(`/api/orders`, {
+            id: order?.id,
+            status_id: status === "Принят" ? 2 : 3,
+        });
+
+        if (!res.data.success) {
+            toast.error(res.data.message);
+            return;
+        }
+
+        toast.success(res.data.message);
+
+        setOrder({ ...order, status: { name: status } });
+    };
+
+    const repeatOrder = async () => {
+        const res = await axios.post(`/api/orders/repeat`, {
+            products: order?.products,
+        });
+
+        if (!res.data.success) {
+            toast.error(res.data.message);
+            return;
+        }
+
+        toast.success(res.data.message);
+        router.push("/checkout");
+    }
 
     return (
         <section className={`${styles["order"]} container`}>
@@ -28,11 +66,20 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
             <div className={`${styles["order__info-container"]}`}>
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Статус</p>
-                    <p className={`${styles["order__info-text"]}`}>Новый</p>
+                    <p
+                        className={`${styles["order__info-text"]} ${
+                            order?.status?.name === "Принят"
+                                ? styles["order__info-label--green"]
+                                : order?.status?.name === "Отменен"
+                                ? styles["order__info-label--red"]
+                                : ""
+                        }`}>
+                        {order?.status?.name}
+                    </p>
                 </div>
                 {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>ФИО</p>
-                    <p className={`${styles["order__info-text"]}`}>{order?.user}</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.user?.login}</p>
                 </div> */}
                 {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Способ доставки</p>
@@ -45,28 +92,46 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
                 {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Телефон</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.telephone}</p>
-                </div>
+                </div> */}
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>E-mail</p>
-                    <p className={`${styles["order__info-text"]}`}>{order?.email}</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.user?.email}</p>
                 </div>
-                <div className={`${styles["order__info"]}`}>
+                {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Адрес</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.address}</p>
                 </div> */}
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Действия</p>
                     <div className={`${styles["order__buttons-container"]}`}>
+                        {order?.status?.name === "Новый" && (
+                            <>
+                                <button
+                                    onClick={() => {
+                                        updateOrderStatus("Принят");
+                                    }}
+                                    className={`${styles["order__button"]} ${styles["order__button--green"]}`}>
+                                    Принять заказ
+                                </button>
+                                <span className={`${styles["order__info-label"]}`}>
+                                    &nbsp;&nbsp;/&nbsp;&nbsp;
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        setModalActive(true);
+                                    }}
+                                    className={`${styles["order__button"]} ${styles["order__button--red"]}`}>
+                                    Отменить заказ
+                                </button>
+                                <span className={`${styles["order__info-label"]}`}>
+                                    &nbsp;&nbsp;/&nbsp;&nbsp;
+                                </span>
+                            </>
+                        )}
                         <button
-                            className={`${styles["order__button"]} ${styles["order__button--green"]}`}>
-                            Принять заказ
-                        </button>
-                        <span className={`${styles["order__info-label"]}`}>
-                            &nbsp;&nbsp;/&nbsp;&nbsp;
-                        </span>
-                        <button
-                            className={`${styles["order__button"]} ${styles["order__button--red"]}`}>
-                            Отменить заказ
+                            onClick={() => {repeatOrder()}}
+                            className={`${styles["order__button"]} ${styles["order__button--yellow"]}`}>
+                            Повторить заказ
                         </button>
                     </div>
                 </div>
@@ -107,15 +172,17 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
             </div>
             <div className={`${styles["order__products-container"]}`}>
                 {order?.products?.map((product: any, index: number) => {
-                    return (
-                        <Product
-                            key={product.id}
-                            product={product}
-                            setOrder={setOrder}
-                        />
-                    );
+                    return <Product key={product.id} product={product} setOrder={setOrder} />;
                 })}
             </div>
+
+            <Modal active={modalActive} setActive={setModalActive}>
+                <CancelOrderForm
+                    order={order}
+                    action={updateOrderStatus}
+                    setActive={setModalActive}
+                />
+            </Modal>
         </section>
     );
 };
