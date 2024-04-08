@@ -128,6 +128,9 @@ export async function GET(req: NextRequest) {
             const productsOrder = await db.orderProducts.findMany({
                 where: {
                     idOrder: order.id
+                },
+                include: {
+                    product: true
                 }
             })
 
@@ -156,6 +159,9 @@ export async function GET(req: NextRequest) {
             const productsOrder = await db.orderProducts.findMany({
                 where: {
                     idOrder: orders.id
+                },
+                include: {
+                    product: true
                 }
             })
 
