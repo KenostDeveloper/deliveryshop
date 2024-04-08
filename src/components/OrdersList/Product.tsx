@@ -10,7 +10,7 @@ const Product = ({ product }: { product: any }) => {
 
     return (
         <article className={`${styles["order__product"]}`}>
-            <Link href={`/dashboard/products/${product.id}`}>
+            <Link href={`/products/${product.id}`}>
                 <img
                     src={`/products/${product?.product?.image}`}
                     alt="product image"
@@ -19,16 +19,23 @@ const Product = ({ product }: { product: any }) => {
             </Link>
             <div className={`${styles["order__product-content"]}`}>
                 <Link
-                    href={`/dashboard/products/${product?.id}`}
+                    href={`/products/${product?.id}`}
                     className={`${styles["order__info-text"]} ${styles["orders__info-title"]}`}>
                     {product?.product?.name}
                 </Link>
                 <p className={`${styles["order__info-label"]}`}>{product?.count} шт</p>
-                <button
+                {/* <button
                     className={`${styles["order__product-button"]}`}
-                    onClick={() => router.push(`/dashboard/products/${product?.id}`)}>
+                    onClick={() => router.push(`/products/${product?.id}`)}>
                     Оценить товар
-                </button>
+                </button> */}
+                <div className={`${styles["order__star-container"]}`}>
+                    <img src="/reviews/star-rated.svg" alt="star img" />
+                    <img src="/reviews/star-rated.svg" alt="star img" />
+                    <img src="/reviews/star-rated.svg" alt="star img" />
+                    <img src="/reviews/star-rated.svg" alt="star img" />
+                    <img src="/reviews/star-rated.svg" alt="star img" />
+                </div>
             </div>
             <p className={`${styles["order__info-text"]}`}>
                 {product?.price?.toLocaleString()} ₽
