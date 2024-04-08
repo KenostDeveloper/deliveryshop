@@ -9,10 +9,11 @@ import MyTextArea from '@/components/UI/MyInput/MyTextArea';
 import MyButton from '@/components/UI/MyInput/MyButton';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { InputPicker } from 'rsuite';
+import { InputNumber, InputPicker } from 'rsuite';
 import { v4 as uuidv4 } from 'uuid';
 import NotFound from '@/components/NotFound/NotFound';
 import { Modal, ButtonToolbar, Button, RadioGroup, Radio, Placeholder } from 'rsuite';
+import { Graph } from "react-d3-graph";
 
 
 export default function Settings() {
@@ -167,10 +168,12 @@ export default function Settings() {
                 toast.success(res.data.message);
                 setProfile(res.data.profile)
                 axios.get(`/api/profile/city?way=true`).then((res) => {
-                    setCityUser(res.data?.city.map((item: any) => ({
-                        label: item.city.name,
-                        value: item.city.id,
-                    })));
+                    if(res.data.success){
+                        setCityUser(res.data?.city.map((item: any) => ({
+                            label: item.city.name,
+                            value: item.city.id,
+                        })));
+                    }
                 });
             } else {
                 toast.error(res.data.message);
@@ -184,14 +187,112 @@ export default function Settings() {
   };
 
     //Добавление нового маршрута
+
     const [newCityWay, setNewCityWay] = useState<any>({
         city1: "",
         city2: "",
-        transport: "", // Тип транспорта
-        duration: "", //Длительность
-        cost: "", //Стоимость
         length: "", //Протяжённость
     })
+
+    const [newCityWayTransport, setNewCityWayTransport] = useState<any>([
+        {
+            id: uuidv4(),
+            transport: "", // Тип транспорта
+            duration: 0, //Длительность
+            cost: 0, //Стоимость
+        }
+    ])
+
+    const [sityWayGraph, setSityWayGraph] = useState([]);
+
+    useEffect(() => {
+        axios.get(`/api/delivery/cityway?graph=true`).then((res) => {
+            if(res.data.success){
+                setSityWayGraph(res.data?.cityway);
+            }
+        });
+    }, [])
+
+
+    const myConfig = {
+        nodeHighlightBehavior: true,
+        focusZoom: 1,
+        node: {
+          color: "#FFE500",
+          size: 120,
+          labelProperty: "id",
+          highlightStrokeColor: "blue",
+        },
+        link: {
+          type: "CURVE_SMOOTH",
+          highlightColor: "lightblue",
+        },
+      };
+    
+    const [loadCityWay, setLoadCityWay] = useState(false);
+
+    function updateNewCityWayTransport(id: string, item: any, property: any) {
+        const nextShapes = newCityWayTransport.map((characteristic: any) => {
+            if (characteristic.id != id) {
+                // No change
+                return characteristic;
+            } else {
+                // Return a new circle 50px below
+                switch (item) {
+                    case "transport":
+                        return {
+                            ...characteristic,
+                            transport: property,
+                        };
+                    case "duration":
+                        return {
+                            ...characteristic,
+                            duration: property,
+                        };
+                    case "cost":
+                        return {
+                            ...characteristic,
+                            cost: property,
+                        };
+                }
+            }
+        });
+        setNewCityWayTransport(nextShapes);
+    }
+
+
+
+    function createCytiway(){
+        setLoadCityWay(true)
+        axios
+        .post(`/api/delivery/cityway`, JSON.stringify({ cityWay: newCityWay, cityWayTransport: newCityWayTransport }))
+        .then((res) => {
+            if (res.data.success) {
+                toast.success(res.data.message);
+                axios.get(`/api/delivery/cityway?graph=true`).then((res) => {
+                    if(res.data.success){
+                        setSityWayGraph(res.data?.cityway);
+                    }
+                });
+                setOpen(false)
+                setNewCityWay({
+                    city1: "",
+                    city2: "",
+                    length: "", //Протяжённость
+                })
+                setNewCityWayTransport([
+                    {
+                        id: uuidv4(),
+                        transport: "", // Тип транспорта
+                        duration: 0, //Длительность
+                        cost: 0, //Стоимость
+                    }
+                ])
+            } else {
+                toast.error(res.data.message);
+            }
+        }).finally(() => setLoadCityWay(false));
+    }
 
     const [transport, setTransport] = useState([]);
 
@@ -266,6 +367,12 @@ export default function Settings() {
                 <div className='kenost-window'>
                     <div className="kenost-title">Мои маршруты</div>
                     <div className={styles.sityWayAdd} onClick={() => setOpen(true)}><i className='pi pi-plus'></i> Добавить</div>
+                    <Graph
+                        className="kenost-graph"
+                        id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
+                        data={sityWayGraph}
+                        config={myConfig}
+                    />
                 </div>
 
                 <Modal keyboard={false} open={open} onClose={() => setOpen(false)}>
@@ -275,32 +382,86 @@ export default function Settings() {
 
                     <Modal.Body>
                         <div className={styles.sityWayFlex}>
-                            <InputPicker
-                                data={cityUser}
-                                value={newCityWay.city1}
-                                onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
-                                placeholder="Выберите город"
-                            />
-                            <InputPicker
-                                data={cityUser}
-                                value={newCityWay.city2}
-                                onChange={(value) => setNewCityWay({...newCityWay, city2: value})}
-                                placeholder="Выберите город"
-                            />
+                            <div className={styles.sityWayFlexEl}>
+                                <p className={styles.label}>Первый город</p>
+                                <InputPicker
+                                    data={cityUser}
+                                    value={newCityWay.city1}
+                                    onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
+                                    placeholder="Выберите город"
+                                />
+                            </div>
+                            <div className={styles.sityWayFlexEl}>
+                                <p className={styles.label}>Второй город</p>
+                                <InputPicker
+                                    data={cityUser}
+                                    value={newCityWay.city2}
+                                    onChange={(value) => setNewCityWay({...newCityWay, city2: value})}
+                                    placeholder="Выберите город"
+                                />
+                            </div>
                         </div>
                         <div className={styles.sityWayFlex}>
-                            <InputPicker
-                                data={transport}
-                                value={newCityWay.transport}
-                                onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
-                                placeholder="Тип транспорта"
-                            />
+                            <div className={styles.sityWayFlexEl}>
+                                <p className={styles.label}>Протяжённость (км)</p>
+                                <InputNumber
+                                    placeholder="Протяжённость"
+                                    value={newCityWay.length}
+                                    min={0}
+                                    onChange={(value, e) =>
+                                        setNewCityWay({ ...newCityWay, length: Number(value) })
+                                    }
+                                />
+                            </div>
                         </div>
+                        {newCityWayTransport.map((item: any, index: any) => 
+                            <div key={item.id} className={styles.sityWayFlex}>
+                                <div className={styles.sityWayFlexEl}>
+                                    <p className={styles.label}>Тип транспорта</p>
+                                    <InputPicker
+                                        data={transport}
+                                        value={item.transport}
+                                        onChange={(value, e) =>
+                                            updateNewCityWayTransport(item.id, "transport", value)
+                                        }
+                                        placeholder="Тип транспорта"
+                                    />
+                                </div>
+                                <div className={styles.sityWayFlexEl}>
+                                    <p className={styles.label}>Стоимость</p>
+                                    <InputNumber
+                                        placeholder="Стоимость"
+                                        value={item.cost}
+                                        min={0}
+                                        onChange={(value, e) =>
+                                            updateNewCityWayTransport(item.id, "cost", value)
+                                        }
+                                    />
+                                </div>
+                                <div className={styles.sityWayFlexEl}>
+                                    <p className={styles.label}>Длительность (ч)</p>
+                                    <InputNumber
+                                        placeholder="Длительность"
+                                        value={item.duration}
+                                        min={0}
+                                        onChange={(value, e) =>
+                                            updateNewCityWayTransport(item.id, "duration", value)
+                                        }
+                                    />
+                                </div>
+                                
+                                {index + 1 == newCityWayTransport.length && transport.length >= index + 2? 
+                                    <div className={styles.shops__button} onClick={() => {setNewCityWayTransport([...newCityWayTransport, {id: uuidv4(), transport: "", duration: 0, cost: 0}])}}><i className='pi pi-plus'></i></div>
+                                    :
+                                    ""
+                                }
+                            </div>
+                        )}
                         
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button onClick={() => setOpen(false)} appearance="primary">
-                        Сохранить
+                    <Button onClick={() => createCytiway()} appearance="primary">
+                        {loadCityWay? <i className='pi pi-spin pi-spinner'></i> : "Сохранить"}
                     </Button>
                     <Button onClick={() => setOpen(false)} appearance="subtle">
                         Отменить

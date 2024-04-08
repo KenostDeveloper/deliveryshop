@@ -15,8 +15,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const thisData = new Date(Date.now());
 
-
-
         //Удаляем все просроченые токены
         const deleteExpiresTokenBasket = await db.basket.deleteMany({
             where: {
