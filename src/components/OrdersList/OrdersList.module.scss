@@ -107,3 +107,127 @@
 
 
 // Компонент Order
+.order {
+    background-color: white;
+
+    font-size: 20px;
+
+    margin-top: 100px;
+    padding: 40px 50px;
+}
+
+.order__top-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.order__top-side-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    img {
+        height: fit-content;
+    }
+}
+
+.order__title-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.order__title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.order__date {
+    font-size: 20px;
+}
+
+.order__button {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-dark-color);
+
+    height: fit-content;
+}
+
+.order__info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px 0 45px 0;
+    border-bottom: 1px solid var(--gray-dark-color);
+}
+
+.order__info {
+    display: flex;
+    justify-content: space-between;
+
+    width: 50%;
+
+    p {
+        width: 50%;
+    }
+}
+
+.order__info-label {
+    color: var(--gray-dark-color);
+
+    &--bold {
+        color: black;
+        font-weight: bold;
+    }
+}
+
+.order__info-text {
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.order__price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding-block: 45px;
+    border-bottom: 1px solid var(--gray-dark-color);
+}
+
+.order__products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    padding-block: 45px;
+}
+
+.order__product {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+
+    height: 140px;
+    width: 100%;
+}
+
+.order__product-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.order__product-img {
+    border: 2px solid var(--gray-color);
+    border-radius: var(--border-radius);
+
+    height: 140px;
+    aspect-ratio: 1;
+}

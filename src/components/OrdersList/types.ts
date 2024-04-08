@@ -3,10 +3,18 @@ export type OrderType = {
     number: number;
     status: string;
     deliveryMethod: string;
+    user: string,
+    paymentMethod: string,
+    telephone: string;
+    email: string;
+    address: string;
+    deliveryPrice: number;
     products: ProductType[];
 }
 
 export type ProductType = {
+    name: string;
     image: string;
     price: number;
+    count: number;
 }
