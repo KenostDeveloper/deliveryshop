@@ -13,7 +13,7 @@ const OrdersList = ({
             <Title text="Заказы" margin={false} />
 
             <div className={`${styles["orders__container"]}`}>
-                {orders.map((order, index) => {
+                {orders?.map((order, index) => {
                     return <OrdersListItem key={index} order={order} />;
                 })}
             </div>

@@ -16,7 +16,7 @@ const Order = ({ order }: { order: OrderType }) => {
         year: "numeric",
         hour: "numeric",
         minute: "numeric",
-    }).format(order.date);
+    })?.format(order.date);
 
     const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
 
