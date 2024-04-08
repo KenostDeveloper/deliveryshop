@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './Counter.module.css'
+import styles from './Counter.module.scss'
 
 
-const Counter = ({count, setCount}: any) => {
+const Counter = ({ count, setCount, isSmall }: any) => {
 
     return (
-        <div className={styles.Counter}>
+        <div className={`${styles.Counter} ${isSmall && styles['Counter--small']}`}>
             <div className={styles.click} onClick={() => count > 0 ? setCount(count - 1) : ""}>
                 <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L11 1" stroke={count > 0 ? '#02121C' : '#7F7F7F'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

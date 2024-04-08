@@ -7,6 +7,24 @@
     gap: 16px;
     height: 42px;
     border-radius: 8px;
+    
+    &--small {
+        background-color: var(--accent-color);
+        font-size: 14px;
+
+        padding: 5px;
+        height: 25px;
+        gap: 2px;
+
+        div {
+            height: 25px;
+            aspect-ratio: 1;
+        }
+
+        p {
+            width: fit-content;
+        }
+    }
 }
 
 .click{
