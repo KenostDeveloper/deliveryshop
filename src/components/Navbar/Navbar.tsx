@@ -9,6 +9,7 @@ import ModalAuth from "@/components/ModalAuth/ModalAuth";
 import {signOut, useSession} from "next-auth/react";
 import MyButton from "@/components/UI/MyButton/MyButton";
 import Sitebar from '../Sitebar/Sitebar.components';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
     const [modalActive, setModalActive] = useState<boolean>(false)
@@ -19,6 +20,8 @@ const Navbar = () => {
     useState(() => {
         console.log(session);
     })
+
+    const router = useRouter();
 
     const noUser = () => {
         return(
@@ -44,10 +47,10 @@ const Navbar = () => {
     }
 
 
-    const openRate = () => {
-        setModalActive(true)
-        setAuthEmail(4);
-    }
+    // const openRate = () => {
+    //     setModalActive(true)
+    //     setAuthEmail(4);
+    // }
 
     return (
         <nav className={styles.nav}>
@@ -73,7 +76,7 @@ const Navbar = () => {
                 </div>
 
                 <div className={`${styles["nav__buttons-container"]}`}>
-                    <button className={`${styles.nav__button} ${styles.nav__catalog}`} onClick={() => openRate()}>
+                    <button className={`${styles.nav__button} ${styles.nav__catalog}`} onClick={() => router.push('/catalog/1')}>
                         <i className={`${styles["nav__catalog-icon"]} pi pi-th-large`}></i>
                         <p className={`${styles.nav__text}`}>каталог</p>
                     </button>

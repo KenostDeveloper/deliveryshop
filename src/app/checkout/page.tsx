@@ -49,11 +49,7 @@ export default function Checkout() {
             .finally(() => setLoad(false));
     }
 
-    if(!basket) {
-        return <Loading />
-    }
-
-    if (basket.length == 0) {
+    if (basket == null || !basket?.length) {
         return <EmptyBasket />;
     }
 

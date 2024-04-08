@@ -9,7 +9,7 @@ const EmptyBasket = () => {
 
     return (
         <section className={`${styles["empty-basket"]} container`}>
-            <Title text="Корзина" margin={false} />
+            {/* <Title text="Корзина" margin={false} /> */}
             <div className={`${styles["empty-basket__container"]}`}>
                 <img src="/empty-basket/empty-basket-background.svg" alt="backgronud image" className={`${styles["empty-basket__background"]}`} />
                 <div className={`${styles["empty-basket__content"]}`}>
