@@ -137,38 +137,40 @@ export async function GET(req: NextRequest) {
             order['products'] = productsOrder;
 
             return NextResponse.json({success: true, order});
-        }
-        
-        let orders:any = await db.orders.findMany({
-            where: {
-                idUser: session.user.id
-            },
-        })
-
-        const dateFormated = new Intl.DateTimeFormat("ru-RU", {
-            day: "numeric",
-            month: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-        }).format(new Date(orders.date));
-
-        orders['date'] = dateFormated;
-
-        for(let i = 0; i < orders.length; i++){
-            const productsOrder = await db.orderProducts.findMany({
+        }else{
+            let orders:any = await db.orders.findMany({
                 where: {
-                    idOrder: orders.id
+                    idUser: session.user.id
                 },
-                include: {
-                    product: true
-                }
             })
 
-            orders[i]['products'] = productsOrder;
+    
+            for(let i = 0; i < orders.length; i++){
+                const dateFormated = new Intl.DateTimeFormat("ru-RU", {
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                }).format(new Date(orders[i].date));
+
+                orders[i]['date'] = dateFormated;
+
+                const productsOrder = await db.orderProducts.findMany({
+                    where: {
+                        idOrder: orders.id
+                    },
+                    include: {
+                        product: true
+                    }
+                })
+    
+                orders[i]['products'] = productsOrder;
+            }
+            
+            return NextResponse.json({success: true, orders});
         }
         
-        return NextResponse.json({success: true, orders});
 
     }catch(e){
         return NextResponse.json({success: false, message: "Произошла неизвестная ошибка, попробуйте снова :(", e});
