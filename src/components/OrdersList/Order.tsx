@@ -7,10 +7,10 @@ import { OrderType } from "./types";
 import Product from "./Product";
 import Link from "next/link";
 
-const Order = ({ order }: { order: OrderType }) => {
+const Order = ({ order }: { order: any }) => {
     const router = useRouter();
 
-    const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
+    // const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
 
     return (
         <section className={`${styles["order"]} container`}>
@@ -30,21 +30,21 @@ const Order = ({ order }: { order: OrderType }) => {
             <div className={`${styles["order__info-container"]}`}>
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Статус</p>
-                    <p className={`${styles["order__info-text"]}`}>{order?.status}</p>
+                    <p className={`${styles["order__info-text"]}`}>Новый</p>
                 </div>
-                <div className={`${styles["order__info"]}`}>
+                {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>ФИО</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.user}</p>
-                </div>
-                <div className={`${styles["order__info"]}`}>
+                </div> */}
+                {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Способ доставки</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.deliveryMethod}</p>
-                </div>
-                <div className={`${styles["order__info"]}`}>
+                </div> */}
+                {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Способ оплаты</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.paymentMethod}</p>
-                </div>
-                <div className={`${styles["order__info"]}`}>
+                </div> */}
+                {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Телефон</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.telephone}</p>
                 </div>
@@ -55,7 +55,7 @@ const Order = ({ order }: { order: OrderType }) => {
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Адрес</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.address}</p>
-                </div>
+                </div> */}
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Действия</p>
                     <div className={`${styles["order__buttons-container"]}`}>
@@ -83,7 +83,8 @@ const Order = ({ order }: { order: OrderType }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {order?.deliveryPrice}₽
+                        {/* {order?.deliveryPrice}₽ */}
+                        1000 ₽
                     </p>
                 </div>
                 <div className={`${styles["order__info"]}`}>
@@ -93,7 +94,8 @@ const Order = ({ order }: { order: OrderType }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {productsPrice + order?.deliveryPrice}₽
+                        {/* { + order?.deliveryPrice}₽ */}
+                        {order?.cost} ₽
                     </p>
                 </div>
             </div>
