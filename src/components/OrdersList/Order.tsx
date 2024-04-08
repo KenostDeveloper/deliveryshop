@@ -73,7 +73,7 @@ const Order = ({ order }: { order: any }) => {
                     </p>
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                        {/* {productsPrice}₽ */}
+                        {order?.cost}₽
                     </p>
                 </div>
                 <div className={`${styles["order__info"]}`}>
@@ -95,7 +95,7 @@ const Order = ({ order }: { order: any }) => {
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
                         {/* { + order?.deliveryPrice}₽ */}
-                        {order?.cost?.toLocaleString()} ₽
+                        {(order?.cost + Number(1000)).toLocaleString()} ₽
                     </p>
                 </div>
             </div>
