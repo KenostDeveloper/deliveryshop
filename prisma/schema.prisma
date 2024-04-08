@@ -78,6 +78,7 @@ model User {
     forgorPassword ForgotPassword[]
     orders Orders[]
     cityWay CityWay[]
+    productRating ProductRating[]
 }
 
 model VerificationToken {
@@ -145,6 +146,7 @@ model Product {
     count              Int?
     basket             Basket[]
     orderProducts OrderProducts[]
+    productRating ProductRating[]
 }
 
 model Category {
@@ -216,4 +218,16 @@ model Transport {
     id         Int         @id @default(autoincrement())
     name String
     cityWay CityWay[]
+}
+
+model ProductRating{
+    id         Int         @id @default(autoincrement())
+    product               Product                 @relation(fields: [idProduct], references: [id])
+    idProduct             Int
+    rate Int
+    Dignities String?
+    Disadvantages String?
+    Comment String?
+    user               User                 @relation(fields: [idUser], references: [id])
+    idUser             Int
 }
