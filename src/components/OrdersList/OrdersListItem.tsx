@@ -20,7 +20,7 @@ const OrdersListItem = ({ order }: { order: any }) => {
                         Заказ от {order?.date}{" "}
                         <span className={`${styles["orders__info-number"]}`}>#{order?.id}</span>
                     </Link>
-                    <p className={`${styles["orders__info-title"]}`}>{order?.cost}₽</p>
+                    <p className={`${styles["orders__info-title"]}`}>{order?.cost.toLocaleString()} ₽</p>
                 </div>
                 <div className={`${styles["orders__info-block"]}`}>
                     <p className={`${styles["orders__info-text"]}`}>{order?.deliveryMethod}</p>
@@ -39,10 +39,12 @@ const OrdersListItem = ({ order }: { order: any }) => {
                             />
                         </article>
                     );
-                })} 
-                <article className={`${styles["orders__more"]}`}>
-                    +{order?.products?.length - 5}
-                </article>
+                })}
+                {order?.products?.length > 6 && (
+                    <article className={`${styles["orders__more"]}`}>
+                        +{order?.products?.length - 5}
+                    </article>
+                )}
             </div>
         </article>
     );
