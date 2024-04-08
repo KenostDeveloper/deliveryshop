@@ -105,6 +105,26 @@ export async function GET(req: NextRequest) {
         if(!session){
             return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
         }
+
+        let id = req.nextUrl.searchParams.get('id') as string
+        
+        if(id){
+            let order:any = await db.orders.findUnique({
+                where: {
+                    id: Number(id)
+                },
+            })
+    
+            const productsOrder = await db.orderProducts.findMany({
+                where: {
+                    idOrder: order.id
+                }
+            })
+
+            order['products'] = productsOrder;
+
+            return NextResponse.json({success: true, order});
+        }
         
         let orders:any = await db.orders.findMany({
             where: {

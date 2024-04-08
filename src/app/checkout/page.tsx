@@ -5,11 +5,12 @@ import styles from './checkout.module.css'
 import axios from 'axios';
 import { useBasketContext } from '@/components/Helps/GlobalBasket';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 
 export default function Checkout() {
   const [methodDelivert, setMetodDelivery] = useState(0);
-
+  const router = useRouter()
   const {basket, setBasket} = useBasketContext();
   const [amount, setAmount] = useState(0);
   const [load, setLoad] = useState(false);
@@ -38,6 +39,7 @@ export default function Checkout() {
     axios.post(`/api/orders`).then((res) => {
       if (res.data.success) {
         toast.success(res.data.message);
+        router.push(`/orders/${res.data.order.id}`)
       } else {
         toast.error(res.data.message);
       }
