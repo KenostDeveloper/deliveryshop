@@ -107,4 +107,8 @@
         display: flex;
         gap: 10px;
     }
+
+    &Flex + &Flex{
+        margin-top: 10px;
+    }
 }

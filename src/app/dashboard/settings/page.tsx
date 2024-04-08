@@ -36,6 +36,7 @@ export default function Settings() {
     const [sityWay, setSityWay] = useState([{}]);
 
     const [city, setCity] = useState([]);
+    const [cityUser, setCityUser] = useState([]);
 
     const type= [
         {label: 'Склад', value: 'Warehouse'},
@@ -113,6 +114,23 @@ export default function Settings() {
                 value: item.id,
             })));
         });
+
+        axios.get(`/api/profile/city?way=true`).then((res) => {
+            if(res.data.success){
+                setCityUser(res.data?.city.map((item: any) => ({
+                    label: item.city.name,
+                    value: item.city.id,
+                })));
+            }
+        });
+
+        axios.get(`/api/delivery/transports`).then((res) => {
+            setTransport(res.data?.transport.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+            })));
+        });
+        
     }, [])
 
 
@@ -148,6 +166,12 @@ export default function Settings() {
             if (res.data.success) {
                 toast.success(res.data.message);
                 setProfile(res.data.profile)
+                axios.get(`/api/profile/city?way=true`).then((res) => {
+                    setCityUser(res.data?.city.map((item: any) => ({
+                        label: item.city.name,
+                        value: item.city.id,
+                    })));
+                });
             } else {
                 toast.error(res.data.message);
             }
@@ -160,10 +184,16 @@ export default function Settings() {
   };
 
     //Добавление нового маршрута
-    const [newCityWay, setNewCityWay] = useState({
+    const [newCityWay, setNewCityWay] = useState<any>({
         city1: "",
-        city2: ""
+        city2: "",
+        transport: "", // Тип транспорта
+        duration: "", //Длительность
+        cost: "", //Стоимость
+        length: "", //Протяжённость
     })
+
+    const [transport, setTransport] = useState([]);
 
     if(loading){
         return <Loading/>
@@ -246,16 +276,24 @@ export default function Settings() {
                     <Modal.Body>
                         <div className={styles.sityWayFlex}>
                             <InputPicker
-                                data={city}
+                                data={cityUser}
                                 value={newCityWay.city1}
                                 onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
                                 placeholder="Выберите город"
                             />
                             <InputPicker
-                                data={city}
+                                data={cityUser}
                                 value={newCityWay.city2}
                                 onChange={(value) => setNewCityWay({...newCityWay, city2: value})}
                                 placeholder="Выберите город"
+                            />
+                        </div>
+                        <div className={styles.sityWayFlex}>
+                            <InputPicker
+                                data={transport}
+                                value={newCityWay.transport}
+                                onChange={(value) => setNewCityWay({...newCityWay, city1: value})}
+                                placeholder="Тип транспорта"
                             />
                         </div>
                         
