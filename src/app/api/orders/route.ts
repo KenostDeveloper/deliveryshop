@@ -125,16 +125,33 @@ export async function GET(req: NextRequest) {
 
             order['date'] = dateFormated;
     
-            const productsOrder = await db.orderProducts.findMany({
+            const productsOrder: any = await db.orderProducts.findMany({
                 where: {
                     idOrder: order.id
                 },
                 include: {
                     product: true
+                    // product: {
+                    //     p
+                    //     // include: {
+                    //     //     productRating: true
+                    //     // }
+                    // }
                 }
             })
 
             order['products'] = productsOrder;
+
+            for(let i = 0; i < order.products.length; i++) {
+                const getRating = await db.productRating.findFirst({
+                    where: {
+                        idProduct: order.products[i].product.id,
+                        idUser: session.user.id
+                    }
+                })
+
+                order['products'][i]['product']['rating'] = getRating;
+            }
 
             return NextResponse.json({success: true, order});
         }else{

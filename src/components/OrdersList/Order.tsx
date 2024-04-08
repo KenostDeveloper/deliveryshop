@@ -7,10 +7,8 @@ import { OrderType } from "./types";
 import Product from "./Product";
 import Link from "next/link";
 
-const Order = ({ order }: { order: any }) => {
+const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
     const router = useRouter();
-
-    // const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
 
     return (
         <section className={`${styles["order"]} container`}>
@@ -59,9 +57,17 @@ const Order = ({ order }: { order: any }) => {
                 <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Действия</p>
                     <div className={`${styles["order__buttons-container"]}`}>
-                        <button className={`${styles["order__button"]} ${styles["order__button--green"]}`}>Принять заказ</button>
-                        <span className={`${styles["order__info-label"]}`}>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <button className={`${styles["order__button"]} ${styles["order__button--red"]}`}>Отменить заказ</button>
+                        <button
+                            className={`${styles["order__button"]} ${styles["order__button--green"]}`}>
+                            Принять заказ
+                        </button>
+                        <span className={`${styles["order__info-label"]}`}>
+                            &nbsp;&nbsp;/&nbsp;&nbsp;
+                        </span>
+                        <button
+                            className={`${styles["order__button"]} ${styles["order__button--red"]}`}>
+                            Отменить заказ
+                        </button>
                     </div>
                 </div>
             </div>
@@ -101,7 +107,13 @@ const Order = ({ order }: { order: any }) => {
             </div>
             <div className={`${styles["order__products-container"]}`}>
                 {order?.products?.map((product: any, index: number) => {
-                    return <Product key={product.id} product={product} />;
+                    return (
+                        <Product
+                            key={product.id}
+                            product={product}
+                            setOrder={setOrder}
+                        />
+                    );
                 })}
             </div>
         </section>

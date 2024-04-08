@@ -161,3 +161,18 @@
 .input {
     width: 100%;
 }
+
+
+
+.active {
+    color: var(--accent-color);
+    font-size: 35px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.noActive {
+    color: #F2F2F2;
+    font-size: 35px;
+    margin-right: 10px;
+    cursor: pointer;
+}
