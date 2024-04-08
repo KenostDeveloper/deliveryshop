@@ -297,6 +297,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Длина (мм)"
                                         value={newProduct.length}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, length: Number(value) })
                                         }
@@ -307,6 +308,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Ширина (мм)"
                                         value={newProduct.width}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, width: Number(value) })
                                         }
@@ -317,6 +319,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Высота (мм)"
                                         value={newProduct.height}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, height: Number(value) })
                                         }
@@ -327,6 +330,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Вес (г)"
                                         value={newProduct.weight}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, weight: Number(value) })
                                         }
@@ -449,7 +453,8 @@ export default function Products() {
                                     <p className={styles.label}>Длина</p>
                                     <InputNumber
                                         placeholder="Длина (мм)"
-                                        value={item.length}
+                                        value={item.length}         
+                                        min={0}                               
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "length", value)
                                         }
@@ -460,6 +465,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Ширина (мм)"
                                         value={item.width}
+                                        min={0}
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "width", value)
                                         }
