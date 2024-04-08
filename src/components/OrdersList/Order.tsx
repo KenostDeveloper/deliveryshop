@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import Title from "../UI/Title.components";
 import styles from "./OrdersList.module.scss";
 import { OrderType } from "./types";
+import Product from "./Product";
 
 const Order = ({ order }: { order: OrderType }) => {
-
     const router = useRouter();
 
     const dateFormated = new Intl.DateTimeFormat("ru-RU", {
@@ -17,7 +17,7 @@ const Order = ({ order }: { order: OrderType }) => {
         minute: "numeric",
     }).format(order.date);
 
-    const productsPrice = order.products.reduce((acc, item) => (acc += item.price), 0);
+    const productsPrice = order.products.reduce((acc, item) => (acc += item.price * item.count), 0);
 
     return (
         <section className={`${styles["order"]} container`}>
@@ -99,25 +99,7 @@ const Order = ({ order }: { order: OrderType }) => {
             </div>
             <div className={`${styles["order__products-container"]}`}>
                 {order.products.map((product, index) => {
-                    return (
-                        <article className={`${styles["order__product"]}`} key={index}>
-                            <img
-                                src={product.image}
-                                alt="product image"
-                                className={`${styles["orders__product-img"]} ${styles["order__product-img"]}`}
-                            />
-                            <div className={`${styles["order__product-content"]}`}>
-                                <p className={`${styles["order__info-text"]}`}>{product.name}</p>
-                                <p className={`${styles["order__info-label"]}`}>
-                                    {product.count} шт
-                                </p>
-                            </div>
-                            <p
-                                className={`${styles["order__info-text"]} ${styles["order__info-text--bold"]}`}>
-                                {product.price * product.count}₽
-                            </p>
-                        </article>
-                    );
+                    return <Product key={index} product={product} />;
                 })}
             </div>
         </section>

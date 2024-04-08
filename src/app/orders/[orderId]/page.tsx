@@ -15,33 +15,38 @@ export default function OrderPage() {
         deliveryPrice: 300,
         products: [
             {
+                id: 1,
                 name: "Чемодан большой L  пропилен, светло-жёлтый Чемодан большой L  пропилен, светло-жёлтый",
                 image: "/quickshopimage.png",
-                price: 200,
+                price: 300,
                 count: 2
             },
             {
+                id: 2,
                 name: "Чемодан большой L  пропилен, светло-жёлтый Чемодан большой L  пропилен, светло-жёлтый",
                 image: "/quickshopimage.png",
-                price: 200,
+                price: 500,
                 count: 3
             },
             {
+                id: 3,
                 name: "Чемодан большой L  пропилен, светло-жёлтый Чемодан большой L  пропилен, светло-жёлтый",
                 image: "/quickshopimage.png",
                 price: 200,
                 count: 7
             },
             {
+                id: 3,
                 name: "Чемодан большой L  пропилен, светло-жёлтый Чемодан большой L  пропилен, светло-жёлтый",
                 image: "/quickshopimage.png",
-                price: 200,
+                price: 100,
                 count: 5
             },
             {
+                id: 4,
                 name: "Чемодан большой L  пропилен, светло-жёлтый Чемодан большой L  пропилен, светло-жёлтый",
                 image: "/quickshopimage.png",
-                price: 200,
+                price: 1,
                 count: 1
             },
         ],
