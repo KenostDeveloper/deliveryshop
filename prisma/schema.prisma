@@ -73,8 +73,6 @@ model User {
     city City @relation(fields: [idCity], references: [id])
     nameShop       String?
     description    String?
-    city               City                 @relation(fields: [idCity], references: [id])
-    idCity             Int
     accounts       Account[]
     sessions       Session[]
     sellerSity     SellerCity[]
