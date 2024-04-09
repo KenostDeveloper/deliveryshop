@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 import ProductCard from '../ProductCard/ProductCatd.components';
 
 
-const ProductsSwiper = ({products}:any) => {
+const ProductsSwiper = ({ products, isHomePage }:any) => {
     return (
         <Swiper
             className='padding-swiper'
@@ -49,7 +49,7 @@ const ProductsSwiper = ({products}:any) => {
 
             {products?.map((product: any) => (
                 <SwiperSlide key={product.id}>
-                    <ProductCard slider={true} item={product}/>
+                    <ProductCard slider={true} item={product} isHomePage={isHomePage} />
                 </SwiperSlide>
             ))}
         </Swiper>
