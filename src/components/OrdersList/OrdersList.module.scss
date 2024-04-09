@@ -238,7 +238,15 @@
         height: 80px;
 
         .order__product-content {
-            gap: 5px;
+            gap: 0;
+        }
+
+        .order__content-container {
+            margin: 10px 0 8px 0;
+        }
+
+        .order__info-text--small {
+            line-height: 16px;
         }
 
         a {
@@ -344,6 +352,7 @@
 
 .order__content-container {
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: 5px;
 
