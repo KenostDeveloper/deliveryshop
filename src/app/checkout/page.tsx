@@ -20,6 +20,7 @@ export default function Checkout() {
     const [load, setLoad] = useState(false);
     
     const [path, setPath] = useState([]);
+    const [pathParam, setPathParam] = useState("");
 
     useEffect(() => {
         if (basket) {
@@ -37,13 +38,31 @@ export default function Checkout() {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
-        
-        axios.get(`/api/delivery/search/short`).then((res) => {
-            setPath(res.data?.result);
-            console.log(path);
-            
-        })
+    
     }, []);
+
+    useEffect(() => {
+        switch(methodDelivery) {
+            case 1:
+                axios.get(`/api/delivery/search/fast`).then((res) => {
+                    setPath(res.data?.result[0]?.path[0].path);            
+                });
+                setPathParam("ч");
+                break;
+            case 2:
+                axios.get(`/api/delivery/search/cheap`).then((res) => {
+                    setPath(res.data?.result[0]?.path[0].path);
+                });
+                setPathParam("₽");
+                break;
+            case 3:
+                axios.get(`/api/delivery/search/short`).then((res) => {
+                    setPath(res.data?.result[0]?.path[0].path);
+                });
+                setPathParam("км");
+                break;
+        }
+    }, [methodDelivery])
 
     function placeOrder() {
         setLoad(true);
@@ -122,7 +141,7 @@ export default function Checkout() {
                         </div>
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
-                            <BasketRoute products={basket} path={[]} />
+                            <BasketRoute products={basket} path={path} pathParam={pathParam} />
                         </section>
                     </div>
                     <div className={styles.right}>
