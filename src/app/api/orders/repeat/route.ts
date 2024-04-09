@@ -60,7 +60,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             data: products.map((product: any) => ({
                 id_token: basketToken?.id,
                 id_product: product?.product?.id,
-                quantity: product?.count
+                quantity: product?.quantity
             })),
         })
 

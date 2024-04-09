@@ -80,7 +80,7 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
                                 ? style.MpInput
                                 : `${style.MpInput} ${style.MpInputErrorBorder}`
                         }
-                        type="text"
+                        type="password"
                         {...register("password")}
                     />
                     <p className={style.MpInputError}>{errors.password?.message?.toString()}</p>
@@ -96,7 +96,7 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
                                 ? style.MpInput
                                 : `${style.MpInput} ${style.MpInputErrorBorder}`
                         }
-                        type="text"
+                        type="password"
                         {...register("confirmPassword")}
                     />
                     <p className={style.MpInputError}>

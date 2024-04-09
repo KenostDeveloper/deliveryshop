@@ -1,0 +1,54 @@
+.basket-routes {
+    display: flex;
+    flex-direction: column;
+}
+
+.basket-route {
+    padding-block: 20px;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid black;
+    }
+}
+
+// Компонент BasketRoutePath
+.basket-route-path {
+    margin-top: 40px;
+}
+
+.basket-route-path__container {
+    display: flex;
+    gap: 10px;
+}
+
+.basket-route-path__flag-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+
+    p {
+        font-size: 15px;
+    }
+}
+
+.basket-route-path__line-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    p {
+        position: absolute;
+        top: 25%;
+
+        font-size: 12px;
+    }
+}
+
+.basket-route__price-total {
+    font-weight: bold;
+    text-align: end;
+}

@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from "@/lib/db";
 const fs = require('fs');
 import { cookies } from 'next/headers'
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth/next";
 
 export async function POST(req: NextRequest, res: NextResponse) {
     try{
@@ -137,6 +139,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest) {
     try{
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({
+                success: false,
+                message: "У вас нет доступа к данной функции!",
+            });
+        }
+
         const cookiesList = cookies()
         const isBasketNull = cookiesList.has('basket-quick-shop')
         
@@ -179,9 +189,14 @@ export async function GET(req: NextRequest) {
                 include: {
                     product: {
                         include: {
-                            category: true
-                        }
-                    }
+                            category: true,
+                            productRating: {
+                                where: {
+                                    idUser: session.user.id
+                                }
+                            },
+                        },
+                    },
                 }
             })
 

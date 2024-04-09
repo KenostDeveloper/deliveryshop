@@ -201,6 +201,11 @@
     font-weight: 500;
     line-height: 26px;
     white-space: nowrap;
+
+    &--small {
+        font-size: 11px;
+        color: var(--gray-text-color);
+    }
 }
 
 .order__price-container {
@@ -228,6 +233,19 @@
 
     height: 140px;
     width: 100%;
+
+    &--basket {
+        height: 80px;
+
+        .order__product-content {
+            gap: 5px;
+        }
+
+        a {
+            font-size: 14px;
+            line-height: 16px;
+        }
+    }
 }
 
 .order__product-content {
@@ -245,6 +263,10 @@
     aspect-ratio: 1;
 
     object-fit: cover;
+
+    &--basket {
+        height: 80px;
+    }
 }
 
 .arrow {
@@ -311,5 +333,28 @@
     img {
         width: 26px;
         aspect-ratio: 1;
+    }
+
+    &--basket {
+        img {
+            width: 20px;
+        }
+    }
+}
+
+.order__content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    &--basket {
+        flex-direction: row;
+        gap: 20px;
+
+        p {
+            font-size: 12px;
+            line-height: 15px;
+            width: fit-content
+        }
     }
 }

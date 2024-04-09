@@ -13,6 +13,8 @@ export default function Orders() {
     useEffect(() => {
         axios.get(`/api/orders`).then((res) => {
             if(res.data.success){
+                console.log(res.data?.orders);
+                
                 setOrders(res.data?.orders);
             }
         });
