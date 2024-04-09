@@ -71,6 +71,8 @@ model User {
     emailVerified  DateTime?
     nameShop       String?
     description    String?
+    city               City                 @relation(fields: [idCity], references: [id])
+    idCity             Int
     accounts       Account[]
     sessions       Session[]
     sellerSity     SellerCity[]
@@ -107,6 +109,7 @@ model City {
     sellerCity     SellerCity[]
     city1          CityWay[]    @relation("city1")
     player2Matches CityWay[]    @relation("city2")
+    users User[]
 }
 
 model SellerCity {
@@ -236,14 +239,14 @@ model CityWay {
     idCity2 Int
     user    User   @relation(fields: [idUser], references: [id])
     idUser  Int
-    length  Float? //Протяжённость
+    length  Float? //Протяжённость (км)
     cityWayTransport CityWayTransport[]
 }
 
 model CityWayTransport {
     id   Int    @id @default(autoincrement())
-    duration    Float? //Длительность
-    cost        Float? //Стоимость
+    duration    Float? //Длительность (ч)
+    cost        Float? //Стоимость (руб)
     cityWay   CityWay @relation(fields: [idCityWay], references: [id])
     idCityWay Int
     transport   Transport @relation(fields: [idTransport], references: [id])

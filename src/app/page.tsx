@@ -27,7 +27,7 @@ export default function Home() {
 
     useEffect(() => {
         axios
-            .get("/api/products")
+            .get("/api/products?limit=10")
             .then((res) => res.data)
             .then((data) => {
                 setProducts(data?.product);                
