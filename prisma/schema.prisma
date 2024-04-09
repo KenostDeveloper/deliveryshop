@@ -227,7 +227,7 @@ model OrderProducts {
     product   Product @relation(fields: [idProduct], references: [id])
     idProduct Int
     price     Int?
-    count     Int?
+    quantity     Int?
 }
 
 //Маршрут между городами

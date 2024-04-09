@@ -172,7 +172,7 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
             </div>
             <div className={`${styles["order__products-container"]}`}>
                 {order?.products?.map((product: any, index: number) => {
-                    return <Product key={product.id} product={product} setOrder={setOrder} />;
+                    return <Product key={product.id} product={product} setOrder={setOrder} inBasket={false} />;
                 })}
             </div>
 

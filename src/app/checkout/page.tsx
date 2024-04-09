@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
-import styles from "./checkout.module.css";
+import styles from "./checkout.module.scss";
 import axios from "axios";
 import { useBasketContext } from "@/components/Helps/GlobalBasket";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ import EmptyBasket from "@/components/EmptyBasket/EmptyBasket";
 import Loading from "@/components/Helps/Loading";
 import Counter from "@/components/Counter/Counter.components";
 import BasketItem from "@/components/BasketItem/BasketItem";
+import BasketRoute from "@/components/BasketRoute/BasketRoute";
 
 export default function Checkout() {
     const [methodDelivery, setMetodDelivery] = useState(0);
@@ -34,6 +35,8 @@ export default function Checkout() {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
+        console.log(basket);
+        
     }, []);
 
     function placeOrder() {
@@ -111,35 +114,15 @@ export default function Checkout() {
                                 </div>
                             </div>
                         </div>
+                        <section>
+                            <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
+                            <BasketRoute products={basket} path={[]} />
+                        </section>
                     </div>
                     <div className={styles.right}>
                         <div className={styles.card}>
                             <div className={styles.products}>
                                 {basket.map((item: any) => (
-                                    // <div key={item.id} className={styles.item}>
-                                    //     <img
-                                    //         src={
-                                    //             item?.product?.image
-                                    //                 ? `/products/${item?.product?.image}`
-                                    //                 : `/quickshopimage.png`
-                                    //         }
-                                    //         alt={`${item?.product?.name}`}
-                                    //     />
-                                    //     <div className={styles.itemText}>
-                                    //         <div className={styles.itemTextTitle}>
-                                    //             <p>
-                                    //                 {item?.product?.name}{" "}
-                                    //             </p>
-                                    //             <span>
-                                    //                 {item?.product?.price?.toLocaleString()}₽
-                                    //             </span>
-                                    //         </div>
-                                    //         <div className={styles.itemButtons}>
-                                    //             <Counter count={item?.quantity} setCount={() => changeCount} />
-                                    //             <i className="pi pi-trash"></i>
-                                    //         </div>
-                                    //     </div>
-                                    // </div>
                                     <BasketItem key={item.id} item={item} />
                                 ))}
                             </div>
