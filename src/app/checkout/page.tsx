@@ -8,9 +8,11 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import EmptyBasket from "@/components/EmptyBasket/EmptyBasket";
 import Loading from "@/components/Helps/Loading";
+import Counter from "@/components/Counter/Counter.components";
+import BasketItem from "@/components/BasketItem/BasketItem";
 
 export default function Checkout() {
-    const [methodDelivert, setMetodDelivery] = useState(0);
+    const [methodDelivery, setMetodDelivery] = useState(0);
     const router = useRouter();
     const { basket, setBasket } = useBasketContext();
     const [amount, setAmount] = useState(0);
@@ -70,7 +72,7 @@ export default function Checkout() {
                         <div className={styles.methodDelivery}>
                             <div
                                 className={
-                                    methodDelivert == 1
+                                    methodDelivery == 1
                                         ? `${styles.active} ${styles.delivery}`
                                         : `${styles.delivery}`
                                 }
@@ -87,7 +89,7 @@ export default function Checkout() {
                             </div>
                             <div
                                 className={
-                                    methodDelivert == 2
+                                    methodDelivery == 2
                                         ? `${styles.active} ${styles.delivery}`
                                         : `${styles.delivery}`
                                 }
@@ -102,7 +104,7 @@ export default function Checkout() {
                             </div>
                             <div
                                 className={
-                                    methodDelivert == 3
+                                    methodDelivery == 3
                                         ? `${styles.active} ${styles.delivery}`
                                         : `${styles.delivery}`
                                 }
@@ -121,32 +123,31 @@ export default function Checkout() {
                         <div className={styles.card}>
                             <div className={styles.products}>
                                 {basket.map((item: any) => (
-                                    <div key={item.id} className={styles.item}>
-                                        {item?.product?.image != null ? (
-                                            <img
-                                                src={`/products/${item?.product?.image}`}
-                                                alt={`${item?.product?.name}`}
-                                            />
-                                        ) : (
-                                            <img
-                                                src="/quickshopimage.png"
-                                                alt={`${item?.product?.name}`}
-                                            />
-                                        )}
-                                        <div className={styles.itemText}>
-                                            <div className={styles.itemTextTitle}>
-                                                <p>
-                                                    {item.quantity} х {item?.product?.name}{" "}
-                                                </p>
-                                                <span>
-                                                    {item?.product?.price?.toLocaleString()}₽
-                                                </span>
-                                            </div>
-                                            <p className={styles.itemInfo}>
-                                                «{item?.product?.category?.name}»
-                                            </p>
-                                        </div>
-                                    </div>
+                                    // <div key={item.id} className={styles.item}>
+                                    //     <img
+                                    //         src={
+                                    //             item?.product?.image
+                                    //                 ? `/products/${item?.product?.image}`
+                                    //                 : `/quickshopimage.png`
+                                    //         }
+                                    //         alt={`${item?.product?.name}`}
+                                    //     />
+                                    //     <div className={styles.itemText}>
+                                    //         <div className={styles.itemTextTitle}>
+                                    //             <p>
+                                    //                 {item?.product?.name}{" "}
+                                    //             </p>
+                                    //             <span>
+                                    //                 {item?.product?.price?.toLocaleString()}₽
+                                    //             </span>
+                                    //         </div>
+                                    //         <div className={styles.itemButtons}>
+                                    //             <Counter count={item?.quantity} setCount={() => changeCount} />
+                                    //             <i className="pi pi-trash"></i>
+                                    //         </div>
+                                    //     </div>
+                                    // </div>
+                                    <BasketItem key={item.id} item={item} />
                                 ))}
                             </div>
 
@@ -158,16 +159,16 @@ export default function Checkout() {
                                 <div className={styles.saleEl}>
                                     <p>Доставка</p>
                                     <span>
-                                        {methodDelivert == 0
+                                        {methodDelivery == 0
                                             ? "Не выбрано"
-                                            : methodDelivert == 1
+                                            : methodDelivery == 1
                                             ? "Бесплатно"
-                                            : methodDelivert == 2
+                                            : methodDelivery == 2
                                             ? "Стоимость уточнит менеджер"
                                             : "Бесплатно"}
                                     </span>
                                 </div>
-                                {methodDelivert == 1 ? (
+                                {methodDelivery == 1 ? (
                                     <div className={styles.saleEl}>
                                         <p>Адрес доставки</p>
                                         {/* <span>{codeCdek.city? `${codeCdek?.city}, ${codeCdek?.address}` : "Не выбрано"}</span> */}

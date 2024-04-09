@@ -1,12 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import style from './ProductCard.module.css'
+import style from './ProductCard.module.scss'
 import Link from 'next/link';
 import axios from 'axios';
 import { useBasketContext } from '../Helps/GlobalBasket';
 
 
-const ProductCard = ({item, slider}: any) => {
+const ProductCard = ({ item, slider, isHomePage }: any) => {
     const [image, setImage] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [isBasket, setIsBasket] = useState(false);
@@ -58,14 +58,16 @@ const ProductCard = ({item, slider}: any) => {
                 <img src={`/products/${item.image}`} alt="" />
             </Link>
 
-            <div className={style.ProductCardText}>
+            <div className={`${style.ProductCardText}`}>
                 <Link href={`/product/${item.id}`}><p>{item?.name}</p></Link>
-                <b>{(item?.price).toLocaleString()}₽</b>
-                {!isBasket? 
-                <button onClick={() => addToBasket()}>В корзину</button>
-                :
-                <button className={style.btnActive}>В корзине</button>
-                }
+                <div className={`${style.ProductCardPrice} ${isHomePage && style.ProductCardPrice_Home}`}>
+                    <b>{(item?.price).toLocaleString()} ₽</b>
+                    {!isBasket?
+                    <button onClick={() => addToBasket()}>В корзину</button>
+                    :
+                    <button className={style.btnActive}>В корзине</button>
+                    }
+                </div>
             </div>
         </div>
     );

@@ -24,6 +24,10 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+
+    // &--row {
+    //     flex-direction: row;
+    // }
 }
 
 .ProductCardText p{
@@ -59,9 +63,31 @@
 .ProductCardImage{
     width: 200px;
     height: 200px;
+
+    border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 .ProductCardImage img{
     width: 100%;
     height: 100%;
+
+    object-fit: cover;
+}
+
+.ProductCardPrice {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    &_Home {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        b {
+            margin: 0;
+        }
+    }
 }

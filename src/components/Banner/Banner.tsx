@@ -5,11 +5,92 @@ const Banner = () => {
     return (
         <section className={`${styles.banner}`}>
             <div className={`${styles.banner__container}`}>
+                {/* Группа эллипсов */}
+                <>
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--1"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--2"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--3"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--4"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--5"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--6"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--7"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--8"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--9"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--10"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--11"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--12"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--13"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--14"]}`}
+                    />
+                    <img
+                        src="/ellipse1.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--15"]}`}
+                    />
+                    <img
+                        src="/ellipse2.svg"
+                        alt="ellipse image"
+                        className={`${styles["banner__ellipse"]} ${styles["banner__ellipse--16"]}`}
+                    />
+                </>
                 <div
                     className={`${styles["banner__img-container"]} ${styles["banner__img-container--primary"]}`}>
                     <div className={`${styles["banner__img-group"]}`}>
-                        {/* <img src="/money.svg" alt="banner img" className={`${styles["banner__img"]} ${styles["banner__img--primary--first"]} ${styles["money-icon"]}`} /> */}
-
                         {/* Группа картинок "Деньги" */}
                         <div
                             className={`${styles["banner__img-group"]} ${styles["banner__img-group--money"]}`}>
@@ -95,6 +176,7 @@ const Banner = () => {
                         </p>
                     </div>
                 </div>
+                <div className={`${styles["banner__gap"]}`}></div>
                 <div className={`${styles["banner__img-container-wrapper"]}`}>
                     <div
                         className={`${styles["banner__img-container"]} ${styles["banner__img-container--secondary"]}`}>
@@ -109,6 +191,8 @@ const Banner = () => {
                             className={`${styles["banner__img"]}`}
                         />
                     </div>
+                    <div className={`${styles["banner__gap"]} ${styles["banner__gap--row"]}`}></div>
+
                     <div
                         className={`${styles["banner__img-container"]} ${styles["banner__img-container--secondary"]}`}>
                         <h2 className={`${styles["banner__title"]}`}>Выгодные цены</h2>

@@ -226,3 +226,9 @@
     background: var(--rs-primary-600);
     transition: all 0.5s;
 }
+
+
+.itemButtons {
+    display: flex;
+    gap: 20px;
+}
