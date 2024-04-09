@@ -97,6 +97,10 @@ body {
   width: 100%;
 }
 
+.rs-picker-select-menu {
+    z-index: 100;
+}
+
 .rs-btn-primary{
   background: var(--accent-color) !important;
   color: var(--text-color) !important;

@@ -69,6 +69,8 @@ model User {
     cover          String?
     about          String?
     emailVerified  DateTime?
+    idCity Int @default(1)
+    city City @relation(fields: [idCity], references: [id])
     nameShop       String?
     description    String?
     accounts       Account[]
@@ -107,6 +109,7 @@ model City {
     sellerCity     SellerCity[]
     city1          CityWay[]    @relation("city1")
     player2Matches CityWay[]    @relation("city2")
+    user User[]
 }
 
 model SellerCity {

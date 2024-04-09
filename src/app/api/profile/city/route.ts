@@ -6,8 +6,28 @@ import { authOptions } from "@/lib/auth";
 export async function GET(req: NextRequest) {
     try{
         let way = req.nextUrl.searchParams.get('way') as string
+        let id = req.nextUrl.searchParams.get('id') as string
 
-        if(way){
+        if(id) {
+            const session = await getServerSession(authOptions)
+            if(!session){
+                const city = await db.city.findFirst();
+
+                return NextResponse.json({ success: true, city });
+            }
+
+            const user = await db.user.findUnique({
+                where: {
+                    id: session.user.id
+                },
+                include: {
+                    city: true
+                }
+            })
+
+            return NextResponse.json({success: true, city: user!.city});
+        }
+        else if(way){
             const session = await getServerSession(authOptions)
             if(!session){
                 return NextResponse.json({success: false, message: "У вас нет доступа к данной функции!"});
