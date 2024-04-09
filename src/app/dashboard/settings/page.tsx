@@ -173,6 +173,12 @@ export default function Settings() {
                             label: item.city.name,
                             value: item.city.id,
                         })));
+
+                        axios.get(`/api/delivery/cityway?graph=true`).then((res) => {
+                            if(res.data.success){
+                                setSityWayGraph(res.data?.cityway);
+                            }
+                        });
                     }
                 });
             } else {
@@ -190,8 +196,7 @@ export default function Settings() {
 
     const [newCityWay, setNewCityWay] = useState<any>({
         city1: "",
-        city2: "",
-        length: "", //Протяжённость
+        city2: ""
     })
 
     const [newCityWayTransport, setNewCityWayTransport] = useState<any>([
@@ -200,6 +205,7 @@ export default function Settings() {
             transport: "", // Тип транспорта
             duration: 0, //Длительность
             cost: 0, //Стоимость
+            length: 0 //Протяжённость
         }
     ])
 
@@ -254,6 +260,12 @@ export default function Settings() {
                             ...characteristic,
                             cost: property,
                         };
+                    case "length":
+                        return {
+                            ...characteristic,
+                            length: property,
+                        };
+                        
                 }
             }
         });
@@ -278,7 +290,6 @@ export default function Settings() {
                 setNewCityWay({
                     city1: "",
                     city2: "",
-                    length: "", //Протяжённость
                 })
                 setNewCityWayTransport([
                     {
@@ -286,6 +297,7 @@ export default function Settings() {
                         transport: "", // Тип транспорта
                         duration: 0, //Длительность
                         cost: 0, //Стоимость
+                        length: 0, //Протяжённость
                     }
                 ])
             } else {
@@ -373,6 +385,29 @@ export default function Settings() {
                         data={sityWayGraph}
                         config={myConfig}
                     />
+                    <div className={styles.explanations}>
+                        <b>Обозначения</b>
+                        <div className={styles.explanationsEl}>
+                            <img src="/shop/1.svg" alt="" />
+                            Транзитный город
+                        </div>
+                        <div className={styles.explanationsEl}>
+                            <img src="/shop/2.svg" alt="" />
+                            В этом городе есть пункт выдачи заказов
+                        </div>
+                        <div className={styles.explanationsEl}>
+                            <img src="/shop/4.svg" alt="" />
+                            В этом городе есть склад
+                        </div>
+                        <div className={styles.explanationsEl}>
+                            <img src="/shop/3.svg" alt="" />
+                            В этом городе есть пункт выдачи заказов и склад
+                        </div>
+                        <div className={styles.explanationsEl}>
+                            <img src="/shop/5.svg" alt="" />
+                            В городе есть пункт выдвчи заказов или склад, но он не подключён к другим городам (Товары из этого города не будут отображаться в каталоге)
+                        </div>
+                    </div>
                 </div>
 
                 <Modal keyboard={false} open={open} onClose={() => setOpen(false)}>
@@ -381,7 +416,7 @@ export default function Settings() {
                     </Modal.Header>
 
                     <Modal.Body>
-                        <div className={styles.sityWayFlex}>
+                        <div className={`${styles.sityWayFlex} ${styles.sityWayFlexMargin}`}>
                             <div className={styles.sityWayFlexEl}>
                                 <p className={styles.label}>Первый город</p>
                                 <InputPicker
@@ -401,20 +436,8 @@ export default function Settings() {
                                 />
                             </div>
                         </div>
-                        <div className={styles.sityWayFlex}>
-                            <div className={styles.sityWayFlexEl}>
-                                <p className={styles.label}>Протяжённость (км)</p>
-                                <InputNumber
-                                    placeholder="Протяжённость"
-                                    value={newCityWay.length}
-                                    min={0}
-                                    onChange={(value, e) =>
-                                        setNewCityWay({ ...newCityWay, length: Number(value) })
-                                    }
-                                />
-                            </div>
-                        </div>
-                        {newCityWayTransport.map((item: any, index: any) => 
+                        {newCityWayTransport.map((item: any, index: any) =>
+                            <>
                             <div key={item.id} className={styles.sityWayFlex}>
                                 <div className={styles.sityWayFlexEl}>
                                     <p className={styles.label}>Тип транспорта</p>
@@ -438,6 +461,8 @@ export default function Settings() {
                                         }
                                     />
                                 </div>
+                            </div>            
+                            <div key={item.id} className={styles.sityWayFlex}>
                                 <div className={styles.sityWayFlexEl}>
                                     <p className={styles.label}>Длительность (ч)</p>
                                     <InputNumber
@@ -449,13 +474,27 @@ export default function Settings() {
                                         }
                                     />
                                 </div>
-                                
+                                <div className={styles.sityWayFlexEl}>
+                                    <p className={styles.label}>Протяжённость (км)</p>
+                                    <InputNumber
+                                        placeholder="Протяжённость"
+                                        value={item.length}
+                                        min={0}
+                                        onChange={(value, e) =>
+                                            updateNewCityWayTransport(item.id, "length", value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <div key={item.id} className={styles.sityWayFlex}>
                                 {index + 1 == newCityWayTransport.length && transport.length >= index + 2? 
-                                    <div className={styles.shops__button} onClick={() => {setNewCityWayTransport([...newCityWayTransport, {id: uuidv4(), transport: "", duration: 0, cost: 0}])}}><i className='pi pi-plus'></i></div>
+                                    <div className={styles.shops__button} onClick={() => {setNewCityWayTransport([...newCityWayTransport, {id: uuidv4(), transport: "", duration: 0, cost: 0, length: 0}])}}><i className='pi pi-plus'></i> Добавить транспорт</div>
                                     :
                                     ""
                                 }
                             </div>
+                            </>
+                            
                         )}
                         
                     </Modal.Body>

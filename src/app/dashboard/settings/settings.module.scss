@@ -80,7 +80,9 @@
     &__button{
         border-radius: 8px;
         background: var(--my-background);
-        width: 36px;
+        // width: 36px;
+        padding: 0 10px;
+        gap: 4px;
         height: 36px;
         min-width: 36px;
         display: flex;
@@ -110,6 +112,10 @@
         gap: 10px;
         align-items: flex-end;
 
+        &Margin{
+            margin-bottom: 40px;
+        }
+
         &El{
             width: 100%;
             display: flex;
@@ -119,5 +125,22 @@
 
     &Flex + &Flex{
         margin-top: 10px;
+    }
+}
+
+.explanations{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    b{
+        margin-top: 30px;
+        font-size: 22px;
+    }
+
+    &El{
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 }

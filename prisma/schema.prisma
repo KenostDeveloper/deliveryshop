@@ -239,7 +239,6 @@ model CityWay {
     idCity2 Int
     user    User   @relation(fields: [idUser], references: [id])
     idUser  Int
-    length  Float? //Протяжённость (км)
     cityWayTransport CityWayTransport[]
 }
 
@@ -247,6 +246,7 @@ model CityWayTransport {
     id   Int    @id @default(autoincrement())
     duration    Float? //Длительность (ч)
     cost        Float? //Стоимость (руб)
+    length  Float? //Протяжённость (км)
     cityWay   CityWay @relation(fields: [idCityWay], references: [id])
     idCityWay Int
     transport   Transport @relation(fields: [idTransport], references: [id])

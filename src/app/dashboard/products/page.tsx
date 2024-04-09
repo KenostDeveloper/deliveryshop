@@ -159,9 +159,10 @@ export default function Products() {
         let countAll = 0;
 
         for (let i = 0; i < warehouse.length; i++) {
-            countAll = countAll + warehouse[i].count;
+            if(warehouse[i].typePoint == "Warehouse"){
+                countAll = countAll + warehouse[i].count;
+            }
         }
-
         if (newProduct.count < countAll) {
             toast.error("Общее количество товаров меньше, чем на складах");
         } else {

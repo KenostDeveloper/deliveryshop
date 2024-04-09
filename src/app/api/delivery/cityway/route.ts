@@ -13,16 +13,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
         }
 
         const info = await req.json()
-        console.log(info)
+        // console.log(info)
 
 
         const cityWay = info.cityWay
         const cityWayTransport = info.cityWayTransport
 
-        if(!cityWay.city1 || !cityWay.city2 || !cityWay.length){
+        if(!cityWay.city1 || !cityWay.city2){
             return NextResponse.json({success: false, message: "Пожалуйста, заполните все поля!"});
         }
-        if(cityWayTransport[0].transport == "" || cityWayTransport[0].duration == 0 || cityWayTransport[0].cost == 0){
+        if(cityWayTransport[0].transport == "" || cityWayTransport[0].duration == 0 || cityWayTransport[0].cost == 0 ||  !cityWayTransport[0].length){
             return NextResponse.json({success: false, message: "Пожалуйста, заполните хотя бы тип транспорта"});
         }
         if(cityWay.city1 == cityWay.city2){
@@ -33,7 +33,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
             data: {
                 idCity1: cityWay.city1,
                 idCity2: cityWay.city2,
-                length: cityWay.length,
                 idUser: session.user.id
             }
         })
@@ -46,7 +45,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 }
             })
 
-            console.log(isCityWayTransport)
+            // console.log(isCityWayTransport)
 
             if(isCityWayTransport == null){
                 // console.log(cityWayTransport[i].duration, cityWayTransport[i].cost, newCityWay.id, cityWayTransport[i].transport)
@@ -55,7 +54,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         duration: Number(cityWayTransport[i].duration),
                         cost: Number(cityWayTransport[i].cost),
                         idCityWay: newCityWay.id,
-                        idTransport: cityWayTransport[i].transport
+                        idTransport: Number(cityWayTransport[i].transport),
+                        length: Number(cityWayTransport[i].length),
                     }   
                 })
 
@@ -79,17 +79,17 @@ export async function GET(req: NextRequest) {
         let graph = req.nextUrl.searchParams.get('graph') as string
 
 
-        const data = {
-            nodes: [
-                { id: "Harry" },
-                { id: "Sally" },
-                { id: "Alice" },
-            ],
-            // links: [
-            //     { source: "Harry", target: "Sally", label: "Москва" },
-            //     { source: "Harry", target: "Alice", label: "Пермь" },
-            // ],
-        }
+        // const data = {
+        //     nodes: [
+        //         { id: "Harry" },
+        //         { id: "Sally" },
+        //         { id: "Alice" },
+        //     ],
+        //     // links: [
+        //     //     { source: "Harry", target: "Sally", label: "Москва" },
+        //     //     { source: "Harry", target: "Alice", label: "Пермь" },
+        //     // ],
+        // }
     
 
         if(graph){
@@ -115,8 +115,89 @@ export async function GET(req: NextRequest) {
                 return o;
             }, []);
 
+
+
             for(let i = 0; i < res.length; i++){
-                cityway.nodes.push({id: res[i].city.name})
+
+                const isCityWay = await db.cityWay.findMany({
+                    where: {
+                        OR: [
+                            {
+                                idUser: session.user.id,
+                                city1: {
+                                    id: res[i].city.id
+                                }
+                            },
+                            {
+                                idUser: session.user.id,
+                                city2: {
+                                    id: res[i].city.id
+                                }
+                            },
+                        ],                
+                    },
+                    include: {
+                        city1: {
+                            include: {
+                                sellerCity: true
+                            }
+                        },
+                        city2: {
+                            include: {
+                                sellerCity: true
+                            }
+                        }
+                    }
+                })
+
+                if(isCityWay.length != 0){
+
+                    const isType = await db.sellerCity.findMany({
+                        where: {
+                            idUser: session.user.id,
+                            idCity: res[i].city.id
+                        }
+                    })
+
+                    let tempType;
+
+                    for(let x = 0; x < isType.length; x++){
+                        if(isType[x].typePoint == "Transit"){
+                            tempType = "Transit";
+                        }
+                    }
+
+                    if(tempType != "Transit"){
+                        for(let x = 0; x < isType.length; x++){
+                            if(isType[x].typePoint == "PickPoint"){
+                                tempType = "PickPoint";
+                            }
+                        }
+
+                        for(let x = 0; x < isType.length; x++){
+                            if(isType[x].typePoint == "Warehouse"){
+                                if(tempType != "PickPoint"){
+                                    tempType = "Warehouse";
+                                }else{
+                                    tempType = "PickPoint & Warehouse"
+                                }
+                            }
+                        }
+                    }
+
+                    if(tempType == "Transit"){
+                        cityway.nodes.push({id: res[i].city.name, svg: `${process.env.URL}shop/1.svg`})
+                    }else if(tempType == "PickPoint"){
+                        cityway.nodes.push({id: res[i].city.name, svg: `${process.env.URL}shop/2.svg`})
+                    }else if(tempType == "Warehouse"){
+                        cityway.nodes.push({id: res[i].city.name, svg: `${process.env.URL}shop/4.svg`})
+                    }else{
+                        cityway.nodes.push({id: res[i].city.name, svg: `${process.env.URL}shop/3.svg`})
+                    }
+
+                }else{
+                    cityway.nodes.push({id: res[i].city.name, svg: `${process.env.URL}shop/5.svg`})
+                }        
             }
 
             const getCityWay = await db.cityWay.findMany({

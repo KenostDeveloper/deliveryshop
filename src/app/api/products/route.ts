@@ -234,6 +234,12 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
         if(!product) {
             return NextResponse.json({success: false, message: "Вы не можете удалить не свой продукт!"});
         }
+
+        const sellerCityProduct = await db.sellerCityProducts.deleteMany({
+            where: {
+                idProduct: Number(id)
+            }
+        })
     
         const productDelete = await db.product.delete({
             where: {
