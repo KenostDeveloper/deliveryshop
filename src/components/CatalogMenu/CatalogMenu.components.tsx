@@ -18,7 +18,8 @@ const CatalogMenu = (params: any) => {
     return (
         <div className={styles.menu}>
           <ul>
-            {category.map((item:any) => <Link key={item.id} href={`/catalog/${item.id}`}><img src={`/catalogMenu/${item.id}.svg`} alt="" />{item.name}</Link>)}
+            {/* <Link key={item.id} href={`/catalog/${item.id}`}><img src={`/catalogMenu/${item.id}.svg`} alt="" /> */}
+            {category.map((item:any) => <Link key={item.id} href={`/catalog/${item.id}`} className={params.params == `${item.id}` ? `${styles.active}` : ``}><img src={`/catalogMenu/${item.id}.svg`} alt="" />{item.name}</Link>)}
           </ul>
         </div>
     );

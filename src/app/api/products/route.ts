@@ -128,24 +128,40 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({count, product});
         }
 
-        if(!id){
-            const count = await db.product.count();
-
-            const product = await db.product.findMany({
-                take: getLimit,
-                skip: offset,
-            });
-
-            return NextResponse.json({count, product});
-
-        }else{
-            const product = await db.product.findUnique({
+        if(category_id){
+            const count = await db.product.count({
                 where: {
-                    id: Number(id)
+                    idCategory: Number(category_id)
                 }
             });
 
-            return NextResponse.json({product});
+            const product = await db.product.findMany({
+                where: {
+                    idCategory: Number(category_id)
+                }
+            })
+
+            return NextResponse.json({count, product});
+        }else{
+            if(!id){
+                const count = await db.product.count();
+    
+                const product = await db.product.findMany({
+                    take: getLimit,
+                    skip: offset,
+                });
+    
+                return NextResponse.json({count, product});
+    
+            }else{
+                const product = await db.product.findUnique({
+                    where: {
+                        id: Number(id)
+                    }
+                });
+    
+                return NextResponse.json({product});
+            }
         }
 
 
