@@ -253,6 +253,11 @@
             font-size: 14px;
             line-height: 16px;
         }
+
+        img {
+            object-fit: contain;
+            border: none;
+        }
     }
 }
 

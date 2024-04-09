@@ -18,6 +18,8 @@ export default function Checkout() {
     const { basket, setBasket } = useBasketContext();
     const [amount, setAmount] = useState(0);
     const [load, setLoad] = useState(false);
+    
+    const [path, setPath] = useState([]);
 
     useEffect(() => {
         if (basket) {
