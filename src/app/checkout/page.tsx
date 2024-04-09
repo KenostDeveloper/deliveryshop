@@ -37,8 +37,12 @@ export default function Checkout() {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
-        console.log(basket);
         
+        axios.get(`/api/delivery/search/short`).then((res) => {
+            setPath(res.data?.result);
+            console.log(path);
+            
+        })
     }, []);
 
     function placeOrder() {
