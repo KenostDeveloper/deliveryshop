@@ -63,3 +63,11 @@
     flex-direction: column;
     justify-content: space-around;
 }
+
+.trash {
+    transition: all 0.1s linear;
+    cursor: pointer;
+    &:hover {
+        color: red;
+    }
+}

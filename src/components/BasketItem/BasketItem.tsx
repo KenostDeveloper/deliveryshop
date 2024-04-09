@@ -70,7 +70,7 @@ const BasketItem = ({ item }: any) => {
                 <div className={styles.itemButtons}>
                     <Counter count={count} setCount={changeCount} isSmall={true} />
                     <i
-                        className="pi pi-trash"
+                        className={`${styles.trash} pi pi-trash`}
                         onClick={() => deleteProductBasket(item.id_product)}></i>
                 </div>
             </div>
