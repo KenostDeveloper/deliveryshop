@@ -61,14 +61,7 @@ export default function Checkout() {
                 <h1>Офомление заказа</h1>
                 <div className={styles.containerChekout}>
                     <div className={styles.left}>
-                        {/* <div className={styles.data}>
-                  <input type="text" placeholder='Фамилия'/>
-                  <input type="text" placeholder='Имя'/>
-                  <input type="text" placeholder='Отчество'/>
-                  <input type="text" placeholder='Номер телефона'/>
-                  <input type="text" placeholder='email'/>
-              </div> */}
-                        <h2>Способы получения</h2>
+                        {/* <h2>Оформление доставки</h2> */}
                         <div className={styles.methodDelivery}>
                             <div
                                 className={
@@ -80,10 +73,10 @@ export default function Checkout() {
                                     setMetodDelivery(1);
                                 }}>
                                 <div className={styles.deliveryTitle}>
-                                    <p>Доставка</p> <img src="/order/1.svg" alt="" />
+                                    <p>Самая быстрая</p> <i className="pi pi-bolt"></i>
                                 </div>
                                 <div className={styles.deliveryBody}>
-                                    <p>По России</p>
+                                    {/* <p>По России</p> */}
                                     <span>Выбрать</span>
                                 </div>
                             </div>
@@ -95,10 +88,10 @@ export default function Checkout() {
                                 }
                                 onClick={() => setMetodDelivery(2)}>
                                 <div className={styles.deliveryTitle}>
-                                    <p>Доставка</p> <img src="/order/2.svg" alt="" />
+                                    <p>Самая дешевая</p> <i className="pi pi-wallet"></i>
                                 </div>
                                 <div className={styles.deliveryBody}>
-                                    <p>По СПб</p>
+                                    {/* <p>По СПб</p> */}
                                     <span>Выбрать</span>
                                 </div>
                             </div>
@@ -110,10 +103,10 @@ export default function Checkout() {
                                 }
                                 onClick={() => setMetodDelivery(3)}>
                                 <div className={styles.deliveryTitle}>
-                                    <p>Самовывоз</p> <img src="/order/3.svg" alt="" />
+                                    <p>Короткий маршрут</p> <i className="pi pi-compass"></i>
                                 </div>
                                 <div className={styles.deliveryBody}>
-                                    <p>В магазине</p>
+                                    {/* <p>В магазине</p> */}
                                     <span>Выбрать</span>
                                 </div>
                             </div>
