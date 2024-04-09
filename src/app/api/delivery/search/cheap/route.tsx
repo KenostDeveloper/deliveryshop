@@ -126,17 +126,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
                     //Связи в граф
                     for(let w = 0; w < basket[i].product.user.cityWay.length; w++){
                         //Наименьшее количество времени между городами
-                        let masDuration: any = [];
+                        let masCost: any = [];
                         for(let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++){
-                            masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration
+                            masCost[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].cost
                         }
 
-                        if(masDuration.length > 0){
-                            graph[basket[i].product.user.cityWay[w].city1.name][basket[i].product.user.cityWay[w].city2.name] = Math.min(masDuration);
-                            graph[basket[i].product.user.cityWay[w].city2.name][basket[i].product.user.cityWay[w].city1.name] = Math.min(masDuration);
+                        if(masCost.length > 0){
+                            graph[basket[i].product.user.cityWay[w].city1.name][basket[i].product.user.cityWay[w].city2.name] = Math.min(masCost);
+                            graph[basket[i].product.user.cityWay[w].city2.name][basket[i].product.user.cityWay[w].city1.name] = Math.min(masCost);
                         }
                     }
-
                     //Маршруты от пользователя до магазина
                     let path:any = []
                     //Индекс самого наименьшего маршрута в массиве path
@@ -163,7 +162,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                         id_product: basket[i].id_product,
                         id_basket: basket[i].id,
                         path: path[indexMinPath],
-                        min_duration_path: distancesMin,
+                        min_cost_path: distancesMin,
                         quantity: basket[i].quantity,
                         count_warehouse: sellerCityProductFit[indexMinPath].count
                     }
@@ -174,7 +173,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                 }
             }
 
-            return NextResponse.json({ success: true, message: "Самый быстрый маршрут построен!", result });
+            return NextResponse.json({ success: true, message: "Самый дешёвый маршрут построен!", result });
 
 
         }

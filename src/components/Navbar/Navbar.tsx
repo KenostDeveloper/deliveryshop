@@ -89,7 +89,7 @@ const Navbar = () => {
                     <button onClick={() => setCityModalActive(true)}
                         className={`${styles.nav__button} ${styles["nav__button--transparent"]} ${styles.nav__location}`}>
                         <i className={`${styles["nav__location-icon"]} pi pi-map-marker`}></i>
-                        <p className={`${styles.nav__text}`}>{userCity.name}</p>
+                        <p className={`${styles.nav__text}`}>{userCity?.name}</p>
                     </button>
                     <div className={`${styles.nav__search}`}>
                         <input
