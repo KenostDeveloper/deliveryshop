@@ -83,9 +83,11 @@ export default function Checkout() {
 
         if(!res?.data?.success) {
             toast.error(res.data?.message);
+        } else {
+            setPathResult(res.data?.result);
         }
 
-        setPathResult(res.data?.result);
+        console.log("Pathresult:", res.data);
     }
 
     function placeOrder() {

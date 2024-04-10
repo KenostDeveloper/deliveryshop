@@ -9,15 +9,22 @@ const BasketRoute = ({ products, pathResult, pathParam }: any) => {
     }, []);
 
     console.log("products", products);
-    
 
     return (
         <div className={`${styles["basket-routes"]}`}>
             {products.map((product: any, index: number) => (
                 <article key={product?.id} className={`${styles["basket-route"]}`}>
-                    <Product product={product} setOrder={null} inBasket={true} index={index} pathResult={pathResult} />
-                    {pathResult?.find((product: any) => product?.id_product === product?.id_product) && (
+                    <Product
+                        product={product}
+                        setOrder={null}
+                        inBasket={true}
+                        index={index}
+                        pathResult={pathResult}
+                    />
+                    {pathResult[index]?.path ? (
                         <BasketRoutePath pathResultItem={pathResult[index]} pathParam={pathParam} />
+                    ) : (
+                        <p>Пути не найдены</p>
                     )}
                     <p className={`${styles["basket-route__price-total"]}`}>
                         Итого: {(product?.product?.price * product?.quantity).toLocaleString()} ₽
