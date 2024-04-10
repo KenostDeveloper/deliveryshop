@@ -29,7 +29,7 @@ const BasketRoutePath = ({ pathResultItem, pathParam }: any) => {
                                     <div
                                         key={path?.id}
                                         className={`${styles["basket-route-path__flag-container"]}`}>
-                                        <img src={`${index % 2 == 0 && index === array.length - 1 ? "/basket/flag.svg" : "/basket/flag-ellipse.svg"}`} alt="flag image" />
+                                        <img src={`${index !== array.length - 1 ? "/basket/flag-ellipse.svg" : "/basket/flag.svg"}`} alt="flag image" />
                                         <p>{Object.keys(path)[0]}</p>
                                     </div>
                                 </>
