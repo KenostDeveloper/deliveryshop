@@ -134,6 +134,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                                 masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration
                             }
 
+
                             if(masDuration.length > 0){
                                 graph[basket[i].product.user.cityWay[w].city1.name][basket[i].product.user.cityWay[w].city2.name] = Math.min(masDuration);
                                 graph[basket[i].product.user.cityWay[w].city2.name][basket[i].product.user.cityWay[w].city1.name] = Math.min(masDuration);
@@ -158,6 +159,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                             path[e]["sum_duration"] = tempDistance;
                             path[e]['count'] = sellerCityProductFit[e].count
                             path[e]['index'] = path.length - 1
+
                             
                             if(tempDistance < distancesMin){
                                 distancesMin = tempDistance;
@@ -186,10 +188,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
                         }
 
+                        
+
                         //Записываем несколько маршрутов для вывода результата
                         let resultPath: any = [];
 
                         for(let n = 0; n < middleResult[indexSumMinPath].length; n++){
+                            // console.log(sellerCityProductFit[middleResult[indexSumMinPath][n]['index']])
                             resultPath[n] = path[middleResult[indexSumMinPath][n]['index']]
                         }
 
@@ -264,14 +269,59 @@ export async function GET(req: NextRequest, res: NextResponse) {
                             }
                         }
 
+                        
+                        let tempDuration = 0;
+                        let tempCost = 0;
+                        let tempLength = 0;
+
+                        for(let b = 0; b < path[indexMinPath].length - 1; b++){
+                            const getInfoSity = await db.cityWay.findFirst({
+                                where: {
+                                    OR: [
+                                        {
+                                            city1:{
+                                                name: Object.keys(path[indexMinPath][b])[0]
+                                            },
+                                            city2: {
+                                                name: Object.keys(path[indexMinPath][b+1])[0]
+                                            }
+                                        },
+                                        {
+                                            city1:{
+                                                name: Object.keys(path[indexMinPath][b+1])[0]
+                                            },
+                                            city2: {
+                                                name: Object.keys(path[indexMinPath][b])[0]
+                                            }
+                                        }
+                                    ]
+                                }
+                            })
+
+                            const getInfo = await db.cityWayTransport.findFirst({
+                                where: {
+                                    idCityWay: getInfoSity?.id,
+                                    duration: Number(Object.values(path[indexMinPath][b + 1])[0]) - Number(Object.values(path[indexMinPath][b])[0])
+                                }
+                            })
+
+                            tempDuration += getInfo?.duration!
+                            tempCost += getInfo?.cost!
+                            tempLength += getInfo?.length!
+                        }
+
+
+
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: 1,
                             path: [{path: path[indexMinPath]}],
-                            min_duration_path: distancesMin,
                             quantity: basket[i].quantity,
-                            count_warehouse: sellerCityProductFit[indexMinPath].count
+                            count_warehouse: sellerCityProductFit[indexMinPath].count,
+                            all_duration: tempDuration,
+                            all_cost: tempCost,
+                            all_length: tempLength
                         }
 
                         //graph, topCityUser, sellerCityProductFit, basket
