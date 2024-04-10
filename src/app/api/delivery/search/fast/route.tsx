@@ -250,7 +250,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                                     },
                                 });
 
-                                console.log("getInfoSity: ", getInfoSity);
+                                // console.log("getInfoSity: ", getInfoSity);
     
                                 const getInfo = await db.cityWayTransport.findFirst({
                                     where: {

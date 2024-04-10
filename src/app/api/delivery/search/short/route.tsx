@@ -193,13 +193,69 @@ export async function GET(req: NextRequest, res: NextResponse) {
                             resultPath[n] = path[middleResult[indexSumMinPath][n]['index']]
                         }
 
+                        let tempDuration = 0;
+                        let tempCost = 0;
+                        let tempLength = 0;
+
+                        for(let a = 0; a < middleResult[indexSumMinPath].length; a++) {
+                            // console.log("a: ", middleResult[indexSumMinPath][a]);
+                            
+                            for (let b = 0; b < middleResult[indexSumMinPath][a].path.length - 1; b++) {
+                                // console.log(middleResult[indexMinPath][a]);        
+                                                                
+                                const getInfoSity = await db.cityWay.findFirst({
+                                    where: {
+                                        OR: [
+                                            {
+                                                city1: {
+                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b])[0],
+                                                },
+                                                city2: {
+                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b + 1])[0],
+                                                },
+                                            },
+                                            {
+                                                city1: {
+                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b + 1])[0],
+                                                },
+                                                city2: {
+                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b])[0],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                });
+
+                                // console.log("getInfoSity: ", getInfoSity);
+    
+                                const getInfo = await db.cityWayTransport.findFirst({
+                                    where: {
+                                        idCityWay: getInfoSity?.id,
+                                        length:
+                                            Number(Object.values(middleResult[indexSumMinPath][a].path[b + 1])[0]) -
+                                            Number(Object.values(middleResult[indexSumMinPath][a].path[b])[0]),
+                                    },
+                                });
+
+                                // console.log("getInfo: ", getInfo);
+    
+                                tempDuration += getInfo?.duration!;
+                                tempCost += getInfo?.cost!;
+                                tempLength += getInfo?.length!;
+
+                                // console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                            }
+                        }
+
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: resultPath.length,
                             path: resultPath,
-                            min_distance_path: sumMinPath,
                             quantity: basket[i].quantity,
+                            all_duration: tempDuration,
+                            all_cost: tempCost,
+                            all_length: tempLength,
                         }
                     }
                 }else{
@@ -264,14 +320,58 @@ export async function GET(req: NextRequest, res: NextResponse) {
                             }
                         }
 
+                        let tempDuration = 0;
+                        let tempCost = 0;
+                        let tempLength = 0;
+
+                        for (let b = 0; b < path[indexMinPath].length - 1; b++) {
+                            const getInfoSity = await db.cityWay.findFirst({
+                                where: {
+                                    OR: [
+                                        {
+                                            city1: {
+                                                name: Object.keys(path[indexMinPath][b])[0],
+                                            },
+                                            city2: {
+                                                name: Object.keys(path[indexMinPath][b + 1])[0],
+                                            },
+                                        },
+                                        {
+                                            city1: {
+                                                name: Object.keys(path[indexMinPath][b + 1])[0],
+                                            },
+                                            city2: {
+                                                name: Object.keys(path[indexMinPath][b])[0],
+                                            },
+                                        },
+                                    ],
+                                },
+                            });
+
+                            const getInfo = await db.cityWayTransport.findFirst({
+                                where: {
+                                    idCityWay: getInfoSity?.id,
+                                    length:
+                                        Number(Object.values(path[indexMinPath][b + 1])[0]) -
+                                        Number(Object.values(path[indexMinPath][b])[0]),
+                                },
+                            });
+
+                            tempDuration += getInfo?.duration!;
+                            tempCost += getInfo?.cost!;
+                            tempLength += getInfo?.length!;
+                        }
+
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: 1,
                             path: [{path: path[indexMinPath]}],
-                            min_distance_path: distancesMin,
                             quantity: basket[i].quantity,
-                            count_warehouse: sellerCityProductFit[indexMinPath].count
+                            count_warehouse: sellerCityProductFit[indexMinPath].count,
+                            all_duration: tempDuration,
+                            all_cost: tempCost,
+                            all_length: tempLength,
                         }
 
                         // graph, topCityUser, sellerCityProductFit, basket
