@@ -111,12 +111,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                     //Проверяем, доставляет ли магазин в город, который выбран у пользователя
                     for (let j = 0; j < basket[i].product.user.cityWay.length; j++) {
-                        // if (
-                        //     basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                        //     basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id 
-                        // ) {
-                        //     isDeliveryProduct = true;
-                        // }
 
                         //Проверяем доставляет ли магазин выбраным транспортом
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
@@ -129,7 +123,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         }
                     }
 
-                    console.log(isDeliveryProduct)
 
                     if (isDeliveryProduct) {
                         //объект графа
@@ -151,25 +144,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             graph[topCityUser[q].city.name] = {};
                         }
 
-                        //console.log(data.transport)
-
-
                         //Связи в граф
                         for (let w = 0; w < basket[i].product.user.cityWay.length; w++) {
-                        // console.log(basket[i].product.user.cityWay[w].cityWayTransport)
-                            // for(let l = 0; l < data.transport; l++){
-                            //     if(basket[i].product.user.cityWay[w].cityWayTransport.idTransport)
-                            // }
+
                             //Наименьшее количество времени между городами
                             let masDuration: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
-                                //console.log(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport))
-                                //if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
+                                if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
                                     masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
-                                //}
+                                }
                             }
-
-                            // console.log(masDuration)
 
                             if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
@@ -181,7 +165,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             }
                         }
 
-                        // console.log(graph)
 
                         //Маршруты от пользователя до магазина
                         let path: any = [];
@@ -190,8 +173,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         //Минимальная дистанция в массиве path
                         let distancesMin = Number.MAX_SAFE_INTEGER;
 
+
+                        //Переменная, которая хранит значение найден или не найден хоть 1 маршрут в графе
+                        let routeExists;
+
                         //Находим все кротчайшие маршруты до всех складов
                         for (let e = 0; e < sellerCityProductFit.length; e++) {
+                            //Проверка графа на хотя бы 1 маршрут
+                            let testGraph = convertGraphToArray(graph)
+
+                            const visited = {};
+
+                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
+
+                            if (!routeExists) {
+                                console.log("Маршрут между вершинами не существует.");
+                                break;
+                            }
                             let tempDistance = 0;
                             let tempPath = shortPathWithDistances(
                                 graph,
@@ -211,6 +209,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 indexMinPath = e;
                             }
                         }
+
+                        if (!routeExists) {
+                            console.log("Маршрут между вершинами не существует.");
+                            result[i] = {
+                                id_product: basket[i].id_product,
+                                id_basket: basket[i].id,
+                                count_path: 0,
+                                path: null,
+                                all_duration: 0,
+                                all_cost: 0,
+                                all_length: 0,
+                                quantity: basket[i].quantity,
+                                product: basket[i].product
+                            };
+                            continue;
+                        }
+                        
 
                         //Находим кротчайший маршрут между 2 и более точками
                         let sumMinPath = Number.MAX_SAFE_INTEGER;
@@ -308,23 +323,35 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             all_cost: tempCost,
                             all_length: tempLength,
                             quantity: basket[i].quantity,
+                            product: basket[i].product
                         };
                     }else{
                         console.log(`Товар ${basket[i].product.name} нельзя доставить данным типом`)
+                        result[i] = {
+                            id_product: basket[i].id_product,
+                            id_basket: basket[i].id,
+                            count_path: 0,
+                            path: null,
+                            all_duration: 0,
+                            all_cost: 0,
+                            all_length: 0,
+                            quantity: basket[i].quantity,
+                            product: basket[i].product
+                        };
                         break;
-                        // return NextResponse.json({
-                        //     success: true,
-                        //     message: "Маршрут не построен! Данный товар не доставляется в ваш город этим транспортом."
-                        // });
+
                     }
                 } else {
                     //Проверяем, доставляет ли магазин в город, который выбран у пользователя
                     for (let j = 0; j < basket[i].product.user.cityWay.length; j++) {
-                        if (
-                            basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                            basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id
-                        ) {
-                            isDeliveryProduct = true;
+                        //Проверяем доставляет ли магазин выбраным транспортом
+                        for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport)
+                            ) {
+                                isDeliveryProduct = true;
+                            }
                         }
                     }
 
@@ -350,15 +377,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Связи в граф
                         for (let w = 0; w < basket[i].product.user.cityWay.length; w++) {
+                            
                             //Наименьшее количество времени между городами
                             let masDuration: any = [];
-                            for (
-                                let o = 0;
-                                o < basket[i].product.user.cityWay[w].cityWayTransport.length;
-                                o++
-                            ) {
-                                masDuration[o] =
-                                    basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                            for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
+                                if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
+                                    masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                                }
                             }
 
                             if (masDuration.length > 0) {
@@ -371,6 +396,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             }
                         }
 
+
                         //Маршруты от пользователя до магазина
                         let path: any = [];
                         //Индекс самого наименьшего маршрута в массиве path
@@ -378,8 +404,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         //Минимальная дистанция в массиве path
                         let distancesMin = Number.MAX_SAFE_INTEGER;
 
+                        //Переменная, которая хранит значение найден или не найден хоть 1 маршрут в графе
+                        let routeExists;
+
                         //Находим все кротчайшие маршруты до всех складов
                         for (let e = 0; e < sellerCityProductFit.length; e++) {
+                            //Проверка графа на хотя бы 1 маршрут
+                            let testGraph = convertGraphToArray(graph)
+
+                            const visited = {};
+
+                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
+
+                            if (!routeExists) {
+                                console.log("Маршрут между вершинами не существует.");
+                                break;
+                            }
+
                             let tempDistance = 0;
                             let tempPath = shortPathWithDistances(
                                 graph,
@@ -395,6 +436,22 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 distancesMin = tempDistance;
                                 indexMinPath = e;
                             }
+                        }
+
+                        if (!routeExists) {
+                            console.log("Маршрут между вершинами не существует.");
+                            result[i] = {
+                                id_product: basket[i].id_product,
+                                id_basket: basket[i].id,
+                                count_path: 0,
+                                path: null,
+                                all_duration: 0,
+                                all_cost: 0,
+                                all_length: 0,
+                                quantity: basket[i].quantity,
+                                product: basket[i].product
+                            };
+                            continue;
                         }
 
                         let tempDuration = 0;
@@ -454,17 +511,24 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             all_duration: tempDuration,
                             all_cost: tempCost,
                             all_length: tempLength,
+                            product: basket[i].product
                         };
 
                         //graph, topCityUser, sellerCityProductFit, basket
                     } else {
-                        return NextResponse.json({
-                            success: true,
-                            message:
-                                "Маршрут не построен! Данный товар не доставляется в ваш город.",
-                            sellerCityProductFit,
-                            basket,
-                        });
+                        console.log(`Товар ${basket[i].product.name} нельзя доставить данным типом`)
+                        result[i] = {
+                            id_product: basket[i].id_product,
+                            id_basket: basket[i].id,
+                            count_path: 0,
+                            path: null,
+                            all_duration: 0,
+                            all_cost: 0,
+                            all_length: 0,
+                            quantity: basket[i].quantity,
+                            product: basket[i].product
+                        };
+                        break;
                     }
                 }
             }
@@ -557,4 +621,32 @@ function getAllCombinations(inputArray: any) {
         return resultArray;
     };
     return combine();
+}
+
+
+function hasRoute(graph:any, start:any, end:any, visited:any) {
+    visited[start] = true;
+
+    if (start === end) {
+        return true;
+    }
+
+    for (let i = 0; i < graph[start].length; i++) {
+        const neighbor = graph[start][i];
+        if (!visited[neighbor] && hasRoute(graph, neighbor, end, visited)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function convertGraphToArray(graph:any) {
+    const graphArray:any = {};
+
+    for (const vertex in graph) {
+        graphArray[vertex] = Object.keys(graph[vertex]);
+    }
+
+    return graphArray;
 }
