@@ -24,6 +24,16 @@
     display: flex;
     gap: 10px;
     overflow-x: auto;
+
+    &::-webkit-scrollbar {
+        height: 4px;
+        background-color: #f0f0f0; /* blue */
+    }
+  
+    &::-webkit-scrollbar-thumb {
+        background-color: #e2e2e2; /* green */
+        border-radius: 9em;
+    }
 }
 
 .basket-route-path__flag-container {
@@ -33,11 +43,11 @@
     flex-direction: column;
     gap: 5px;
 
-    min-width: 130px;
+    min-width: 75px;
     text-align: center;
 
     p {
-        font-size: 15px;
+        font-size: 12px;
         word-wrap: break-word;
         white-space: pre-line;
     }

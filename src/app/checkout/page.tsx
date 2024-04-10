@@ -11,6 +11,7 @@ import Loading from "@/components/Helps/Loading";
 import Counter from "@/components/Counter/Counter.components";
 import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
+import { Input } from "rsuite";
 
 export default function Checkout() {
     const [methodDelivery, setMetodDelivery] = useState(1);
@@ -18,9 +19,11 @@ export default function Checkout() {
     const { basket, setBasket } = useBasketContext();
     const [amount, setAmount] = useState(0);
     const [load, setLoad] = useState(false);
-    
+
     const [pathResult, setPathResult] = useState([]);
     const [pathParam, setPathParam] = useState("");
+
+    const [orderComment, setOrderComment] = useState("");
 
     useEffect(() => {
         if (basket) {
@@ -38,14 +41,13 @@ export default function Checkout() {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
-    
     }, []);
 
-    useEffect(() => {        
-        switch(methodDelivery) {
+    useEffect(() => {
+        switch (methodDelivery) {
             case 1:
                 axios.get(`/api/delivery/search/fast`).then((res) => {
-                    setPathResult(res.data?.result);            
+                    setPathResult(res.data?.result);
                 });
                 setPathParam("ч");
                 break;
@@ -62,7 +64,7 @@ export default function Checkout() {
                 setPathParam("км");
                 break;
         }
-    }, [methodDelivery, basket])
+    }, [methodDelivery, basket]);
 
     function placeOrder() {
         setLoad(true);
@@ -141,7 +143,35 @@ export default function Checkout() {
                         </div>
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
-                            <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />
+                            <BasketRoute
+                                products={basket}
+                                pathResult={pathResult}
+                                pathParam={pathParam}
+                            />
+
+                            <p
+                                className={`${styles["basket-route__title"]} ${styles["basket-route__title--comment"]}`}>
+                                Комментарий к заказу
+                            </p>
+                            <Input
+                                as="textarea"
+                                rows={5}
+                                placeholder=""
+                                value={orderComment}
+                                onChange={(value, e) => {
+                                    setOrderComment(e.target.value);
+                                }}
+                                id="advantages"
+                            />
+
+                            <div>
+                                <input type="checkbox" name="call" id="call" />
+                                <label htmlFor="call">Перезвоните для подтверждения заказа</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" name="conditionAgree" id="conditionAgree" />
+                                <label htmlFor="call">Перезвоните для подтверждения заказа</label>
+                            </div>
                         </section>
                     </div>
                     <div className={styles.right}>
