@@ -214,13 +214,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
                         let tempCost = 0;
                         let tempLength = 0;
 
-                        // return NextResponse.json({
-                        //     success: true,
-                        //     message: "Самый быстрый маршрут построен!",
-                        //     test: middleResult[indexSumMinPath],
-                        //     testasdasd: middleResult[indexSumMinPath][0][0]
-                        // });
-
                         for(let a = 0; a < middleResult[indexSumMinPath].length; a++) {
                             // console.log("a: ", middleResult[indexSumMinPath][a]);
                             
