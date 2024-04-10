@@ -10,6 +10,7 @@ import LoginForm from "@/components/Forms/LoginForm";
 import {signIn} from "next-auth/react";
 import ChangePassword from '../Forms/ForgotPasswordForm';
 import RateForm from '../Forms/RateForm';
+import MpYandex from '../Icons/MpYandex';
 
 const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) => {
     const searchParams = useSearchParams();
@@ -35,8 +36,7 @@ const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) 
             {authEmail == 0?
                 <div className={style.ModalAuth}>
                     <p className={style.ModalAuth__title}>Войти с помощью</p>
-                    <div className={`${style.ModalAuth__el} ${style.ModalAuth__discord}`} onClick={() => signIn("twitch")}><MpDiscord/> Twitch</div>
-                    <div className={`${style.ModalAuth__el} ${style.ModalAuth__discord}`} onClick={() => signIn("vk")}><MpDiscord/> ВКонтакте</div>
+                    <div className={`${style.ModalAuth__el} ${style.ModalAuth__yandex}`} onClick={() => signIn("yandex")}><MpYandex/> Яндекс</div>
                     <div className={`${style.ModalAuth__el} ${style.ModalAuth__discord}`} onClick={() => signIn("discord")}><MpDiscord/> Discord</div>
                     <div className={style.ModalAuth__el} onClick={() => setAuthEmail(true)}><MpMail/> Почта</div>
                 </div>
@@ -47,10 +47,7 @@ const ModalAuth = ({modalActive, setModalActive, authEmail, setAuthEmail}: any) 
                 authEmail == 2?
                 <RegisterForm authEmail={authEmail} setAuthEmail={setAuthEmail}/>
                 :
-                authEmail == 3?
                 <ChangePassword authEmail={authEmail} setAuthEmail={setAuthEmail} setModalActive={setModalActive} />
-                :
-                <RateForm />
             }
         </Modal>
     );
