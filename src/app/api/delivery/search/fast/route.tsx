@@ -111,13 +111,25 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                     //Проверяем, доставляет ли магазин в город, который выбран у пользователя
                     for (let j = 0; j < basket[i].product.user.cityWay.length; j++) {
-                        if (
-                            basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                            basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id
-                        ) {
-                            isDeliveryProduct = true;
+                        // if (
+                        //     basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
+                        //     basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id 
+                        // ) {
+                        //     isDeliveryProduct = true;
+                        // }
+
+                        //Проверяем доставляет ли магазин выбраным транспортом
+                        for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport)
+                            ) {
+                                isDeliveryProduct = true;
+                            }
                         }
                     }
+
+                    console.log(isDeliveryProduct)
 
                     if (isDeliveryProduct) {
                         //объект графа
@@ -151,13 +163,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             //Наименьшее количество времени между городами
                             let masDuration: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
-                                console.log(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport))
-                                if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
+                                //console.log(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport))
+                                //if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
                                     masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
-                                }
+                                //}
                             }
 
-                            console.log(masDuration)
+                            // console.log(masDuration)
 
                             if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
@@ -169,7 +181,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             }
                         }
 
-                        console.log(graph)
+                        // console.log(graph)
 
                         //Маршруты от пользователя до магазина
                         let path: any = [];
@@ -297,6 +309,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             all_length: tempLength,
                             quantity: basket[i].quantity,
                         };
+                    }else{
+                        console.log(`Товар ${basket[i].product.name} нельзя доставить данным типом`)
+                        break;
+                        // return NextResponse.json({
+                        //     success: true,
+                        //     message: "Маршрут не построен! Данный товар не доставляется в ваш город этим транспортом."
+                        // });
                     }
                 } else {
                     //Проверяем, доставляет ли магазин в город, который выбран у пользователя
