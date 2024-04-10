@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import axios from "axios";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try {
         const session = await getServerSession(authOptions);
         if (!session) {

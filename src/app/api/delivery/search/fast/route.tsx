@@ -7,13 +7,22 @@ import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import axios from "axios";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try {
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({
                 success: false,
                 message: "У вас нет доступа к данной функции!",
+            });
+        }
+
+        const data = await req.json();
+
+        if(data.transport.length == 0){
+            return NextResponse.json({
+                success: false,
+                message: "Вам нужно выбрать хотя бы 1 тип транспорта для доставки",
             });
         }
 
@@ -130,18 +139,25 @@ export async function GET(req: NextRequest, res: NextResponse) {
                             graph[topCityUser[q].city.name] = {};
                         }
 
+                        //console.log(data.transport)
+
+
                         //Связи в граф
                         for (let w = 0; w < basket[i].product.user.cityWay.length; w++) {
+                        // console.log(basket[i].product.user.cityWay[w].cityWayTransport)
+                            // for(let l = 0; l < data.transport; l++){
+                            //     if(basket[i].product.user.cityWay[w].cityWayTransport.idTransport)
+                            // }
                             //Наименьшее количество времени между городами
                             let masDuration: any = [];
-                            for (
-                                let o = 0;
-                                o < basket[i].product.user.cityWay[w].cityWayTransport.length;
-                                o++
-                            ) {
-                                masDuration[o] =
-                                    basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                            for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
+                                console.log(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport))
+                                if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
+                                    masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                                }
                             }
+
+                            console.log(masDuration)
 
                             if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
@@ -152,6 +168,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
                                 ] = Math.min(masDuration);
                             }
                         }
+
+                        console.log(graph)
 
                         //Маршруты от пользователя до магазина
                         let path: any = [];

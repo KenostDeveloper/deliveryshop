@@ -64,25 +64,25 @@ export default function Checkout() {
     useEffect(() => {
         switch (methodDelivery) {
             case 1:
-                axios.post(`/api/delivery/search/fast`, JSON.stringify(selectTransport)).then((res) => {
+                axios.post(`/api/delivery/search/fast`, {transport: selectTransport}).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("ч");
                 break;
             case 2:
-                axios.post(`/api/delivery/search/cheap`, JSON.stringify(selectTransport)).then((res) => {
+                axios.post(`/api/delivery/search/cheap`, {transport: selectTransport}).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("₽");
                 break;
             case 3:
-                axios.post(`/api/delivery/search/short`, JSON.stringify(selectTransport)).then((res) => {
+                axios.post(`/api/delivery/search/short`, {transport: selectTransport}).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("км");
                 break;
         }
-    }, [methodDelivery, basket]);
+    }, [methodDelivery, basket, selectTransport]);
 
     function placeOrder() {
         setLoad(true);
