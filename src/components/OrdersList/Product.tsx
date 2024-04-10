@@ -72,30 +72,33 @@ const Product = ({ product, setOrder, inBasket, index, pathResult }: any) => {
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--small"]}`}>
                         Товар: {(product?.product?.price * product?.quantity).toLocaleString()} ₽
-                        Доставка: {Number(pathResult[index]?.all_cost).toLocaleString()} ₽
+                        {pathResult?.length &&
+                            `Доставка: ${Number(pathResult[index]?.all_cost).toLocaleString()} ₽`}
                     </p>
                 )}
-                <p className={`${styles["order__info-label"]}`}>
-                    Из{" "}
-                    {String(pathResult[index]?.count_path).endsWith("1")
-                        ? `${pathResult[index]?.count_path} склада`
-                        : `${pathResult[index]?.count_path} складов`}{" "}
-                    мы доставим за{" "}
-                    {pathResult[index]?.all_duration < 24
-                        ? `${
-                              pathResult[index]?.all_duration == 1
-                                  ? pathResult[index]?.all_duration + " час"
-                                  : pathResult[index]?.all_duration >= 5
-                                  ? pathResult[index]?.all_duration + " часов"
-                                  : pathResult[index]?.all_duration + " часа"
-                          }`
-                        : `${
-                              Math.floor(pathResult[index]?.all_duration / 24) == 1
-                                  ? Math.floor(pathResult[index]?.all_duration / 24) + " день"
-                                  : Math.floor(pathResult[index]?.all_duration / 24) + " дня"
-                          }`}{" "}
-                    ({pathResult[index]?.all_length} км)
-                </p>
+                {pathResult?.length && (
+                    <p className={`${styles["order__info-label"]}`}>
+                        Из{" "}
+                        {String(pathResult[index]?.count_path).endsWith("1")
+                            ? `${pathResult[index]?.count_path} склада`
+                            : `${pathResult[index]?.count_path} складов`}{" "}
+                        мы доставим за{" "}
+                        {pathResult[index]?.all_duration < 24
+                            ? `${
+                                  pathResult[index]?.all_duration == 1
+                                      ? pathResult[index]?.all_duration + " час"
+                                      : pathResult[index]?.all_duration >= 5
+                                      ? pathResult[index]?.all_duration + " часов"
+                                      : pathResult[index]?.all_duration + " часа"
+                              }`
+                            : `${
+                                  Math.floor(pathResult[index]?.all_duration / 24) == 1
+                                      ? Math.floor(pathResult[index]?.all_duration / 24) + " день"
+                                      : Math.floor(pathResult[index]?.all_duration / 24) + " дня"
+                              }`}{" "}
+                        ({pathResult[index]?.all_length} км)
+                    </p>
+                )}
             </div>
             {!inBasket && (
                 <p className={`${styles["order__info-text"]}`}>

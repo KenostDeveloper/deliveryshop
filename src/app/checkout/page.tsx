@@ -64,25 +64,29 @@ export default function Checkout() {
     useEffect(() => {
         switch (methodDelivery) {
             case 1:
-                axios.post(`/api/delivery/search/fast`, {transport: selectTransport}).then((res) => {
-                    setPathResult(res.data?.result);
-                });
+                fetchPath('fast');
                 setPathParam("ч");
                 break;
             case 2:
-                axios.post(`/api/delivery/search/cheap`, {transport: selectTransport}).then((res) => {
-                    setPathResult(res.data?.result);
-                });
+                fetchPath('cheap');
                 setPathParam("₽");
                 break;
             case 3:
-                axios.post(`/api/delivery/search/short`, {transport: selectTransport}).then((res) => {
-                    setPathResult(res.data?.result);
-                });
+                fetchPath('short');
                 setPathParam("км");
                 break;
         }
     }, [methodDelivery, basket, selectTransport]);
+
+    const fetchPath = async (searchType: string) => {
+        const res = await axios.post(`/api/delivery/search/${searchType}`, {transport: selectTransport});
+
+        if(!res?.data?.success) {
+            toast.error(res.data?.message);
+        }
+
+        setPathResult(res.data?.result);
+    }
 
     function placeOrder() {
         setLoad(true);
