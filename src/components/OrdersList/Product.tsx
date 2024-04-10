@@ -72,7 +72,7 @@ const Product = ({ product, setOrder, inBasket, index, pathResult }: any) => {
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--small"]}`}>
                         Товар: {(product?.product?.price * product?.quantity).toLocaleString()} ₽
-                        Доставка: {Number(1000).toLocaleString()} ₽
+                        Доставка: {Number(pathResult[index]?.all_cost).toLocaleString()} ₽
                     </p>
                 )}
                 <p className={`${styles["order__info-label"]}`}>
