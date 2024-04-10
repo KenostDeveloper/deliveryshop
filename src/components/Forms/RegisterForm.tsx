@@ -7,6 +7,7 @@ import { schemaRegistr } from "@/validations/userSchema";
 import style from "./forms.module.scss";
 import { toast } from "react-hot-toast";
 import { RadioButton } from "primereact/radiobutton";
+import { Toggle } from "rsuite";
 
 const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
     const {
@@ -98,6 +99,15 @@ const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
                 <p className={style.MpInputError}>{errors.confirmPassword?.message?.toString()}</p>
             </div>
             <div className="flex align-items-center">
+                <Toggle
+                    checkedChildren="Компания"
+                    unCheckedChildren="Покупатель"
+                    size="lg"
+                    onChange={() => setRole(role === "BUYER" ? "SELLER" : "BUYER")}
+                />
+            </div>
+
+            {/* <div className="flex align-items-center">
                 <RadioButton
                     inputId="ingredient3"
                     name="role"
@@ -120,7 +130,7 @@ const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
                 <label htmlFor="ingredient4" className="ml-2">
                     Компания
                 </label>
-            </div>
+            </div> */}
             <MyButton type="submit">Зарегистрироваться</MyButton>
             <p className={style.notAccount}>
                 Уже есть аккаунт? <span onClick={() => setAuthEmail(1)}>Войти</span>
