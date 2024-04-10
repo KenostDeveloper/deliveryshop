@@ -11,7 +11,7 @@ import Loading from "@/components/Helps/Loading";
 import Counter from "@/components/Counter/Counter.components";
 import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
-import { Input } from "rsuite";
+import { CheckPicker, Input } from "rsuite";
 
 export default function Checkout() {
     const [methodDelivery, setMetodDelivery] = useState(1);
@@ -24,6 +24,10 @@ export default function Checkout() {
     const [pathParam, setPathParam] = useState("");
 
     const [orderComment, setOrderComment] = useState("");
+
+    const [deliveryTransports, setDeliveryTransports] = useState<any>([])
+    const [selectTransport, setSelectTransport] = useState<any>([]);
+
 
     useEffect(() => {
         if (basket) {
@@ -41,24 +45,38 @@ export default function Checkout() {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
+
+        axios.get(`/api/delivery/transports`).then((res) => {
+            setDeliveryTransports(
+                res.data?.transport.map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
+                }))
+            );
+
+            setSelectTransport(
+                res.data?.transport.map((item: any) => (item.id))
+            );
+        });
     }, []);
+
 
     useEffect(() => {
         switch (methodDelivery) {
             case 1:
-                axios.get(`/api/delivery/search/fast`).then((res) => {
+                axios.post(`/api/delivery/search/fast`, JSON.stringify(selectTransport)).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("ч");
                 break;
             case 2:
-                axios.get(`/api/delivery/search/cheap`).then((res) => {
+                axios.post(`/api/delivery/search/cheap`, JSON.stringify(selectTransport)).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("₽");
                 break;
             case 3:
-                axios.get(`/api/delivery/search/short`).then((res) => {
+                axios.post(`/api/delivery/search/short`, JSON.stringify(selectTransport)).then((res) => {
                     setPathResult(res.data?.result);
                 });
                 setPathParam("км");
@@ -141,6 +159,7 @@ export default function Checkout() {
                                 </div>
                             </div>
                         </div>
+                        <CheckPicker value={selectTransport} onChange={setSelectTransport} data={deliveryTransports} className='deliveryTranspots' />
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
                             <BasketRoute

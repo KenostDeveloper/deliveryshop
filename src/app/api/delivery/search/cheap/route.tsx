@@ -328,13 +328,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
                         let tempCost = 0;
                         let tempLength = 0;
 
+                        if(path[indexMinPath].length - 1 == 0){
+                            tempDuration += basket[i].product.user.deliveryTime!
+                            tempCost += basket[i].product.user.deliveryCost!
+                        }
+
                         for (let b = 0; b < path[indexMinPath].length - 1; b++) {
-                            if(path[indexMinPath].length == 1){
-                                tempDuration += basket[i].product.user.deliveryTime!
-                                tempCost += basket[i].product.user.deliveryCost!
-                            }
-
-
                             const getInfoSity = await db.cityWay.findFirst({
                                 where: {
                                     OR: [

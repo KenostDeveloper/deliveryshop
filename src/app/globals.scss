@@ -117,3 +117,11 @@ body {
   margin-top: 20px;
   width: 100% !important;
 }
+
+.deliveryTranspots{
+  width: 250px;
+  margin-top: 16px;
+  .rs-picker-toggle{
+    background-color: var(--main-window);
+  }
+}
