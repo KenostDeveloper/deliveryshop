@@ -199,6 +199,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
                         for(let a = 0; a < middleResult[indexSumMinPath].length; a++) {
                             // console.log("a: ", middleResult[indexSumMinPath][a]);
+
+                            if(middleResult[indexSumMinPath][a].path.length == 1){
+                                tempDuration += basket[i].product.user.deliveryTime!
+                                tempCost += basket[i].product.user.deliveryCost!
+                            }
                             
                             for (let b = 0; b < middleResult[indexSumMinPath][a].path.length - 1; b++) {
                                 // console.log(middleResult[indexMinPath][a]);        
@@ -324,6 +329,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
                         let tempLength = 0;
 
                         for (let b = 0; b < path[indexMinPath].length - 1; b++) {
+                            if(path[indexMinPath].length == 1){
+                                tempDuration += basket[i].product.user.deliveryTime!
+                                tempCost += basket[i].product.user.deliveryCost!
+                            }
+
+
                             const getInfoSity = await db.cityWay.findFirst({
                                 where: {
                                     OR: [
