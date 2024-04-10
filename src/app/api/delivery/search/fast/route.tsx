@@ -151,19 +151,27 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             let masDuration: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
                                 if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
-                                    masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                                    masDuration.push(basket[i].product.user.cityWay[w].cityWayTransport[o].duration);
+                                    
+                                    console.log("Current duration", basket[i].product.user.cityWay[w].cityWayTransport[o].duration, basket[i].product.user.cityWay[w].cityWayTransport[o]);
                                 }
                             }
 
                             if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
                                     basket[i].product.user.cityWay[w].city2.name
-                                ] = Math.min(masDuration);
+                                ] = Math.min(...masDuration);
                                 graph[basket[i].product.user.cityWay[w].city2.name][
                                     basket[i].product.user.cityWay[w].city1.name
-                                ] = Math.min(masDuration);
+                                ] = Math.min(...masDuration);
+                                
+                                console.log("Duration", Math.min(...masDuration), masDuration);
+                                
                             }
                         }
+
+                        console.log("Граф с первого условия", graph);
+                        
 
 
                         //Маршруты от пользователя до магазина
@@ -190,6 +198,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 console.log("Маршрут между вершинами не существует.");
                                 break;
                             }
+
+                            // // Использование
+                            // let tempPath: any = [];
+                            // timeout(30000, shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name))
+                            // .then((result) => {
+                            //     tempPath = result;
+                            // })
+                            // .catch((error) => {
+                            //     console.log("Время превысило ожидание");
+                            //     routeExists = false;
+                            // });
+
+                            // if(!routeExists) break;
+
                             let tempDistance = 0;
                             let tempPath = shortPathWithDistances(
                                 graph,
@@ -382,19 +404,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             let masDuration: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
                                 if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
-                                    masDuration[o] = basket[i].product.user.cityWay[w].cityWayTransport[o].duration;
+                                    masDuration.push(basket[i].product.user.cityWay[w].cityWayTransport[o].duration);
                                 }
                             }
 
                             if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
                                     basket[i].product.user.cityWay[w].city2.name
-                                ] = Math.min(masDuration);
+                                ] = Math.min(...masDuration);
                                 graph[basket[i].product.user.cityWay[w].city2.name][
                                     basket[i].product.user.cityWay[w].city1.name
-                                ] = Math.min(masDuration);
+                                ] = Math.min(...masDuration);
                             }
                         }
+
+                        console.log("Граф со второго условия", graph);
 
 
                         //Маршруты от пользователя до магазина
@@ -420,6 +444,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 console.log("Маршрут между вершинами не существует.");
                                 break;
                             }
+
+                            // // Использование
+                            // let tempPath: any = [];
+                            // timeout(30000, shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name))
+                            // .then((result) => {
+                            //     tempPath = result;
+                            // })
+                            // .catch((error) => {
+                            //     console.log("Время превысило ожидание");
+                            //     routeExists = false;
+                            // });
+
+                            // if(!routeExists) break;
 
                             let tempDistance = 0;
                             let tempPath = shortPathWithDistances(
@@ -548,6 +585,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 }
 function shortPathWithDistances(graph: any, start: any, end: any) {
+
     const distances: any = {};
     const visited = new Set();
     const path: any = {};
@@ -649,4 +687,24 @@ function convertGraphToArray(graph:any) {
     }
 
     return graphArray;
+}
+
+
+// function longRunningFunction() {
+//     return new Promise((resolve, reject) => {
+//         // Симулируем долгую операцию, которая может превысить 30 секунд
+//         setTimeout(() => {
+//             resolve("Значение, если операция завершилась до 30 секунд");
+//         }, 30000); // Симулируем операцию, которая длится 15 секунд
+//     });
+// }
+
+function timeout(ms: any, promise: any) {
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject("Время выполнения функции превысило 30 секунд");
+        }, ms);
+    });
+
+    return Promise.race([promise, timeoutPromise]);
 }
