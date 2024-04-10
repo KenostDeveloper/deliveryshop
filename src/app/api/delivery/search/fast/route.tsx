@@ -222,10 +222,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
                         // });
 
                         for(let a = 0; a < middleResult[indexSumMinPath].length; a++) {
-                            console.log("a: ", middleResult[indexSumMinPath][a]);
+                            // console.log("a: ", middleResult[indexSumMinPath][a]);
                             
-                            for (let b = 0; b < middleResult[indexMinPath][a].path.length - 1; b++) {
-                                console.log("b: ", middleResult[indexSumMinPath][a].path[b]);        
+                            for (let b = 0; b < middleResult[indexSumMinPath][a].path.length - 1; b++) {
+                                // console.log(middleResult[indexMinPath][a]);        
                                                                 
                                 const getInfoSity = await db.cityWay.findFirst({
                                     where: {
@@ -261,13 +261,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
                                     },
                                 });
 
-                                console.log("getInfo: ", getInfo);
+                                // console.log("getInfo: ", getInfo);
     
                                 tempDuration += getInfo?.duration!;
                                 tempCost += getInfo?.cost!;
                                 tempLength += getInfo?.length!;
 
-                                console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                                // console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
                             }
                         }
 
