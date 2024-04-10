@@ -26,6 +26,13 @@
     color: #FFF;
 }
 
+.ModalAuth__yandex{
+    background-color: #fc3f1d;
+    border: none;
+    color: #FFF;
+    overflow: hidden;
+}
+
 .ModalAuth__inputs{
     padding: 30px;
 }
