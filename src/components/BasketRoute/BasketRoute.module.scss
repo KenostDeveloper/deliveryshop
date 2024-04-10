@@ -13,12 +13,17 @@
 
 // Компонент BasketRoutePath
 .basket-route-path {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
     margin-top: 40px;
 }
 
 .basket-route-path__container {
     display: flex;
     gap: 10px;
+    overflow-x: auto;
 }
 
 .basket-route-path__flag-container {
@@ -28,8 +33,13 @@
     flex-direction: column;
     gap: 5px;
 
+    min-width: 130px;
+    text-align: center;
+
     p {
         font-size: 15px;
+        word-wrap: break-word;
+        white-space: pre-line;
     }
 }
 
@@ -51,4 +61,8 @@
 .basket-route__price-total {
     font-weight: bold;
     text-align: end;
+}
+
+.basket-route-path__line {
+    max-width: 130px;
 }

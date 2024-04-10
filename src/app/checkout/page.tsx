@@ -13,13 +13,13 @@ import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
 
 export default function Checkout() {
-    const [methodDelivery, setMetodDelivery] = useState(0);
+    const [methodDelivery, setMetodDelivery] = useState(1);
     const router = useRouter();
     const { basket, setBasket } = useBasketContext();
     const [amount, setAmount] = useState(0);
     const [load, setLoad] = useState(false);
     
-    const [path, setPath] = useState([]);
+    const [pathResult, setPathResult] = useState([]);
     const [pathParam, setPathParam] = useState("");
 
     useEffect(() => {
@@ -41,28 +41,28 @@ export default function Checkout() {
     
     }, []);
 
-    useEffect(() => {
+    useEffect(() => {        
         switch(methodDelivery) {
             case 1:
                 axios.get(`/api/delivery/search/fast`).then((res) => {
-                    setPath(res.data?.result[0]?.path[0].path);            
+                    setPathResult(res.data?.result);            
                 });
                 setPathParam("ч");
                 break;
             case 2:
                 axios.get(`/api/delivery/search/cheap`).then((res) => {
-                    setPath(res.data?.result[0]?.path[0].path);
+                    setPathResult(res.data?.result);
                 });
                 setPathParam("₽");
                 break;
             case 3:
                 axios.get(`/api/delivery/search/short`).then((res) => {
-                    setPath(res.data?.result[0]?.path[0].path);
+                    setPathResult(res.data?.result);
                 });
                 setPathParam("км");
                 break;
         }
-    }, [methodDelivery])
+    }, [methodDelivery, basket])
 
     function placeOrder() {
         setLoad(true);
@@ -141,7 +141,7 @@ export default function Checkout() {
                         </div>
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
-                            <BasketRoute products={basket} path={path} pathParam={pathParam} />
+                            <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />
                         </section>
                     </div>
                     <div className={styles.right}>
