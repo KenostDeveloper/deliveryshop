@@ -73,6 +73,8 @@ model User {
     city City @relation(fields: [idCity], references: [id])
     nameShop       String?
     description    String?
+    deliveryTime Int? @default(4)
+    deliveryCost Int? @default(300)
     accounts       Account[]
     sessions       Session[]
     sellerSity     SellerCity[]

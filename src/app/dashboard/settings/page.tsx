@@ -89,6 +89,11 @@ export default function Settings() {
         }
     }, [session]);
 
+    const [deliverySityUser, setDeliverySityUser] = useState({
+        time: 0,
+        cost: 0
+    })
+
     useEffect(() => {
         axios.get(`/api/profile/settings`).then((res) => {
             setProfile(res.data?.profile);
@@ -98,6 +103,12 @@ export default function Settings() {
 
             if(profile?.description == null){
                 setProfile({...profile, description: " "})
+            }
+        });
+
+        axios.get(`/api/users`).then((res) => {
+            if(res.data.success){
+                setDeliverySityUser({cost: res.data.user?.deliveryCost, time: res.data.user?.deliveryTime})
             }
         });
 
@@ -131,6 +142,8 @@ export default function Settings() {
                 value: item.id,
             })));
         });
+
+
         
     }, [])
 
@@ -306,6 +319,19 @@ export default function Settings() {
         }).finally(() => setLoadCityWay(false));
     }
 
+    function updateDeliverySityUser(){
+        axios
+        .post(`/api/profile/settings/delivery`, JSON.stringify({deliverySityUser}))
+        .then((res) => {
+            if (res.data.success) {
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message);
+            }
+        })
+        .finally(() => setIsEdit(false));
+    }
+
     const [transport, setTransport] = useState([]);
 
     if(loading){
@@ -408,6 +434,15 @@ export default function Settings() {
                             В городе есть пункт выдвчи заказов или склад, но он не подключён к другим городам (Товары из этого города не будут отображаться в каталоге)
                         </div>
                     </div>
+                </div>
+
+                <div className='kenost-window'>
+                    <div className="kenost-title">Доставка в пределах города</div>
+                    <p>Количество часов</p>
+                    <MyInput value={deliverySityUser.time}  onChange={(e: any) => setDeliverySityUser({...deliverySityUser, time: e.target.value})}/>
+                    <p>Цена</p>
+                    <MyInput value={deliverySityUser.cost}  onChange={(e: any) => setDeliverySityUser({...deliverySityUser, cost: e.target.value})}/>
+                    <MyButton onClick={() => updateDeliverySityUser()}>Сохранить</MyButton>
                 </div>
 
                 <Modal keyboard={false} open={open} onClose={() => setOpen(false)}>
