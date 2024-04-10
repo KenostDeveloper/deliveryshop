@@ -8,12 +8,15 @@ const BasketRoute = ({ products, pathResult, pathParam }: any) => {
         console.log(products);
     }, []);
 
+    console.log("products", products);
+    
+
     return (
         <div className={`${styles["basket-routes"]}`}>
             {products.map((product: any, index: number) => (
                 <article key={product?.id} className={`${styles["basket-route"]}`}>
                     <Product product={product} setOrder={null} inBasket={true} index={index} pathResult={pathResult} />
-                    {pathResult?.length && (
+                    {pathResult?.find((product: any) => product?.id_product === product?.id_product) && (
                         <BasketRoutePath pathResultItem={pathResult[index]} pathParam={pathParam} />
                     )}
                     <p className={`${styles["basket-route__price-total"]}`}>
