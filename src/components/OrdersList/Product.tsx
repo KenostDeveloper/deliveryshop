@@ -11,10 +11,10 @@ import MyButton from "../UI/MyInput/MyButton";
 import Modal from "../Modal/Modal";
 import RateForm from "../Forms/RateForm";
 
-const Product = ({ product, setOrder, inBasket }: any) => {
+const Product = ({ product, setOrder, inBasket, index, pathResult }: any) => {
     const [modalActive, setModalActive] = useState<boolean>(false);
 
-    const router = useRouter();    
+    const router = useRouter();
 
     const getStars = (rate: number): ReactNode => {
         const stars: ReactNode[] = [];
@@ -54,10 +54,14 @@ const Product = ({ product, setOrder, inBasket }: any) => {
                     className={`${styles["order__info-text"]} ${styles["orders__info-title"]}`}>
                     {product?.product?.name}
                 </Link>
-                <div className={`${styles["order__content-container"]} ${inBasket && `${styles["order__content-container--basket"]}`}`}>
+                <div
+                    className={`${styles["order__content-container"]} ${
+                        inBasket && `${styles["order__content-container--basket"]}`
+                    }`}>
                     <p className={`${styles["order__info-label"]}`}>{product?.quantity} шт</p>
                     {product?.product?.productRating?.length ? (
-                        <div className={`${styles["order__star-container"]} ${styles["order__star-container--basket"]}`}>
+                        <div
+                            className={`${styles["order__star-container"]} ${styles["order__star-container--basket"]}`}>
                             {getStars(product?.product?.productRating[0]?.rate)}
                         </div>
                     ) : (
@@ -67,10 +71,31 @@ const Product = ({ product, setOrder, inBasket }: any) => {
                 {inBasket && (
                     <p
                         className={`${styles["order__info-text"]} ${styles["order__info-text--small"]}`}>
-                        Товар: {(product?.product?.price * product?.quantity).toLocaleString()} ₽ Доставка:{" "}
-                        {Number(1000).toLocaleString()} ₽
+                        Товар: {(product?.product?.price * product?.quantity).toLocaleString()} ₽
+                        Доставка: {Number(1000).toLocaleString()} ₽
                     </p>
                 )}
+                <p className={`${styles["order__info-label"]}`}>
+                    Из{" "}
+                    {String(pathResult[index]?.count_path).endsWith("1")
+                        ? `${pathResult[index]?.count_path} склада`
+                        : `${pathResult[index]?.count_path} складов`}{" "}
+                    мы доставим за{" "}
+                    {pathResult[index]?.all_duration < 24
+                        ? `${
+                              pathResult[index]?.all_duration == 1
+                                  ? pathResult[index]?.all_duration + " час"
+                                  : pathResult[index]?.all_duration >= 5
+                                  ? pathResult[index]?.all_duration + " часов"
+                                  : pathResult[index]?.all_duration + " часа"
+                          }`
+                        : `${
+                              Math.floor(pathResult[index]?.all_duration / 24) == 1
+                                  ? Math.floor(pathResult[index]?.all_duration / 24) + " день"
+                                  : Math.floor(pathResult[index]?.all_duration / 24) + " дня"
+                          }`}{" "}
+                    ({pathResult[index]?.all_length} км)
+                </p>
             </div>
             {!inBasket && (
                 <p className={`${styles["order__info-text"]}`}>

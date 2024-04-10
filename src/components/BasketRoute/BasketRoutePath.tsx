@@ -22,7 +22,7 @@ const BasketRoutePath = ({ pathResultItem, pathParam }: any) => {
                                     <div
                                         className={`${styles["basket-route-path__line-container"]}`}>
                                         <p>
-                                            {Object.values(path)[0] as number} {pathParam}
+                                            {Number(Object.values(path)[0]) - Number(Object.values(array[index - 1])[0]) } {pathParam}
                                         </p>
                                         <img src="/basket/line.svg" alt="line svg" className={`${styles["basket-route-path__line"]}`} />
                                     </div>
