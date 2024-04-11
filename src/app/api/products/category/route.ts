@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     try{
         const category = await db.category.findMany();
 
-        return NextResponse.json({category});
+        return NextResponse.json({success: true, category});
     }catch(e){
         return NextResponse.json({success: false, message: "Произошла неизвестная ошибка, попробуйте снова :(", e});
     }

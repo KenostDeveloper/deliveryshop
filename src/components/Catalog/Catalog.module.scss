@@ -15,6 +15,7 @@
 	overflow: hidden;
 
     transition: all linear 0.3s;
+    cursor: pointer;
 
     &:hover {
         box-shadow: 0 0 30px 10px var(--accent-light-color);
