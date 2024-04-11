@@ -110,7 +110,7 @@ export default function Checkout() {
     function placeOrder() {
         setLoad(true);
         axios
-            .post(`/api/orders`)
+            .post(`/api/orders`, JSON.stringify({deliveryCost: deliveryCost}))
             .then((res) => {
                 if (res.data.success) {
                     toast.success(res.data.message);

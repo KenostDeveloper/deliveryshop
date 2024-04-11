@@ -20,6 +20,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const cookiesList = cookies();
         const isBasketNull = cookiesList.has("basket-quick-shop");
 
+        const data = await req.json();
+        const deliveryCost = data.deliveryCost;
+        console.log("Delivery cost", data, deliveryCost);
+        
+
         if (!isBasketNull) {
             return NextResponse.json({
                 success: false,
@@ -62,7 +67,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             //Считаем сумму заказа
             let cost = 0;
             for (let i = 0; i < basket.length; i++) {
-                cost = cost + basket[i]?.product?.price! * basket[i]?.quantity;
+                cost += basket[i]?.product?.price! * basket[i]?.quantity;
             }
 
             //Создаём заказ
@@ -72,6 +77,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     date: new Date(Date.now()),
                     cost: cost,
                     idStatus: 1,
+                    deliveryCost: deliveryCost,
+                    totalCost: cost + deliveryCost,
                 },
             });
 
@@ -97,11 +104,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
             return NextResponse.json({ success: true, message: "Заказ оформлен!", order });
         }
-    } catch (e) {
+    } catch (e: any) {
         return NextResponse.json({
             success: false,
             message: "Произошла неизвестная ошибка, попробуйте снова :(",
-            e,
+            e: e.message,
         });
     }
 }
