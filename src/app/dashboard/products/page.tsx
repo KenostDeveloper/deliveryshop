@@ -263,6 +263,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Введите количество товаров"
                                         value={newProduct.count}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, count: Number(value) })
                                         }
@@ -275,6 +276,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Введите цену"
                                         value={newProduct.price}
+                                        min={0}
                                         onChange={(value, e) =>
                                             setNewProduct({ ...newProduct, price: Number(value) })
                                         }
@@ -360,6 +362,7 @@ export default function Products() {
                                             <InputNumber
                                                 placeholder="Введите количество товаров"
                                                 value={item.count}
+                                                min={0}
                                                 onChange={(value, e) =>
                                                     updateCount(item.idCity, Number(value))
                                                 }
@@ -443,6 +446,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Введите цену"
                                         value={item.price}
+                                        min={0}
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "price", value)
                                         }
@@ -477,6 +481,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Высота (мм)"
                                         value={item.height}
+                                        min={0}
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "height", value)
                                         }
@@ -487,6 +492,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Вес (г)"
                                         value={item.weight}
+                                        min={0}
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "weight", value)
                                         }
@@ -497,6 +503,7 @@ export default function Products() {
                                     <InputNumber
                                         placeholder="Количество товаров"
                                         value={item.count}
+                                        min={0}
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "count", value)
                                         }
