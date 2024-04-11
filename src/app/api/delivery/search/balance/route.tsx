@@ -187,8 +187,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 break;
                             }
                             let tempDistance = 0;
+
+                            // *_________________________________
                             const paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
                             console.log(paths);
+                            // *_________________________________
+
                             let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
                             path.push({path: tempPath})
                             for(let q = 0; q < tempPath.length; q++){
@@ -386,6 +390,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 ] = Math.min(...masDuration);
                             }
                         }
+
                         // console.log(graph)
                         //Маршруты от пользователя до магазина
                         let path:any = []
@@ -399,6 +404,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Находим все кротчайшие маршруты до всех складов
                         for(let e = 0; e < sellerCityProductFit.length; e++){
+
+                            const paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            console.log(paths);
+
                             //Проверка графа на хотя бы 1 маршрут
                             let testGraph = convertGraphToArray(graph)
 
@@ -527,11 +536,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 
         }
-    } catch (e) {
+    } catch (e: any) {
         return NextResponse.json({
             success: false,
             message: "Произошла неизвестная ошибка, попробуйте снова :(",
-            e,
+            error: e.message,
         });
     }
 }
@@ -651,23 +660,22 @@ function convertGraphFormat(graph:any) {
     return graphConverted;
 }
 
-function findAllPathsAndSum(graph:any, start:any, end:any, visited:any, path:any, paths:any, sum:any) {
+function findAllPathsAndSum(graph:any, start:any, end:any, visited:any, path:any, paths:any, calcParameter:any) {
     visited[start] = true;
     path.push(start);
-    let currentSum = sum;
-
+    let currentCalcParameter = calcParameter;
     if (path.length > 1) {
         const previousNode = path[path.length - 2];
-        currentSum += graph[previousNode].find((edge:any) => Object.keys(edge)[0] === start)[start];
+        currentCalcParameter += graph[previousNode].find((edge:any) => Object.keys(edge)[0] === start)[start];
     }
 
     if (start === end) {
-        paths.push({ path: [...path], sum: currentSum });
+        paths.push({ path: [...path], parameter: currentCalcParameter,  });
     } else {
         for (let neighbor of graph[start]) {
             let neighborVertex = Object.keys(neighbor)[0];
             if (!visited[neighborVertex]) {
-                findAllPathsAndSum(graph, neighborVertex, end, visited, path, paths, currentSum);
+                findAllPathsAndSum(graph, neighborVertex, end, visited, path, paths, calcParameter);
             }
         }
     }

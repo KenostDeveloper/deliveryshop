@@ -254,6 +254,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         }
 
+                        console.log("Middle result ", middleResult);
+                        
+
                         //Записываем несколько маршрутов для вывода результата
                         let resultPath: any = [];
 
