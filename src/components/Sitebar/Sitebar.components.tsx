@@ -18,7 +18,7 @@ const Sitebar = ({active, setActive}:any) => {
         {
             name: "Каталог",
             icon: "pi-th-large",
-            link: "/catalog"
+            link: "/catalog/all"
         },
     ])
 

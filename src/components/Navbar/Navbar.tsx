@@ -113,7 +113,7 @@ const Navbar = () => {
                 <div className={`${styles["nav__buttons-container"]}`}>
                     <button
                         className={`${styles.nav__button} ${styles.nav__catalog}`}
-                        onClick={() => router.push("/catalog/1")}>
+                        onClick={() => router.push("/catalog/all")}>
                         <i className={`${styles["nav__catalog-icon"]} pi pi-th-large`}></i>
                         <p className={`${styles.nav__text}`}>каталог</p>
                     </button>

@@ -59,10 +59,10 @@ const Product = ({ product, setOrder, inBasket, index, pathResult }: any) => {
                         inBasket && `${styles["order__content-container--basket"]}`
                     }`}>
                     <p className={`${styles["order__info-label"]}`}>{product?.quantity} шт</p>
-                    {product?.product?.productRating?.length ? (
+                    {product?.product?.rating ? (
                         <div
                             className={`${styles["order__star-container"]} ${styles["order__star-container--basket"]}`}>
-                            {getStars(product?.product?.productRating[0]?.rate)}
+                            {getStars(product?.product?.rating?.rate)}
                         </div>
                     ) : (
                         setOrder && <MyButton onClick={() => openRate()}>Оценить товар</MyButton>

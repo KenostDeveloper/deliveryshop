@@ -151,7 +151,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (category_id) {
-            if (category_id == "1") {
+            if (category_id == "all") {
                 const count = await db.product.count();
                 const product = await db.product.findMany();
 

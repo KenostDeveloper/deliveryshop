@@ -24,6 +24,7 @@
 
 .menu ul a img{
     height: 24px;
+    width: 24px;
 }
 
 .menu ul li + li{

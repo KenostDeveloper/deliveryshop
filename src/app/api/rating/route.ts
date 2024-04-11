@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const disAdvantages = data.disAdvantages;
         const comment = data.comment;
 
-        if (!user_id || !product_id || !rate || !advantages || !disAdvantages || !comment) {
+        if (!user_id || !product_id || !rate || !advantages || !disAdvantages) {
             return NextResponse.json({
                 success: false,
                 message: "Пожалуйста, заполните все поля!",

@@ -164,12 +164,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest) {
     try{
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({
-                success: false,
-                message: "У вас нет доступа к данной функции!",
-            });
-        }
+        // if (!session) {
+        //     return NextResponse.json({
+        //         success: false,
+        //         message: "У вас нет доступа к данной функции!",
+        //     });
+        // }
 
         const cookiesList = cookies()
         const isBasketNull = cookiesList.has('basket-quick-shop')
@@ -214,11 +214,11 @@ export async function GET(req: NextRequest) {
                     product: {
                         include: {
                             category: true,
-                            productRating: {
-                                where: {
-                                    idUser: session.user.id
-                                }
-                            },
+                            // productRating: {
+                            //     where: {
+                            //         idUser: session.user.id
+                            //     }
+                            // },
                         },
                     },
                 }
