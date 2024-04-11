@@ -132,26 +132,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
                             if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
                                 basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
-                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport)
+                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
                         }
                     }
 
-                    //Проверяем, доставляет ли магазин в город, который выбран у пользователя
-                    for (let j = 0; j < basket[i].product.user.cityWay.length; j++) {
 
-                        //Проверяем доставляет ли магазин выбраным транспортом
-                        for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
-                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
-                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport)
-                            ) {
-                                isDeliveryProduct = true;
-                            }
-                        }
-                    }
 
                     if(isDeliveryProduct){
                         //объект графа
@@ -354,7 +343,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             quantity: basket[i].quantity,
                             product: basket[i].product
                         };
-                        break;
+                        continue;
 
                     }
                 }else{
@@ -364,7 +353,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
                             if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
                                 basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
-                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport)
+                                data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
@@ -533,7 +523,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             quantity: basket[i].quantity,
                             product: basket[i].product
                         };
-                        break;
+                        continue;
                     }
                 }
 
