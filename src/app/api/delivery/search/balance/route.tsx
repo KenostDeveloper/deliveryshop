@@ -26,6 +26,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
             });
         }
 
+        if(!data.maxCost || !data.maxLenght || !data.maxDuration){
+            return NextResponse.json({
+                success: false,
+                message: "Вы не указали maxCost или maxLenght или maxDuration",
+            });
+        }
+
         const cookiesList = cookies();
         const isBasketNull = cookiesList.has("basket-quick-shop");
 
@@ -129,6 +136,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     if(isDeliveryProduct){
                         //объект графа
                         let graph: any = {}
+                        let graph2: any = {}
+                        let graph3: any = {}
 
                         //Получаем все вершины продавца
                         const topCityUser = basket[i].product.user.sellerSity.reduce((o: any, i: any) => {
@@ -142,73 +151,67 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         //Добавлем вершины в граф
                         for(let q = 0; q < topCityUser.length; q++){
                             graph[topCityUser[q].city.name] = {}
+                            graph2[topCityUser[q].city.name] = {}
+                            graph3[topCityUser[q].city.name] = {}
                         }
 
                         //Связи в граф
                         for(let w = 0; w < basket[i].product.user.cityWay.length; w++){
                             //Наименьшее количество времени между городами
+                            let masDuration: any = [];
                             let masCost: any = [];
+                            let masLengh: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
                                 if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
+                                    masDuration.push(basket[i].product.user.cityWay[w].cityWayTransport[o].duration);
                                     masCost.push(basket[i].product.user.cityWay[w].cityWayTransport[o].cost);
+                                    masLengh.push(basket[i].product.user.cityWay[w].cityWayTransport[o].length);
                                 }
                             }
 
-                            if (masCost.length > 0) {
+                            if (masDuration.length > 0) {
                                 graph[basket[i].product.user.cityWay[w].city1.name][
                                     basket[i].product.user.cityWay[w].city2.name
-                                ] = Math.min(...masCost);
+                                ] = Math.min(...masDuration);
                                 graph[basket[i].product.user.cityWay[w].city2.name][
                                     basket[i].product.user.cityWay[w].city1.name
+                                ] = Math.min(...masDuration);
+
+                                graph2[basket[i].product.user.cityWay[w].city1.name][
+                                    basket[i].product.user.cityWay[w].city2.name
                                 ] = Math.min(...masCost);
+                                graph2[basket[i].product.user.cityWay[w].city2.name][
+                                    basket[i].product.user.cityWay[w].city1.name
+                                ] = Math.min(...masCost);
+
+                                graph3[basket[i].product.user.cityWay[w].city1.name][
+                                    basket[i].product.user.cityWay[w].city2.name
+                                ] = Math.min(...masLengh);
+                                graph3[basket[i].product.user.cityWay[w].city2.name][
+                                    basket[i].product.user.cityWay[w].city1.name
+                                ] = Math.min(...masLengh);
                             }
                         }
-
-                        //Маршруты от пользователя до магазина
-                        let path:any = []
-                        //Индекс самого наименьшего маршрута в массиве path
-                        let indexMinPath = -1;
-                        //Минимальная дистанция в массиве path
-                        let distancesMin = Number.MAX_SAFE_INTEGER;
 
                         //Переменная, которая хранит значение найден или не найден хоть 1 маршрут в графе
                         let routeExists;
 
+                        
+
+
+                        let mainGraph:any = []
+
                         //Находим все кротчайшие маршруты до всех складов
                         for(let e = 0; e < sellerCityProductFit.length; e++){
-                            //Проверка графа на хотя бы 1 маршрут
-                            let testGraph = convertGraphToArray(graph)
+                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
 
-                            const visited = {};
-
-                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
-
-                            if (!routeExists) {
-                                break;
-                            }
-                            let tempDistance = 0;
-
-                            // *_________________________________
-                            const paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            console.log(paths);
-                            // *_________________________________
-
-                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            path.push({path: tempPath})
-                            for(let q = 0; q < tempPath.length; q++){
-                                tempDistance = tempDistance + Number(Object.values(tempPath[q])[0]);
-                            }
-                            path[e]["cost"] = tempDistance;
-                            path[e]['count'] = sellerCityProductFit[e].count
-                            path[e]['index'] = path.length - 1
-                            
-                            if(tempDistance < distancesMin){
-                                distancesMin = tempDistance;
-                                indexMinPath = e;
-                            }
+                            mainGraph[e] = mergePaths([paths, paths2, paths3]);
                         }
 
-                        if (!routeExists) {
+
+                        if (mainGraph.length == 0) {
                             result[i] = {
                                 id_product: basket[i].id_product,
                                 id_basket: basket[i].id,
@@ -223,93 +226,142 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             continue;
                         }
 
-                        //Находим кротчайший маршрут между 2 и более точками
-                        let sumMinPath = Number.MAX_SAFE_INTEGER;
-                        let indexSumMinPath = 0;
+                        let mainResult:any = []
+                        // let mainResultBest = [];
 
-                        let middleResult = getAllCombinations(path)
+                        for(let z = 0; z < mainGraph.length; z++){
+                            let tempAllDuration = Number.MAX_SAFE_INTEGER;
+                            let tempAllCost = Number.MAX_SAFE_INTEGER;
+                            let tempAllLenght = Number.MAX_SAFE_INTEGER;
+                            let count = 0;
+                            let indexBestPathZ = 0;
+                            let indexBestPathX = 0;
+                            let name;
+                            for(let x = 0; x < mainGraph[z].length; x++){
 
-                        
+                                if(tempAllDuration > mainGraph[z][x]['parameters'][0] &&
+                                 tempAllCost > mainGraph[z][x]['parameters'][1] &&
+                                 tempAllLenght > mainGraph[z][x]['parameters'][2]
+                                ){
+                                    tempAllDuration = mainGraph[z][x]['parameters'][0]
+                                    tempAllCost = mainGraph[z][x]['parameters'][1]
+                                    tempAllLenght = mainGraph[z][x]['parameters'][2]
+                                    indexBestPathZ = z
+                                    indexBestPathX = x
+                                }
 
-                        for(let x = 0; x < middleResult.length; x++){
-                            let tempSumPath = 0;
-                            let tempCount = 0;
-                            for(let y = 0; y < middleResult[x].length; y++){
-                                tempSumPath += middleResult[x][y].cost
-                                tempCount += middleResult[x][y].count
-                            }
-
-                            if(tempCount >= basket[i].quantity && tempSumPath < sumMinPath){
-                                sumMinPath = tempSumPath;
-                                indexSumMinPath = x;
-                            }
-
-                        }
-
-                        //Записываем несколько маршрутов для вывода результата
-                        let resultPath: any = [];
-
-                        for(let n = 0; n < middleResult[indexSumMinPath].length; n++){
-                            resultPath[n] = path[middleResult[indexSumMinPath][n]['index']]
-                        }
-
-                        let tempDuration = 0;
-                        let tempCost = 0;
-                        let tempLength = 0;
-
-                        for(let a = 0; a < middleResult[indexSumMinPath].length; a++) {
-                            // console.log("a: ", middleResult[indexSumMinPath][a]);
-
-                            if(middleResult[indexSumMinPath][a].path.length == 1){
-                                tempDuration += basket[i].product.user.deliveryTime!
-                                tempCost += basket[i].product.user.deliveryCost!
-                            }
-                            
-                            for (let b = 0; b < middleResult[indexSumMinPath][a].path.length - 1; b++) {
-                                // console.log(middleResult[indexMinPath][a]);        
-                                                                
-                                const getInfoSity = await db.cityWay.findFirst({
+                                const getCount = await db.sellerCityProducts.findFirst({
                                     where: {
-                                        OR: [
-                                            {
-                                                city1: {
-                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b])[0],
-                                                },
-                                                city2: {
-                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b + 1])[0],
-                                                },
-                                            },
-                                            {
-                                                city1: {
-                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b + 1])[0],
-                                                },
-                                                city2: {
-                                                    name: Object.keys(middleResult[indexSumMinPath][a].path[b])[0],
-                                                },
-                                            },
-                                        ],
-                                    },
+                                        idProduct: basket[i].id_product,
+                                        sellerCity: {
+                                            city: {
+                                                name: Object.keys(mainGraph[z][x]['path'][0])[0]
+                                            }
+                                        }
+                                    }
                                 });
 
-                                // console.log("getInfoSity: ", getInfoSity);
-    
-                                const getInfo = await db.cityWayTransport.findFirst({
+                                const getUserCity = await db.user.findUnique({
                                     where: {
-                                        idCityWay: getInfoSity?.id,
-                                        cost:
-                                            Number(Object.values(middleResult[indexSumMinPath][a].path[b + 1])[0]) -
-                                            Number(Object.values(middleResult[indexSumMinPath][a].path[b])[0]),
+                                        id: session.user.id
                                     },
-                                });
+                                    include: {
+                                        city: true
+                                    }
+                                })
 
-                                // console.log("getInfo: ", getInfo);
-    
-                                tempDuration += getInfo?.duration!;
-                                tempCost += getInfo?.cost!;
-                                tempLength += getInfo?.length!;
-
-                                // console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                                name = Object.keys(mainGraph[z][x]['path'][0])[0];
+                                if(getUserCity?.city.name == name){
+                                    const getDeliveryInfo = await db.user.findUnique({
+                                        where: {
+                                            id: basket[i].product.user.id
+                                        }
+                                    })
+                                    tempAllCost = getDeliveryInfo?.deliveryCost!
+                                    tempAllDuration = getDeliveryInfo?.deliveryTime!
+                                }
+                                count = getCount?.count!;
                             }
+
+                            mainResult.push({city: name, count, indexBestPathZ, indexBestPathX, costMin: tempAllCost, durationMin: tempAllDuration, lenghtMin: tempAllLenght })
+                        }
+
+                        let newResult = []
+
+                        for(let t = 0; t < mainResult.length; t++){
+                            if(data.maxDuration >= mainResult[t].durationMin &&
+                                data.maxCost >= mainResult[t].costMin &&
+                                data.maxLenght >= mainResult[t].lenghtMin
+                            ){
+                                newResult.push(mainResult[t])
+                            }
+                        }
+
+                        if(!newResult){
+                            result[i] = {
+                                id_product: basket[i].id_product,
+                                id_basket: basket[i].id,
+                                count_path: 0,
+                                path: null,
+                                all_duration: 0,
+                                all_cost: 0,
+                                all_length: 0,
+                                quantity: basket[i].quantity,
+                                product: basket[i].product
+                            };
+                            continue;
+                        }
+
+                        let middleResult = getAllCombinations(newResult)
+
+                        let resultBEST = []
+                        let bestCount = Number.MAX_SAFE_INTEGER;
+                        let bestCost = Number.MAX_SAFE_INTEGER;
+                        let bestDuration = Number.MAX_SAFE_INTEGER;
+                        let bestLength = Number.MAX_SAFE_INTEGER;
+
+                        for(let k = 0; k < middleResult.length; k++){
+                            let count = middleResult[k].reduce((acc:any, item:any) => acc+=item.count, 0)
+                            let cost = middleResult[k].reduce((acc:any, item:any) => acc+=item.costMin, 0)
+                            let duration = middleResult[k].reduce((acc:any, item:any) => acc+=item.durationMin, 0)
+                            let length = middleResult[k].reduce((acc:any, item:any) => acc+=item.lenghtMin, 0)
+                            if(basket[i].quantity <= count){
+                                if(bestCount >= count && bestCost >= cost && bestDuration >= duration && bestLength >= length){
+                                    bestCount = count;
+                                    bestCost = cost;
+                                    bestDuration = duration;
+                                    bestLength = length;
+                                    resultBEST = middleResult[k];
+                                }
+                            }
+                        }
+
+                        if(resultBEST.length == 0){
+                            result[i] = {
+                                id_product: basket[i].id_product,
+                                id_basket: basket[i].id,
+                                count_path: 0,
+                                path: null,
+                                all_duration: 0,
+                                all_cost: 0,
+                                all_length: 0,
+                                quantity: basket[i].quantity,
+                                product: basket[i].product
+                            };
+                            continue;
+                        }
+
+                        let resultPath = []
+                        let all_duration = Number.MIN_SAFE_INTEGER;
+                        let all_cost = 0;
+                        let all_length = 0;
+
+                        for(let q = 0; q < resultBEST.length; q++){
+                            //console.log(mainGraph[resultBEST[q].indexBestPathZ][resultBEST[q].indexBestPathX])
+                            resultPath.push(mainGraph[resultBEST[q].indexBestPathZ][resultBEST[q].indexBestPathX])
+                            all_duration = Math.max(all_duration, resultBEST[q].durationMin)
+                            all_cost += resultBEST[q].costMin
+                            all_length += resultBEST[q].lenghtMin
                         }
 
                         result[i] = {
@@ -317,12 +369,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             id_basket: basket[i].id,
                             count_path: resultPath.length,
                             path: resultPath,
+                            all_duration: all_duration,
+                            all_cost: all_cost,
+                            all_length: all_length,
                             quantity: basket[i].quantity,
-                            all_duration: tempDuration,
-                            all_cost: tempCost,
-                            all_length: tempLength,
                             product: basket[i].product
-                        }
+                        };
                     }else{
                         result[i] = {
                             id_product: basket[i].id_product,
@@ -356,28 +408,33 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     if(isDeliveryProduct){
                         //объект графа
                         let graph: any = {}
+                        let graph2: any = {}
+                        let graph3: any = {}
 
                         //Получаем все вершины продавца
                         const topCityUser = basket[i].product.user.sellerSity.reduce((o: any, i: any) => {
-                            if (!o.find((v: { idCity: any; }) => v.idCity == i.idCity)) {
-                            o.push(i);
-                            }
+                            if (!o.find((v: { idCity: any; }) => v.idCity == i.idCity)) {o.push(i);}
                             return o;
                         }, []);
-
 
                         //Добавлем вершины в граф
                         for(let q = 0; q < topCityUser.length; q++){
                             graph[topCityUser[q].city.name] = {}
+                            graph2[topCityUser[q].city.name] = {}
+                            graph3[topCityUser[q].city.name] = {}
                         }
 
                         //Связи в граф
                         for(let w = 0; w < basket[i].product.user.cityWay.length; w++){
                             //Наименьшее количество времени между городами
                             let masDuration: any = [];
+                            let masCost: any = [];
+                            let masLengh: any = [];
                             for (let o = 0; o < basket[i].product.user.cityWay[w].cityWayTransport.length; o++) {
                                 if(data.transport.includes(basket[i].product.user.cityWay[w].cityWayTransport[o].idTransport)){
-                                    masDuration.push(basket[i].product.user.cityWay[w].cityWayTransport[o].cost);
+                                    masDuration.push(basket[i].product.user.cityWay[w].cityWayTransport[o].duration);
+                                    masCost.push(basket[i].product.user.cityWay[w].cityWayTransport[o].cost);
+                                    masLengh.push(basket[i].product.user.cityWay[w].cityWayTransport[o].length);
                                 }
                             }
 
@@ -388,55 +445,38 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 graph[basket[i].product.user.cityWay[w].city2.name][
                                     basket[i].product.user.cityWay[w].city1.name
                                 ] = Math.min(...masDuration);
+
+                                graph2[basket[i].product.user.cityWay[w].city1.name][
+                                    basket[i].product.user.cityWay[w].city2.name
+                                ] = Math.min(...masCost);
+                                graph2[basket[i].product.user.cityWay[w].city2.name][
+                                    basket[i].product.user.cityWay[w].city1.name
+                                ] = Math.min(...masCost);
+
+                                graph3[basket[i].product.user.cityWay[w].city1.name][
+                                    basket[i].product.user.cityWay[w].city2.name
+                                ] = Math.min(...masLengh);
+                                graph3[basket[i].product.user.cityWay[w].city2.name][
+                                    basket[i].product.user.cityWay[w].city1.name
+                                ] = Math.min(...masLengh);
                             }
                         }
 
-                        // console.log(graph)
-                        //Маршруты от пользователя до магазина
-                        let path:any = []
-                        //Индекс самого наименьшего маршрута в массиве path
-                        let indexMinPath = -1;
-                        //Минимальная дистанция в массиве path
-                        let distancesMin = Number.MAX_SAFE_INTEGER;
-
-                        //Переменная, которая хранит значение найден или не найден хоть 1 маршрут в графе
                         let routeExists;
+
+                        let mainGraph:any = []
+                        const kostil:any = []
 
                         //Находим все кротчайшие маршруты до всех складов
                         for(let e = 0; e < sellerCityProductFit.length; e++){
+                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
 
-                            const paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            console.log(paths);
-
-                            //Проверка графа на хотя бы 1 маршрут
-                            let testGraph = convertGraphToArray(graph)
-
-                            const visited = {};
-
-                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
-
-                            if (!routeExists) {
-                                break;
-                            }
-
-                            let tempDistance = 0;
-                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            //let test = getAllCombinations(graph);
-                            
-                            // console.log(tempPath)
-                            //console.log(test)
-                            path.push(tempPath)
-                            for(let q = 0; q < tempPath.length; q++){
-                                tempDistance = tempDistance + Number(Object.values(tempPath[q])[0]);
-                            }
-                            
-                            if(tempDistance < distancesMin){
-                                distancesMin = tempDistance;
-                                indexMinPath = e;
-                            }
+                            mainGraph = mergePaths([paths, paths2, paths3]);
                         }
 
-                        if (!routeExists) {
+                        if (mainGraph.length == 0) {
                             result[i] = {
                                 id_product: basket[i].id_product,
                                 id_basket: basket[i].id,
@@ -451,68 +491,43 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             continue;
                         }
 
-                        let tempDuration = 0;
-                        let tempCost = 0;
-                        let tempLength = 0;
+                        let mainResult:any = []
+                        let mainResultBest = [];
 
-                        if(path[indexMinPath].length - 1 == 0){
-                            tempDuration += basket[i].product.user.deliveryTime!
-                            tempCost += basket[i].product.user.deliveryCost!
-                        }
+                        for(let z = 0; z < mainGraph.length; z++){
+                            // for(let x = 0; x < mainGraph.length; x++){
 
-                        for (let b = 0; b < path[indexMinPath].length - 1; b++) {
-                            const getInfoSity = await db.cityWay.findFirst({
-                                where: {
-                                    OR: [
-                                        {
-                                            city1: {
-                                                name: Object.keys(path[indexMinPath][b])[0],
-                                            },
-                                            city2: {
-                                                name: Object.keys(path[indexMinPath][b + 1])[0],
-                                            },
-                                        },
-                                        {
-                                            city1: {
-                                                name: Object.keys(path[indexMinPath][b + 1])[0],
-                                            },
-                                            city2: {
-                                                name: Object.keys(path[indexMinPath][b])[0],
-                                            },
-                                        },
-                                    ],
-                                },
-                            });
+                                if(data.maxDuration >= mainGraph[z]['parameters'][0] &&
+                                    data.maxCost >= mainGraph[z]['parameters'][1] &&
+                                    data.maxLenght >= mainGraph[z]['parameters'][2]){
+                                    mainResult.push(mainGraph[z])
+                                    console.log(mainGraph[z]['parameters'][0])
 
-                            const getInfo = await db.cityWayTransport.findFirst({
-                                where: {
-                                    idCityWay: getInfoSity?.id,
-                                    cost:
-                                        Number(Object.values(path[indexMinPath][b + 1])[0]) -
-                                        Number(Object.values(path[indexMinPath][b])[0]),
-                                },
-                            });
-
-                            tempDuration += getInfo?.duration!;
-                            tempCost += getInfo?.cost!;
-                            tempLength += getInfo?.length!;
+                                    //находим наилучший
+                                    if(mainResultBest.length == 0){
+                                        mainResultBest = mainGraph[z]
+                                    }else if(mainResultBest['parameters'][0] > mainGraph[z]['parameters'][0] &&
+                                            mainResultBest['parameters'][1] > mainGraph[z]['parameters'][1] &&
+                                            mainResultBest['parameters'][2] > mainGraph[z]['parameters'][2]
+                                    ){
+                                        mainResultBest = mainGraph[z];
+                                    }
+                                }
+                            // }
                         }
 
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: 1,
-                            path: [{path: path[indexMinPath]}],
+                            path: mainResultBest,
+                            all_duration: mainResultBest['parameters'][0],
+                            all_cost: mainResultBest['parameters'][1],
+                            all_length: mainResultBest['parameters'][2],
                             quantity: basket[i].quantity,
-                            count_warehouse: sellerCityProductFit[indexMinPath].count,
-                            all_duration: tempDuration,
-                            all_cost: tempCost,
-                            all_length: tempLength,
                             product: basket[i].product
-                            
-                        }
+                        };
 
-                        //graph, topCityUser, sellerCityProductFit, basket
                     }else {
                         result[i] = {
                             id_product: basket[i].id_product,
@@ -528,13 +543,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         continue;
                     }
                 }
-
-                
             }
 
             return NextResponse.json({ success: true, message: "Самый дешёвый маршрут построен!", result });
-
-
         }
     } catch (e: any) {
         return NextResponse.json({
@@ -662,20 +673,16 @@ function convertGraphFormat(graph:any) {
 
 function findAllPathsAndSum(graph:any, start:any, end:any, visited:any, path:any, paths:any, calcParameter:any) {
     visited[start] = true;
-    path.push(start);
-    let currentCalcParameter = calcParameter;
-    if (path.length > 1) {
-        const previousNode = path[path.length - 2];
-        currentCalcParameter += graph[previousNode].find((edge:any) => Object.keys(edge)[0] === start)[start];
-    }
+    path.push({ [start]: calcParameter }); // Добавляем город с его расстоянием в виде объекта
 
     if (start === end) {
-        paths.push({ path: [...path], parameter: currentCalcParameter,  });
+        paths.push({ path: [...path] });
     } else {
         for (let neighbor of graph[start]) {
             let neighborVertex = Object.keys(neighbor)[0];
             if (!visited[neighborVertex]) {
-                findAllPathsAndSum(graph, neighborVertex, end, visited, path, paths, calcParameter);
+                let edgeDistance = neighbor[neighborVertex];
+                findAllPathsAndSum(graph, neighborVertex, end, visited, path, paths, calcParameter + edgeDistance);
             }
         }
     }
@@ -684,13 +691,53 @@ function findAllPathsAndSum(graph:any, start:any, end:any, visited:any, path:any
     visited[start] = false;
 }
 
-// Функция для поиска всех маршрутов и сумм по каждому маршруту
+// Функция для поиска всех маршрутов и расстояний по каждому маршруту
 function findPathsAndSums(graph:any, start:any, end:any) {
-    const visited = {};
+    const visited:any = {};
     const path:any = [];
     const paths:any = [];
 
     findAllPathsAndSum(graph, start, end, visited, path, paths, 0);
 
+    // Поменяем формат путей на требуемый
+    for (let result of paths) {
+        let formattedPath = result.path.map((node:any) => {
+            let city = Object.keys(node)[0];
+            let distance = node[city];
+            return { [city]: distance };
+        });
+        result.path = formattedPath;
+    }
+
     return paths;
+}
+
+interface PathStep {
+    [city: string]: number;
+}
+
+interface Path {
+    path: PathStep[];
+    parameters: number[];
+}
+
+function extractLastValues(paths: PathStep[]): number[] {
+    return paths.map(step => Object.values(step)[0]).slice(-1);
+}
+
+function mergePaths(pathsData: any): Path[] {
+    const [ paths, paths2, paths3 ] = pathsData;
+    const mergedPaths: Path[] = [];
+
+    for (let i = 0; i < paths.length; i++) {
+        const newPath: PathStep[] = paths[i].path.map((step: any) => ({ ...step }));
+        const durationValues = extractLastValues(paths[i].path);
+        const costValues = extractLastValues(paths2[i].path);
+        const distanceValues = extractLastValues(paths3[i].path);
+        const parameters: number[] = [...durationValues, ...costValues, ...distanceValues];
+
+        mergedPaths.push({ path: newPath, parameters });
+    }
+
+    return mergedPaths;
 }
