@@ -3,6 +3,7 @@ import Counter from "../Counter/Counter.components";
 import styles from "./BasketItem.module.scss";
 import axios from "axios";
 import { useBasketContext } from "../Helps/GlobalBasket";
+import toast from "react-hot-toast";
 
 const BasketItem = ({ item }: any) => {
     const { basket, setBasket } = useBasketContext();
@@ -36,6 +37,9 @@ const BasketItem = ({ item }: any) => {
                         }
                     });
                     setBasket(updateBasket);
+                }else{
+                    toast.error(res.data.message)
+                    setCount(res.data.basket.quantity)
                 }
             });
         } else {

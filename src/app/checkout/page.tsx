@@ -11,7 +11,7 @@ import Loading from "@/components/Helps/Loading";
 import Counter from "@/components/Counter/Counter.components";
 import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
-import { CheckPicker, Checkbox, Input } from "rsuite";
+import { CheckPicker, Checkbox, Input, Slider } from "rsuite";
 import Link from "next/link";
 
 export default function Checkout() {
@@ -177,6 +177,43 @@ export default function Checkout() {
                             data={deliveryTransports}
                             className="deliveryTranspots"
                         />
+                        <div>
+                            <p>Максимально количество часов доставки</p>
+                            <Slider
+                                progress
+                                min={0}
+                                max={100}
+                                defaultValue={50}
+                                onChange={value => {
+                                    console.log(value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <p>Максимальная сумма доставки</p>
+                            <Slider
+                                progress
+                                min={0}
+                                max={100}
+                                defaultValue={50}
+                                onChange={value => {
+                                    console.log(value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <p>Максимальная протяжённость пути (км)</p>
+                            <Slider
+                                progress
+                                min={0}
+                                max={100}
+                                defaultValue={50}
+                                onChange={value => {
+                                    console.log(value);
+                                }}
+                            />
+                        </div>
+                        
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
                             <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />

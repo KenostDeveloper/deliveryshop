@@ -141,17 +141,36 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                 return NextResponse.json({success: true, basket});
             }else{
-                const basket = await db.basket.update({
+
+                const productWarehouse = await db.sellerCityProducts.findMany({
                     where: {
-                        id: isProduct.id
-                    },
-                    data: {
-                        id_token: getToken?.id,
-                        id_product: Number(id_product),
-                        quantity: Number(quantity)
+                        idProduct: Number(id_product),
                     }
-                });
-                return NextResponse.json({success: true, basket});
+                })
+
+                const countAllProductWarehouse = productWarehouse.reduce((acc, val) => acc+=val.count!, 0)
+
+                if(countAllProductWarehouse >= Number(quantity)){
+                    const basket = await db.basket.update({
+                        where: {
+                            id: isProduct.id
+                        },
+                        data: {
+                            id_token: getToken?.id,
+                            id_product: Number(id_product),
+                            quantity: Number(quantity)
+                        }
+                    });
+                    return NextResponse.json({success: true, basket});
+                }else{
+                    const basket = await db.basket.findFirst({
+                        where: {
+                            id: isProduct.id
+                        },
+                    });
+                    return NextResponse.json({success: false, message: "У нас нет столько товаров на складах :(", basket});
+                }
+                
             }
         }
     }catch(e){
