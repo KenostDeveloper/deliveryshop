@@ -2,12 +2,17 @@ import {NextRequest, NextResponse} from "next/server";
 import {db} from "@/lib/db";
 import {hash} from "bcrypt";
 import {schemaRegistr} from "@/validations/userSchema";
+import { cookies } from "next/headers";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 
 export async function POST(req: NextRequest){
     try{
         const body = await req.json()
         const {username, email, password, role} = body;
+
+        const cookiesList = cookies()
+        const isBasketNull = cookiesList.has('basket-quick-shop')
 
         const validationResult = schemaRegistr.safeParse({username, email, password, confirmPassword: password})
         if(!validationResult.success){
@@ -49,6 +54,25 @@ export async function POST(req: NextRequest){
                     password: hashPassword
                 }
             });
+
+            if(isBasketNull){
+                const token = cookiesList.get('basket-quick-shop');
+
+                const getToken = await db.basketToken.findFirst({
+                    where: {
+                        token: token?.value
+                    }
+                })
+
+                const BasketToken = await db.basketToken.update({
+                    where: {
+                        id: getToken?.id
+                    },
+                    data: {
+                        idUser: newUser.id
+                    }
+                })
+            }
 
             return NextResponse.json({success: true, newAccount})
         }

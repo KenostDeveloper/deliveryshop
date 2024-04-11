@@ -19,12 +19,18 @@ const CatalogMenu = (params: any) => {
         <div className={styles.menu}>
             <ul>
                 {/* <Link key={item.id} href={`/catalog/${item.id}`}><img src={`/catalogMenu/${item.id}.svg`} alt="" /> */}
+                <Link
+                    href={`/catalog/all`}
+                    className={params.params == `all` ? `${styles.active}` : ``}>
+                    <img src={`/catalogMenu/all.svg`} alt="" />
+                    Все товары
+                </Link>
                 {category.map((item: any) => (
                     <Link
                         key={item.id}
                         href={`/catalog/${item.id}`}
                         className={params.params == `${item.id}` ? `${styles.active}` : ``}>
-                        <img src={`/catalogMenu/${item.icon}.svg`} alt="" />
+                        <img src={`/catalogMenu/${item.id}.svg`} alt="" />
                         {item.name}
                     </Link>
                 ))}

@@ -8,6 +8,9 @@ import { getServerSession } from "next-auth/next";
 
 export async function POST(req: NextRequest, res: NextResponse) {
     try{
+
+        const session = await getServerSession(authOptions);
+
         const data = await req.formData()
         const id_product = data.get('id_product') as string;
         const quantity = data.get('quantity') as string;
@@ -52,22 +55,43 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 path: '/',
             })
 
-            const BasketToken = await db.basketToken.create({
-                data: {
-                    token: token,
-                    expires: maxAgeCokies
-                }
-            })
-            
-            const basket = await db.basket.create({
-                data: {
-                    id_token: BasketToken.id,
-                    id_product: Number(id_product),
-                    quantity: Number(quantity)
-                }
-            });
+            if(session){
+                const BasketToken = await db.basketToken.create({
+                    data: {
+                        token: token,
+                        expires: maxAgeCokies,
+                        idUser: session.user.id
+                    }
+                })
 
-            return NextResponse.json({success: true, basket});
+                const basket = await db.basket.create({
+                    data: {
+                        id_token: BasketToken.id,
+                        id_product: Number(id_product),
+                        quantity: Number(quantity)
+                    }
+                });
+    
+                return NextResponse.json({success: true, basket});
+            }else{
+                const BasketToken = await db.basketToken.create({
+                    data: {
+                        token: token,
+                        expires: maxAgeCokies,
+                        idUser: null
+                    }
+                })
+
+                const basket = await db.basket.create({
+                    data: {
+                        id_token: BasketToken.id,
+                        id_product: Number(id_product),
+                        quantity: Number(quantity)
+                    }
+                });
+    
+                return NextResponse.json({success: true, basket});
+            }
         }else{
             //Получаем токен
             const token = cookiesList.get('basket-quick-shop');
@@ -251,6 +275,4 @@ export async function DELETE(req: NextRequest) {
     }catch(e){
         return NextResponse.json({success: false, message: "Произошла неизвестная ошибка, попробуйте снова :(", e});
     }
-
-    
 }

@@ -37,6 +37,11 @@ const Navbar = () => {
         })
     }, []);
 
+    
+    const Logout = async () => {
+        axios.post(`/api/basket/delete`).finally(() => signOut())
+    };
+
     const router = useRouter();
 
     const noUser = () => {
@@ -61,7 +66,9 @@ const Navbar = () => {
 
             <button
                 className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
-                onClick={() => signOut()}>
+                onClick={() => {
+                    Logout();
+                }}>
                 Выйти
             </button>
             // </div>

@@ -69,8 +69,6 @@ export const authOptions = {
                     }
 
                     //Проверка подтверждена ли почта
-
-
                     return {
                         id: checkUserEmail.id,
                         name: checkUserEmail.name,
@@ -99,6 +97,25 @@ export const authOptions = {
                     let comparePassword = await compare(credentials.password, `${checkUserUsernameAccount[0].password}`)
                     if(!comparePassword){
                         throw new Error("Неверный логин или пароль")
+                    }
+
+                    const getToken = await db.basketToken.findFirst({
+                        where: {
+                            idUser: checkUserUsername.id
+                        }
+                    })
+
+                    if(getToken){
+                        let time = 24*60*60*30*1000;
+                        const maxAgeCokies = new Date(Date.now() + time);
+    
+                        cookies().set({
+                            name: 'basket-quick-shop',
+                            value: getToken?.token,
+                            httpOnly: true,
+                            expires: maxAgeCokies,
+                            path: '/',
+                        })
                     }
 
                     return {

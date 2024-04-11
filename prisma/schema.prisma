@@ -84,6 +84,7 @@ model User {
     cityWay        CityWay[]
     productRating  ProductRating[]
     orderCancells OrderCancells[]
+    basketToken BasketToken[]
 }
 
 model VerificationToken {
@@ -174,6 +175,8 @@ model BasketToken {
     token   String
     expires DateTime
     basket  Basket[]
+    user   User?    @relation(fields: [idUser], references: [id])
+    idUser Int?
 }
 
 model Basket {
