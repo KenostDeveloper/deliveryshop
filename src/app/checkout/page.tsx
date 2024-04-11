@@ -11,13 +11,15 @@ import Loading from "@/components/Helps/Loading";
 import Counter from "@/components/Counter/Counter.components";
 import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
-import { CheckPicker, Input } from "rsuite";
+import { CheckPicker, Checkbox, Input } from "rsuite";
+import Link from "next/link";
 
 export default function Checkout() {
     const [methodDelivery, setMetodDelivery] = useState(1);
     const router = useRouter();
     const { basket, setBasket } = useBasketContext();
     const [amount, setAmount] = useState(0);
+    const [deliveryCost, setDeliveryCost] = useState(0);
     const [load, setLoad] = useState(false);
 
     const [pathResult, setPathResult] = useState([]);
@@ -25,9 +27,17 @@ export default function Checkout() {
 
     const [orderComment, setOrderComment] = useState("");
 
-    const [deliveryTransports, setDeliveryTransports] = useState<any>([])
-    const [selectTransport, setSelectTransport] = useState<any>([]);
+    const [deliveryTransports, setDeliveryTransports] = useState<any>([
+        { label: "Автомобильный", value: 1 },
+        { label: "Железнодорожный", value: 2 },
+        { label: "Морской", value: 3 },
+        { label: "Речной", value: 4 },
+        { label: "Воздушный", value: 5 },
+    ]);
+    const [selectTransport, setSelectTransport] = useState<any>([1, 2, 3, 4, 5]);
 
+    const [isAgreeToCondition, setIsAgreeToCondition] = useState(false);
+    const [isAllPathsExists, setIsAllPathsExists] = useState(false);
 
     useEffect(() => {
         if (basket) {
@@ -41,54 +51,61 @@ export default function Checkout() {
     }, [basket]);
 
     useEffect(() => {
+        if (pathResult?.length) {
+            pathResult.find((product: any) => !product?.path) ? setIsAllPathsExists(false) : setIsAllPathsExists(true);
+        }
+
+        setDeliveryCost(pathResult.reduce((acc: number, product: any) => (acc += product?.all_cost), 0));
+    }, [pathResult]);
+
+    useEffect(() => {
         axios.get(`/api/basket`).then((res) => {
             // setBasketItems(res.data?.basket);
             setBasket(res.data?.basket);
         });
 
-        axios.get(`/api/delivery/transports`).then((res) => {
-            setDeliveryTransports(
-                res.data?.transport.map((item: any) => ({
-                    label: item.name,
-                    value: item.id,
-                }))
-            );
+        // axios.get(`/api/delivery/transports`).then((res) => {
+        //     setDeliveryTransports(
+        //         res.data?.transport.map((item: any) => ({
+        //             label: item.name,
+        //             value: item.id,
+        //         }))
+        //     );
 
-            setSelectTransport(
-                res.data?.transport.map((item: any) => (item.id))
-            );
-        });
+        //     setSelectTransport(res.data?.transport.map((item: any) => item.id));
+        // });
     }, []);
-
 
     useEffect(() => {
         switch (methodDelivery) {
             case 1:
-                fetchPath('fast');
+                fetchPath("fast");
                 setPathParam("ч");
                 break;
             case 2:
-                fetchPath('cheap');
+                fetchPath("cheap");
                 setPathParam("₽");
                 break;
             case 3:
-                fetchPath('short');
+                fetchPath("short");
                 setPathParam("км");
                 break;
         }
     }, [methodDelivery, basket, selectTransport]);
 
     const fetchPath = async (searchType: string) => {
-        const res = await axios.post(`/api/delivery/search/${searchType}`, {transport: selectTransport});
+        const res = await axios.post(`/api/delivery/search/${searchType}`, {
+            transport: selectTransport,
+        });
 
-        if(!res?.data?.success) {
+        if (!res?.data?.success) {
             toast.error(res.data?.message);
         } else {
             setPathResult(res.data?.result);
         }
 
         console.log("Pathresult:", res.data);
-    }
+    };
 
     function placeOrder() {
         setLoad(true);
@@ -118,11 +135,7 @@ export default function Checkout() {
                         {/* <h2>Оформление доставки</h2> */}
                         <div className={styles.methodDelivery}>
                             <div
-                                className={
-                                    methodDelivery == 1
-                                        ? `${styles.active} ${styles.delivery}`
-                                        : `${styles.delivery}`
-                                }
+                                className={methodDelivery == 1 ? `${styles.active} ${styles.delivery}` : `${styles.delivery}`}
                                 onClick={() => {
                                     setMetodDelivery(1);
                                 }}>
@@ -135,11 +148,7 @@ export default function Checkout() {
                                 </div>
                             </div>
                             <div
-                                className={
-                                    methodDelivery == 2
-                                        ? `${styles.active} ${styles.delivery}`
-                                        : `${styles.delivery}`
-                                }
+                                className={methodDelivery == 2 ? `${styles.active} ${styles.delivery}` : `${styles.delivery}`}
                                 onClick={() => setMetodDelivery(2)}>
                                 <div className={styles.deliveryTitle}>
                                     <p>Самая дешевая</p> <i className="pi pi-wallet"></i>
@@ -150,11 +159,7 @@ export default function Checkout() {
                                 </div>
                             </div>
                             <div
-                                className={
-                                    methodDelivery == 3
-                                        ? `${styles.active} ${styles.delivery}`
-                                        : `${styles.delivery}`
-                                }
+                                className={methodDelivery == 3 ? `${styles.active} ${styles.delivery}` : `${styles.delivery}`}
                                 onClick={() => setMetodDelivery(3)}>
                                 <div className={styles.deliveryTitle}>
                                     <p>Короткий маршрут</p> <i className="pi pi-compass"></i>
@@ -165,19 +170,18 @@ export default function Checkout() {
                                 </div>
                             </div>
                         </div>
-                        <CheckPicker value={selectTransport} onChange={setSelectTransport} data={deliveryTransports} className='deliveryTranspots' />
+                        <CheckPicker
+                            placeholder="Способ транспортировки"
+                            value={selectTransport}
+                            onChange={setSelectTransport}
+                            data={deliveryTransports}
+                            className="deliveryTranspots"
+                        />
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
-                            <BasketRoute
-                                products={basket}
-                                pathResult={pathResult}
-                                pathParam={pathParam}
-                            />
+                            <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />
 
-                            <p
-                                className={`${styles["basket-route__title"]} ${styles["basket-route__title--comment"]}`}>
-                                Комментарий к заказу
-                            </p>
+                            <p className={`${styles["basket-route__title"]} ${styles["basket-route__title--comment"]}`}>Комментарий к заказу</p>
                             <Input
                                 as="textarea"
                                 rows={5}
@@ -189,13 +193,20 @@ export default function Checkout() {
                                 id="advantages"
                             />
 
-                            <div>
-                                <input type="checkbox" name="call" id="call" />
-                                <label htmlFor="call">Перезвоните для подтверждения заказа</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" name="conditionAgree" id="conditionAgree" />
-                                <label htmlFor="call">Перезвоните для подтверждения заказа</label>
+                            <div className={`${styles["basket__checkbox-container"]}`}>
+                                <div>
+                                    {/* <input type="checkbox" name="call" id="call" />
+                                    <label htmlFor="call">Перезвоните для подтверждения заказа</label> */}
+                                    <Checkbox color="yellow">Перезвоните для подтверждения заказа</Checkbox>
+                                </div>
+                                <div>
+                                    {/* <input type="checkbox" name="conditionAgree" id="conditionAgree" />
+                                    <label htmlFor="conditionAgree">Я соглашаюсь с <Link href="/condition">условиями оферты</Link> и <Link href="/politics">политикой конфиденциальности</Link></label> */}
+                                    <Checkbox color="yellow" checked={isAgreeToCondition} onChange={() => setIsAgreeToCondition(!isAgreeToCondition)}>
+                                        Я соглашаюсь с <Link href="/condition">условиями оферты</Link> и{" "}
+                                        <Link href="/politics">политикой конфиденциальности</Link>
+                                    </Checkbox>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -210,41 +221,21 @@ export default function Checkout() {
                             <div className={styles.sale}>
                                 <div className={styles.saleEl}>
                                     <p>Стоимость товаров</p>
-                                    <p>{amount?.toLocaleString()}₽</p>
+                                    <p>{amount?.toLocaleString()} ₽</p>
                                 </div>
                                 <div className={styles.saleEl}>
                                     <p>Доставка</p>
-                                    <span>
-                                        {methodDelivery == 0
-                                            ? "Не выбрано"
-                                            : methodDelivery == 1
-                                            ? "Бесплатно"
-                                            : methodDelivery == 2
-                                            ? "Стоимость уточнит менеджер"
-                                            : "Бесплатно"}
-                                    </span>
+                                    <p>{deliveryCost.toLocaleString()} ₽</p>
                                 </div>
-                                {methodDelivery == 1 ? (
-                                    <div className={styles.saleEl}>
-                                        <p>Адрес доставки</p>
-                                        {/* <span>{codeCdek.city? `${codeCdek?.city}, ${codeCdek?.address}` : "Не выбрано"}</span> */}
-                                    </div>
-                                ) : (
-                                    ""
-                                )}
                             </div>
 
                             <div className={styles.itog}>
                                 <p>Итого</p>
-                                <p>{amount?.toLocaleString()}₽</p>
+                                <p>{(amount + deliveryCost).toLocaleString()}₽</p>
                             </div>
 
-                            <button onClick={() => placeOrder()} className={styles.buttonOrder}>
-                                {!load ? (
-                                    "Оформить заказ"
-                                ) : (
-                                    <i className="pi pi-spin pi-spinner"></i>
-                                )}
+                            <button onClick={() => placeOrder()} className={styles.buttonOrder} disabled={!isAgreeToCondition || !isAllPathsExists}>
+                                {!load ? "Оформить заказ" : <i className="pi pi-spin pi-spinner"></i>}
                             </button>
                         </div>
                     </div>

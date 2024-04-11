@@ -94,6 +94,27 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
             //Бежим по всей корзине (по товарам)
             for (let i = 0; i < basket.length; i++) {
+
+                const productCountInWhareHouses = basket[i].product.sellerCityProducts.reduce((acc, city) => acc += city.count!, 0);
+                console.log("productCountInWhareHouses", basket[i].quantity, productCountInWhareHouses);
+                
+                if(basket[i].quantity > productCountInWhareHouses) {
+                    console.log("Товара нет в складах");
+                    
+                    result[i] = {
+                        id_product: basket[i].id_product,
+                        id_basket: basket[i].id,
+                        count_path: 0,
+                        path: null,
+                        all_duration: 0,
+                        all_cost: 0,
+                        all_length: 0,
+                        quantity: productCountInWhareHouses,
+                        product: basket[i].product
+                    };
+                    continue;
+                }
+
                 //Те склады, с которых хватает товаров для отправки до пользователя
                 let sellerCityProductFit = [];
                 let isDeliveryProduct = false;

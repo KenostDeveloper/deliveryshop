@@ -220,6 +220,15 @@
     font-weight: 600;
     transition: all 0.5s;
     margin-top: 20px;
+
+    &:disabled {
+        background-color: var(--other-color);
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: var(--other-color);
+        }
+    }
 }
 
 .buttonOrder:hover{
@@ -242,5 +251,14 @@
 
     &--comment {
         margin-bottom: 20px;
+    }
+}
+
+
+.basket__checkbox-container {
+    margin-top: 40px;
+
+    a {
+        text-decoration: underline;
     }
 }

@@ -18,20 +18,21 @@ const BasketItem = ({ item }: any) => {
             const formData = new FormData();
             formData.append("id_product", item.id_product);
             formData.append("quantity", countValue.toString());
-            setCount(countValue);
 
             axios.post("/api/basket", formData).then((res) => {
                 if (res.data.success) {
-                    setCount(countValue);
                     const updateBasket = basket.map((basket: any) => {
                         if (basket.id_product != item.id_product) {
                             // No change
                             return basket;
                         } else {
+                            setCount(basket?.quantity);
+                            console.log("Basket quantity", basket?.quantity, basket);
+                            
                             // Return a new circle 50px below
                             return {
                                 ...basket,
-                                quantity: countValue,
+                                quantity: basket?.quantity,
                             };
                         }
                     });
