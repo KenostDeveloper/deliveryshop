@@ -28,8 +28,11 @@ const CancelOrderForm = ({
     });
 
     const [message, setMessage] = useState("");
+    const [isLoad, setIsLoad] = useState(false);
 
     const handleSubmitCancelOrder = async (e: any) => {
+        setIsLoad(true);
+
         e.preventDefault();
 
         if (!message) {
@@ -51,6 +54,8 @@ const CancelOrderForm = ({
         } else {
             toast.error(res.data.message);
         }
+
+        setIsLoad(false);
     };
 
     return (
@@ -79,7 +84,7 @@ const CancelOrderForm = ({
                     }
                 />
                 <p className={styles.MpInputError}>{errors.advantages?.message?.toString()}</p>
-                <MyButton type="submit">Отправить</MyButton>
+                <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Отправить" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
             </div>
         </form>
     );

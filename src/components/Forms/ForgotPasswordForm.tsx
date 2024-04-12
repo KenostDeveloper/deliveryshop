@@ -20,12 +20,10 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
         resolver: zodResolver(schemaFogotPassword),
     });
 
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    const [buttonText, setButtonText] = useState("Получить код");
+    const [isLoad, setIsLoad] = useState(false);
 
     const handleSubmitForgot = async (data: any) => {
-        setIsButtonDisabled(true);
-        setButtonText("Отправляем код...");
+        setIsLoad(true);
         
         // Отправка сообщения со сгенерированным кодом
         const res = await axios.post("/api/auth/fogot", {
@@ -40,8 +38,7 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
             setModalActive(false);
         }
 
-        setIsButtonDisabled(false);
-        setButtonText("Получить код");
+        setIsLoad(false);
     };
 
     return (
@@ -62,7 +59,7 @@ const ForgotPasswordForm = ({ authEmail, setAuthEmail, setModalActive }: any) =>
                 <p className={style.MpInputError}>{errors.email?.message?.toString()}</p>
             </div>
 
-            <MyButton type="submit" disabled={isButtonDisabled}>{buttonText}</MyButton>
+            <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Отправить код" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
         </form>
     );
 };

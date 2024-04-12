@@ -231,6 +231,7 @@
 
     &:disabled {
         background-color: var(--other-color);
+        color: white;
         cursor: not-allowed;
 
         &:hover {

@@ -32,9 +32,12 @@ const Navbar = () => {
         name: ""
     });
 
-    useState(() => {
-        console.log(session);
-    });
+    const [isLoad, setIsLoad] = useState(false);
+
+    // useState(() => {
+    //     console.log(session);
+    // });
+    const router = useRouter();
 
     useEffect(() => {
         axios.get("/api/profile/city/?id=true").then((res) => {
@@ -44,10 +47,13 @@ const Navbar = () => {
     }, []);
 
     const Logout = async () => {
-        axios.post(`/api/basket/delete`).finally(() => signOut());
-    };
+        setIsLoad(true);
 
-    const router = useRouter();
+        axios.post(`/api/basket/delete`).finally(() => signOut());
+        router.push('/');
+
+        setIsLoad(false);
+    };
 
     const noUser = () => {
         return (
@@ -71,10 +77,11 @@ const Navbar = () => {
 
             <button
                 className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
+                disabled={isLoad}
                 onClick={() => {
                     Logout();
                 }}>
-                Выйти
+                {!isLoad ? "Выйти" : <i className="pi pi-spin pi-spinner"></i>}
             </button>
             // </div>
         );

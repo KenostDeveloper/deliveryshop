@@ -24,6 +24,7 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
     });
 
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isLoad, setIsLoad] = useState(false);
 
     const router = useRouter();
 
@@ -46,6 +47,8 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
     }, []);
 
     const handleSubmitChange = async (data: any) => {
+        setIsLoad(true);
+
         const res = await axios.put("/api/auth/change-password", {
             password: data.password,
         });
@@ -56,6 +59,8 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
         } else {
             toast.error(res.data.message);
         }
+
+        setIsLoad(false);
     };
 
     if (!isSuccess) {
@@ -103,7 +108,7 @@ const ChangePasswordForm = ({ token }: { token: string }) => {
                         {errors.confirmPassword?.message?.toString()}
                     </p>
                 </div>
-                <MyButton type="submit">Сохранить пароль</MyButton>
+                <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Сохранить пароль" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
             </form>
         </div>
     );

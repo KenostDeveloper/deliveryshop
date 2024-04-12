@@ -15,6 +15,7 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
     const { data: session } = useSession();
     const [cities, setCities] = useState([]);
     const [citySelected, setCitySelected] = useState(city);
+    const [isLoad, setIsLoad] = useState(false);
 
     useEffect(() => {
         axios.get(`/api/profile/city`).then((res) => {
@@ -28,6 +29,8 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
     }, []);
 
     const handleSubmit = async (e: any) => {
+        setIsLoad(true);
+
         e.preventDefault();
 
         console.log(session);
@@ -58,6 +61,8 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
             setCity(res.data.city);
             setActive(false);
         });
+
+        setIsLoad(false);
     };
 
     return (
@@ -75,7 +80,7 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
                     }}
                     placeholder="Выберите город"
                 />
-                <MyButton type="submit">Сохранить</MyButton>
+                <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Сохранить" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
             </div>
         </form>
     );

@@ -21,6 +21,8 @@ const RateForm = ({ productId, setActive, setOrder, orderId }: { productId: numb
         resolver: zodResolver(schemaRate),
     });
 
+    const [isLoad, setIsLoad] = useState(false);
+
     const { data: session, update } = useSession();
 
     const [rate, setRate] = useState(0);
@@ -29,6 +31,8 @@ const RateForm = ({ productId, setActive, setOrder, orderId }: { productId: numb
     const [comment, setComment] = useState("");
 
     const sendRate = async () => {
+        setIsLoad(true);
+
         const res = await axios.post(`/api/rating`, {
             user_id: session?.user.id,
             product_id: productId,
@@ -51,6 +55,8 @@ const RateForm = ({ productId, setActive, setOrder, orderId }: { productId: numb
                 setOrder(res.data?.order);
             }
         });
+
+        setIsLoad(false);
     };
 
     return (
@@ -149,10 +155,11 @@ const RateForm = ({ productId, setActive, setOrder, orderId }: { productId: numb
             <MyButton
                 type="button"
                 className={styles["button-rate"]}
+                disabled={isLoad}
                 onClick={() => {
                     sendRate();
                 }}>
-                Отправить
+                {!isLoad ? "Отправить" : <i className="pi pi-spin pi-spinner"></i>}
             </MyButton>
         </form>
     );
