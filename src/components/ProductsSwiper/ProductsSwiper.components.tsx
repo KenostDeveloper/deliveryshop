@@ -25,10 +25,13 @@ const ProductsSwiper = ({ products, isHomePage }:any) => {
             scrollbar={{ draggable: true }}
             breakpoints={{
                 0: {
+                    slidesPerView: 1,
+                },
+                340: {
                     slidesPerView: 1.5,
                 },
-                400: {
-                    slidesPerView: 2.2,
+                460: {
+                    slidesPerView: 2,
                 },
                 575: {
                     slidesPerView: 2.3,
