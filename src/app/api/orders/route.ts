@@ -22,7 +22,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const data = await req.json();
         const deliveryCost = data.deliveryCost;
-        const cities = data.cities;        
+        const cities = data.cities;
+        const allDuration = data.allDuration;
+        const allLength = data.allLength;
 
         if (!isBasketNull) {
             return NextResponse.json({
@@ -78,12 +80,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     idStatus: 1,
                     deliveryCost: deliveryCost,
                     totalCost: cost + deliveryCost,
+                    allDuration: allDuration,
+                    allLength: allLength,
                 },
             });
 
             //Добавляем товары в заказ
             for (let i = 0; i < basket.length; i++) {
-                //Добавляем товары к заказу 
+                //Добавляем товары к заказу
                 const orderProduct = await db.orderProducts.create({
                     data: {
                         idOrder: order.id,
@@ -94,21 +98,21 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 });
 
                 //Списываем товары из складов
-                let quantityToReduce = basket[i].quantity;    //Количество товара к списыванию
+                let quantityToReduce = basket[i].quantity; //Количество товара к списыванию
                 cities[i].forEach(async (city: any) => {
                     //Поиск города склада
                     const cityWarehouse = await db.sellerCityProducts.findFirst({
                         where: {
                             sellerCity: {
                                 city: {
-                                    name: city
-                                }
-                            }
-                        }
+                                    name: city,
+                                },
+                            },
+                        },
                     });
 
                     //Если город не найден, пропускать
-                    if(!cityWarehouse) return;
+                    if (!cityWarehouse) return;
 
                     //Количество к списанию со склада
                     const countToReduce = quantityToReduce > cityWarehouse!.count! ? cityWarehouse!.count! : quantityToReduce;
@@ -119,13 +123,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             id: cityWarehouse!.id,
                         },
                         data: {
-                            count: cityWarehouse!.count! - countToReduce
-                        }
+                            count: cityWarehouse!.count! - countToReduce,
+                        },
                     });
 
                     quantityToReduce -= countToReduce;
                 });
-
 
                 //Удаляем всё содержимое корзины
                 const deleteProduct = await db.basket.deleteMany({
@@ -261,13 +264,11 @@ export async function PUT(req: NextRequest, res: NextResponse) {
         }
 
         const data = await req.json();
-        
+
         const id = data.id;
         const status_id = data.status_id;
 
-        if (
-            !status_id
-        ) {
+        if (!status_id) {
             return NextResponse.json({
                 success: false,
                 message: "Пожалуйста, заполните все поля!",

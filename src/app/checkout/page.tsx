@@ -13,7 +13,7 @@ import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
 import { CheckPicker, Checkbox, Input, Slider } from "rsuite";
 import Link from "next/link";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 import NotFound from "@/components/NotFound/NotFound";
 
 export default function Checkout() {
@@ -105,18 +105,17 @@ export default function Checkout() {
     }, [methodDelivery, basket, selectTransport, maxCost, maxLength, maxDuration]);
 
     const fetchPath = async (searchType: string) => {
-
         const dataToPost: any = {
             transport: selectTransport,
-        }
+        };
 
-        if(methodDelivery == 4) {
+        if (methodDelivery == 4) {
             dataToPost.maxCost = maxCost;
             dataToPost.maxLenght = maxLength;
             dataToPost.maxDuration = maxDuration;
         }
 
-        const res = await axios.post(`/api/delivery/search/${searchType}`, {...dataToPost});
+        const res = await axios.post(`/api/delivery/search/${searchType}`, { ...dataToPost });
 
         if (!res?.data?.success) {
             toast.error(res.data?.message);
@@ -141,7 +140,15 @@ export default function Checkout() {
         }
 
         axios
-            .post(`/api/orders`, JSON.stringify({ deliveryCost: deliveryCost, cities: citiesToReduce }))
+            .post(
+                `/api/orders`,
+                JSON.stringify({
+                    deliveryCost: deliveryCost,
+                    cities: citiesToReduce,
+                    allDuration: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_duration), 0),
+                    allLength: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_length), 0),
+                })
+            )
             .then((res) => {
                 if (res.data.success) {
                     toast.success(res.data.message);
@@ -157,8 +164,8 @@ export default function Checkout() {
         return <EmptyBasket />;
     }
 
-    if(session?.user.role != "BUYER") {
-        return <NotFound />
+    if (session?.user.role != "BUYER") {
+        return <NotFound />;
     }
 
     return (
@@ -227,33 +234,15 @@ export default function Checkout() {
                                     <>
                                         <div>
                                             <p>Максимально количество часов доставки</p>
-                                            <Slider
-                                                progress
-                                                min={0}
-                                                max={100}
-                                                defaultValue={100}
-                                                onChange={setMaxDuration}
-                                            />
+                                            <Slider progress min={0} max={100} defaultValue={100} onChange={setMaxDuration} />
                                         </div>
                                         <div>
                                             <p>Максимальная сумма доставки</p>
-                                            <Slider
-                                                progress
-                                                min={0}
-                                                max={10000}
-                                                defaultValue={10000}
-                                                onChange={setMaxCost}
-                                            />
+                                            <Slider progress min={0} max={10000} defaultValue={10000} onChange={setMaxCost} />
                                         </div>
                                         <div>
                                             <p>Максимальная протяжённость пути (км)</p>
-                                            <Slider
-                                                progress
-                                                min={0}
-                                                max={1000}
-                                                defaultValue={1000}
-                                                onChange={setMaxLength}
-                                            />
+                                            <Slider progress min={0} max={1000} defaultValue={1000} onChange={setMaxLength} />
                                         </div>
                                     </>
                                 )}

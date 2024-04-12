@@ -315,15 +315,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                     },
                                 });
 
-                                // console.log("getInfo: ", getInfo);
+                                if(getInfo) {
+                                    sumDuration += Number(getInfo?.duration!);
     
-                                sumDuration += getInfo?.duration!;
-
-                                // tempDuration = Math.max(tempDuration, getInfo?.duration!);
-                                tempCost += getInfo?.cost!;
-                                tempLength += getInfo?.length!;
-
-                                // console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                                    // tempDuration = Math.max(tempDuration, getInfo?.duration!);
+                                    tempCost += Number(getInfo?.cost!);
+                                    tempLength += Number(getInfo?.length!);
+                                }
                             }
                             tempDuration.push(sumDuration);
                         }
@@ -504,11 +502,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 },
                             });
 
-                            sumDuration += getInfo?.duration!;
-                            
-                            // tempDuration = Math.max(tempDuration, getInfo?.duration!);
-                            tempCost += getInfo?.cost!;
-                            tempLength += getInfo?.length!;
+                            if(getInfo) {
+                                sumDuration += Number(getInfo?.duration!);
+
+                                // tempDuration = Math.max(tempDuration, getInfo?.duration!);
+                                tempCost += Number(getInfo?.cost!);
+                                tempLength += Number(getInfo?.length!);
+                            }
                         }
                         tempDuration.push(sumDuration);
 
