@@ -501,7 +501,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                     data.maxCost >= mainGraph[z]['parameters'][1] &&
                                     data.maxLenght >= mainGraph[z]['parameters'][2]){
                                     mainResult.push(mainGraph[z])
-                                    console.log(mainGraph[z]['parameters'][0])
+                                    // console.log(mainGraph[z]['parameters'][0])
 
                                     //находим наилучший
                                     if(mainResultBest.length == 0){
