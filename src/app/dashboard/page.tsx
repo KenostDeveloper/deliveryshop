@@ -7,6 +7,7 @@ import NotFound from '@/components/NotFound/NotFound';
 import axios from 'axios';
 
 import { Chart } from 'primereact/chart';
+import { Placeholder, Tabs } from 'rsuite';
 
 
 export default function Profile() {
@@ -113,6 +114,10 @@ export default function Profile() {
                             
                         </div>
                     </div>
+                    <Tabs style={{margin: '10px 0 0 0'}} defaultActiveKey="1" appearance="subtle">
+                        <Tabs.Tab eventKey="1" title="Заказы">
+                        </Tabs.Tab>
+                    </Tabs>
                 </div>
             </div>
         </div>

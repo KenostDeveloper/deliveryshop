@@ -56,6 +56,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
                 product: {
                     idUser: session.user.id 
                 }
+            },
+            include: {
+                order: {
+                    include: {
+                        status: true
+                    }
+                },
+                product: true
             }
         });
 
@@ -107,6 +115,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
         data['city'] = {cityCount: res.length, Warehouse, PickPoint, Transit}
         
+        data['orders_list'] = getOrdersAll;
 
 
         return NextResponse.json({success: true, data});
