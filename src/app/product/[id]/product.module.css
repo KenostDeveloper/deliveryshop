@@ -49,6 +49,7 @@
 .flex{
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .color.active{
@@ -118,7 +119,6 @@
     font-size: 20px;
     font-weight: 600;
     color: #02121C;
-    margin-bottom: 20px;
 }
 
 .priceCredit{

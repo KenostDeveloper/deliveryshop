@@ -25,6 +25,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const cities = data.cities;
         const allDuration = data.allDuration;
         const allLength = data.allLength;
+        const deliveryMethod = data.deliveryMethod;
 
         if (!isBasketNull) {
             return NextResponse.json({
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     totalCost: cost + deliveryCost,
                     allDuration: allDuration,
                     allLength: allLength,
+                    deliveryMethod: deliveryMethod
                 },
             });
 

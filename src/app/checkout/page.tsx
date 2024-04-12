@@ -34,7 +34,7 @@ export default function Checkout() {
     const [maxLength, setMaxLength] = useState(1000);
     const [maxDuration, setMaxDuration] = useState(100);
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     const [deliveryTransports, setDeliveryTransports] = useState<any>([
         { label: "Автомобильный", value: 1 },
@@ -49,8 +49,8 @@ export default function Checkout() {
     const [isAllPathsExists, setIsAllPathsExists] = useState(false);
 
     useEffect(() => {
-        if(typeof(session) == "object"){
-            setLoading(false)
+        if (typeof session == "object") {
+            setLoading(false);
         }
     }, [session]);
 
@@ -147,6 +147,16 @@ export default function Checkout() {
             }
         }
 
+        // Получение названия способа доставки
+        const deliveryMethod =
+            methodDelivery == 1
+                ? "Самая быстрая"
+                : methodDelivery == 2
+                ? "Самая дешевая"
+                : methodDelivery == 3
+                ? "Короткий маршрут"
+                : "Сбаланссированный маршрут";
+
         axios
             .post(
                 `/api/orders`,
@@ -155,6 +165,7 @@ export default function Checkout() {
                     cities: citiesToReduce,
                     allDuration: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_duration), 0),
                     allLength: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_length), 0),
+                    deliveryMethod: deliveryMethod
                 })
             )
             .then((res) => {
@@ -168,8 +179,8 @@ export default function Checkout() {
             .finally(() => setLoad(false));
     }
 
-    if(loading){
-        return <Loading/>
+    if (loading) {
+        return <Loading />;
     }
 
     if (basket == null || !basket?.length) {

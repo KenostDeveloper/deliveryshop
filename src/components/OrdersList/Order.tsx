@@ -8,7 +8,7 @@ import Product from "./Product";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 import CancelOrderForm from "../Forms/CancelOrderForm";
 import MyButton from "../UI/MyInput/MyButton";
@@ -77,14 +77,26 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
                         {order?.status?.name}
                     </p>
                 </div>
-                {/* <div className={`${styles["order__info"]}`}>
-                    <p className={`${styles["order__info-label"]}`}>ФИО</p>
-                    <p className={`${styles["order__info-text"]}`}>{order?.user?.login}</p>
-                </div> */}
-                {/* <div className={`${styles["order__info"]}`}>
+                <div className={`${styles["order__info"]}`}>
+                    <p className={`${styles["order__info-label"]}`}>Покупатель</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.user?.name}</p>
+                </div>
+                <div className={`${styles["order__info"]}`}>
+                    <p className={`${styles["order__info-label"]}`}>E-mail</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.user?.email}</p>
+                </div>
+                <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Способ доставки</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.deliveryMethod}</p>
-                </div> */}
+                </div>
+                <div className={`${styles["order__info"]}`}>
+                    <p className={`${styles["order__info-label"]}`}>Общее время в пути</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.allDuration} ч</p>
+                </div>
+                <div className={`${styles["order__info"]}`}>
+                    <p className={`${styles["order__info-label"]}`}>Общее расстояние</p>
+                    <p className={`${styles["order__info-text"]}`}>{order?.allLength} км</p>
+                </div>
                 {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Способ оплаты</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.paymentMethod}</p>
@@ -93,10 +105,6 @@ const Order = ({ order, setOrder }: { order: any; setOrder: any }) => {
                     <p className={`${styles["order__info-label"]}`}>Телефон</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.telephone}</p>
                 </div> */}
-                <div className={`${styles["order__info"]}`}>
-                    <p className={`${styles["order__info-label"]}`}>E-mail</p>
-                    <p className={`${styles["order__info-text"]}`}>{order?.user?.email}</p>
-                </div>
                 {/* <div className={`${styles["order__info"]}`}>
                     <p className={`${styles["order__info-label"]}`}>Адрес</p>
                     <p className={`${styles["order__info-text"]}`}>{order?.address}</p>
