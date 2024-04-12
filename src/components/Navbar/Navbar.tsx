@@ -24,7 +24,7 @@ const Navbar = () => {
 
     const [userCity, setUserCity] = useState({
         id: 0,
-        name: ""
+        name: "",
     });
 
     useState(() => {
@@ -32,14 +32,13 @@ const Navbar = () => {
     });
 
     useEffect(() => {
-        axios.get('/api/profile/city?id=true').then(res => {
+        axios.get("/api/profile/city?id=true").then((res) => {
             setUserCity(res.data.city);
-        })
+        });
     }, []);
 
-    
     const Logout = async () => {
-        axios.post(`/api/basket/delete`).finally(() => signOut())
+        axios.post(`/api/basket/delete`).finally(() => signOut());
     };
 
     const router = useRouter();
@@ -93,17 +92,14 @@ const Navbar = () => {
                             quick<span>shop</span>
                         </div>
                     </Link>
-                    <button onClick={() => setCityModalActive(true)}
+                    <button
+                        onClick={() => setCityModalActive(true)}
                         className={`${styles.nav__button} ${styles["nav__button--transparent"]} ${styles.nav__location}`}>
                         <i className={`${styles["nav__location-icon"]} pi pi-map-marker`}></i>
                         <p className={`${styles.nav__text}`}>{userCity?.name}</p>
                     </button>
                     <div className={`${styles.nav__search}`}>
-                        <input
-                            type="text"
-                            className={`${styles["nav__search-input"]}`}
-                            placeholder="поиск"
-                        />
+                        <input type="text" className={`${styles["nav__search-input"]}`} placeholder="поиск" />
                         <button>
                             <i className={`${styles["nav__search-icon"]} pi pi-search`}></i>
                         </button>
@@ -111,30 +107,26 @@ const Navbar = () => {
                 </div>
 
                 <div className={`${styles["nav__buttons-container"]}`}>
-                    <button
-                        className={`${styles.nav__button} ${styles.nav__catalog}`}
-                        onClick={() => router.push("/catalog/all")}>
+                    <button className={`${styles.nav__button} ${styles.nav__catalog}`} onClick={() => router.push("/catalog/all")}>
                         <i className={`${styles["nav__catalog-icon"]} pi pi-th-large`}></i>
                         <p className={`${styles.nav__text}`}>каталог</p>
                     </button>
 
                     {session ? userProfile() : noUser()}
 
-                    <Link
-                        href="/checkout"
-                        className={`${styles.nav__button} ${styles.nav__basket} ${styles["nav__button--transparent"]} ${styles.nav__cart}`}>
-                        <i className={`${styles["nav__cart-icon"]} pi pi-shopping-cart`}></i>
-                    </Link>
+                    {session?.user.role == "BUYER" && (
+                        <Link
+                            href="/checkout"
+                            className={`${styles.nav__button} ${styles.nav__basket} ${styles["nav__button--transparent"]} ${styles.nav__cart}`}>
+                            <i className={`${styles["nav__cart-icon"]} pi pi-shopping-cart`}></i>
+                        </Link>
+                    )}
                 </div>
             </div>
 
             {/* <Link href="/" className={styles.logo}>mine<span>post</span></Link> */}
 
-            <ModalAuth
-                modalActive={modalActive}
-                setModalActive={setModalActive}
-                authEmail={authEmail}
-                setAuthEmail={setAuthEmail}></ModalAuth>
+            <ModalAuth modalActive={modalActive} setModalActive={setModalActive} authEmail={authEmail} setAuthEmail={setAuthEmail}></ModalAuth>
 
             <Modal active={cityModalActive} setActive={setCityModalActive}>
                 <CitySelectForm city={userCity} setCity={setUserCity} setActive={setCityModalActive} />

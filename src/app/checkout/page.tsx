@@ -13,8 +13,11 @@ import BasketItem from "@/components/BasketItem/BasketItem";
 import BasketRoute from "@/components/BasketRoute/BasketRoute";
 import { CheckPicker, Checkbox, Input, Slider } from "rsuite";
 import Link from "next/link";
+import {useSession} from "next-auth/react";
+import NotFound from "@/components/NotFound/NotFound";
 
 export default function Checkout() {
+    const { data: session, update } = useSession();
     const [methodDelivery, setMetodDelivery] = useState(1);
     const router = useRouter();
     const { basket, setBasket } = useBasketContext();
@@ -152,6 +155,10 @@ export default function Checkout() {
 
     if (basket == null || !basket?.length) {
         return <EmptyBasket />;
+    }
+
+    if(session?.user.role != "BUYER") {
+        return <NotFound />
     }
 
     return (
