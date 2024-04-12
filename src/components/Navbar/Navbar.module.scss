@@ -172,21 +172,27 @@
     .nav__buttons-container {
         
     }
+}
+
+@media screen and (width <= 1000px) {
+    .nav__search {
+        display: none;
+    }
 
     .nav__catalog,
     .nav__auth-button {
         display: none;
     }
-}
 
-@media screen and (width <= 1000px) {
-    // .logo {
-    //     display: none;
-    // }
+    .nav__start-container {
+        width: 100%;
+    }
+
+    .nav__location {
+        justify-self: end;
+    }
 }
 
 @media screen and (width <= 800px) {
-    .nav__search {
-        display: none;
-    }
+
 }
