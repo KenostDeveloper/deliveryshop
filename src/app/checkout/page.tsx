@@ -22,7 +22,7 @@ export default function Checkout() {
     const [deliveryCost, setDeliveryCost] = useState(0);
     const [load, setLoad] = useState(false);
 
-    const [pathResult, setPathResult] = useState([]);
+    const [pathResult, setPathResult] = useState<any>([]);
     const [pathParam, setPathParam] = useState("");
 
     const [orderComment, setOrderComment] = useState("");
@@ -109,8 +109,19 @@ export default function Checkout() {
 
     function placeOrder() {
         setLoad(true);
+
+        // Формирование списка городов, из который нужно списывать товар
+        const citiesToReduce: any = [];
+        for(let i = 0; i < pathResult.length; i++) {
+            citiesToReduce[i] = [];
+            
+            for(let j = 0; j < pathResult[i]?.path.length; j++) {
+                citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j]?.path[0])[0]);
+            }
+        }
+        
         axios
-            .post(`/api/orders`, JSON.stringify({deliveryCost: deliveryCost}))
+            .post(`/api/orders`, JSON.stringify({deliveryCost: deliveryCost, cities: citiesToReduce}))
             .then((res) => {
                 if (res.data.success) {
                     toast.success(res.data.message);

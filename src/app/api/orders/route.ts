@@ -22,8 +22,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const data = await req.json();
         const deliveryCost = data.deliveryCost;
-        console.log("Delivery cost", data, deliveryCost);
-        
+        const cities = data.cities;        
 
         if (!isBasketNull) {
             return NextResponse.json({
@@ -84,6 +83,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
             //Добавляем товары в заказ
             for (let i = 0; i < basket.length; i++) {
+                //Добавляем товары к заказу 
                 const orderProduct = await db.orderProducts.create({
                     data: {
                         idOrder: order.id,
@@ -92,6 +92,40 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         quantity: basket[i].quantity,
                     },
                 });
+
+                //Списываем товары из складов
+                let quantityToReduce = basket[i].quantity;    //Количество товара к списыванию
+                cities[i].forEach(async (city: any) => {
+                    //Поиск города склада
+                    const cityWarehouse = await db.sellerCityProducts.findFirst({
+                        where: {
+                            sellerCity: {
+                                city: {
+                                    name: city
+                                }
+                            }
+                        }
+                    });
+
+                    //Если город не найден, пропускать
+                    if(!cityWarehouse) return;
+
+                    //Количество к списанию со склада
+                    const countToReduce = quantityToReduce > cityWarehouse!.count! ? cityWarehouse!.count! : quantityToReduce;
+
+                    //Списывание товара с найденного склада
+                    await db.sellerCityProducts.update({
+                        where: {
+                            id: cityWarehouse!.id,
+                        },
+                        data: {
+                            count: cityWarehouse!.count! - countToReduce
+                        }
+                    });
+
+                    quantityToReduce -= countToReduce;
+                });
+
 
                 //Удаляем всё содержимое корзины
                 const deleteProduct = await db.basket.deleteMany({
