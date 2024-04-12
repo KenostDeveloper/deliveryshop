@@ -108,3 +108,24 @@
     width: 10px;
     height: 10px;
 }
+
+.kenostdate{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2{
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.filters{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.margin{
+    margin-top: 12px;
+}

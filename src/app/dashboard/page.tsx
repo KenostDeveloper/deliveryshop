@@ -6,6 +6,8 @@ import Loading from "@/components/Helps/Loading";
 import NotFound from '@/components/NotFound/NotFound';
 import axios from 'axios';
 
+import { DateRangePicker, InputPicker } from 'rsuite';
+
 import { Table } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
@@ -19,6 +21,12 @@ export default function Profile() {
     const {data: session, update} = useSession();
 
     const [statistics, setStatistics] = useState<any>([]);
+    const [filtrs, setFiltrs] = useState<any>({
+        status: null,
+        date: []
+    })
+    const [text, setText] = useState("");
+    const [status, setStatus] = useState([]);
 
 
     useEffect(() => {
@@ -35,10 +43,23 @@ export default function Profile() {
             }
         });
 
-        axios.get(`/api/statistics/orders`).then((res) => {
+        axios.get(`/api/orders/status`).then((res) => {
+            if(res.data.success){
+                setStatus(
+                    res.data?.status.map((item: any) => ({
+                        label: item.name,
+                        value: item.id,
+                    }))
+                );
+
+                
+            }
+        });
+
+        axios.post(`/api/statistics/orders`, {}).then((res: any) => {
             if(res.data.success){
                 setDataTable(res.data.data.orders);
-                console.log(res.data.data.orders)
+                setText(res.data.data.text)
             }
         });
     }, [])
@@ -68,6 +89,27 @@ export default function Profile() {
     const [sortType, setSortType] = useState();
     const [loadingTable, setLoadingTable] = useState(false);
 
+    function updateStatistic(name:any, value:any){
+        switch(name){
+            case "date":
+                setFiltrs({...filtrs, date: value})
+                break;
+            case "status":
+                setFiltrs({...filtrs, status: value})
+                break;
+        }
+    }
+
+    useEffect(() => {
+        axios.post(`/api/statistics/orders`, {filtrs: filtrs}).then((res: any) => {
+            if(res.data.success){
+                setDataTable(res.data.data.orders);
+                setText(res.data.data.text)
+            }
+        });
+    }, [filtrs])
+
+
     const getData = () => {
         if (sortColumn && sortType) {
           return dataTable.sort((a:any, b:any) => {
@@ -76,10 +118,10 @@ export default function Profile() {
             let y = b[sortColumn];
 
             if (typeof x === 'string') {
-              x = x.charCodeAt();
+              x = x.charCodeAt(0);
             }
             if (typeof y === 'string') {
-              y = y.charCodeAt();
+              y = y.charCodeAt(0);
             }
             if (sortType === 'asc') {
               return x - y;
@@ -89,7 +131,7 @@ export default function Profile() {
           });
         }
         return dataTable;
-      };
+    };
     
     const handleSortColumn = (sortColumn:any, sortType:any) => {
         setLoadingTable(true);
@@ -116,7 +158,7 @@ export default function Profile() {
         )
     }
 
-    const ImageCell = ({ rowData, dataKey, ...props }) => (
+    const ImageCell = ({ rowData, dataKey, ...props }:any) => (
         <Cell {...props} style={{ padding: 0 }}>
           <div
             style={{
@@ -138,7 +180,7 @@ export default function Profile() {
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
                 <div className={`kenost-window ${styles.kenostwindow}`}>
-                    {/* <div className="kenost-title">Мои маршруты</div> */}
+                    <div className="kenost-title">Статистика продавца</div>
                     <div className={styles.flex}>
                         <div className={styles.date}>
                             <span>{statistics?.day}</span>
@@ -180,8 +222,43 @@ export default function Profile() {
                             
                         </div>
                     </div>
+                    <div className={`${styles.flex} ${styles.margin}`}>
+                        <div className={styles.widget}>
+                            <p>Средний километраж</p>
+                            <b>~{statistics?.medium_lenght?.toLocaleString()} км</b>
+                            <span><i className='pi pi-compass'></i></span>
+                        </div>
+                        <div className={styles.widget}>
+                            <p>Среднее время в пути</p>
+                            <b>~{statistics?.medium_duration?.toLocaleString()} ч</b>
+                            <span> <i className='pi pi-clock'></i></span>
+                        </div>
+                        <div className={styles.widget}>
+                            <p>Средняя стоимость доставки</p>
+                            <b>~{statistics?.medium_delivery?.toLocaleString()} ₽</b>
+                            <span><i className='pi pi-truck'></i></span>
+                        </div>
+                        <div className={styles.widget}>
+                            <p>Средняя стоимость заказа</p>
+                            <b>~{statistics?.medium_cost?.toLocaleString()} ₽</b>
+                            <span><i className='pi pi-box'></i></span>
+                        </div>
+                    </div>
                     <Tabs style={{margin: '10px 0 0 0'}} defaultActiveKey="1" appearance="subtle">
                         <Tabs.Tab eventKey="1" title="Заказы">
+                        <div className={styles.kenostdate}>
+                            <h2>{text}</h2>
+                            <div className={`${styles.filters} filtersstatistic`}>
+                                <InputPicker
+                                    data={status}
+                                    onChange={(value: any) =>
+                                        updateStatistic("status", value)
+                                    }
+                                    placeholder="Выберите статус"
+                                />
+                                <DateRangePicker format="MM/dd/yyyy" character=" – " onChange={(value: any) => updateStatistic("date", value)} placeholder="Период статистики" showOneCalendar />
+                            </div>
+                        </div>
                         <Table
                             height={1000}
                             data={getData()}
@@ -195,10 +272,10 @@ export default function Profile() {
                                 <Cell dataKey="id" />
                             </Column>
 
-                            {/* <Column width={40} sortable fullText>
+                            <Column width={40} sortable fullText>
                                 <HeaderCell>Изображение</HeaderCell>
                                 <ImageCell dataKey="product.image" />
-                            </Column> */}
+                            </Column>
 
                             <Column width={130} sortable fullText>
                                 <HeaderCell>Название</HeaderCell>
@@ -220,24 +297,29 @@ export default function Profile() {
                                 <Cell dataKey="cost" />
                             </Column>
 
-                            {/* <Column width={100} sortable fullText>
+                            <Column width={100} sortable fullText>
                                 <HeaderCell>Стоимость доставки</HeaderCell>
-                                <Cell dataKey="order.deliveryCost" />
+                                <Cell dataKey="deliveryCost" />
                             </Column>
 
                             <Column width={100} sortable fullText>
                                 <HeaderCell>Время заказа в пути (ч)</HeaderCell>
-                                <Cell dataKey="order.allDuration" />
+                                <Cell dataKey="allDuration" />
                             </Column>
 
                             <Column width={100} sortable fullText>
                                 <HeaderCell>Километраж</HeaderCell>
-                                <Cell dataKey="order.allLength" />
-                            </Column> */}
+                                <Cell dataKey="allLength" />
+                            </Column>
 
-                            <Column width={200} sortable fullText>
+                            <Column width={200} sortable fullText >
                                 <HeaderCell>Дата</HeaderCell>
                                 <Cell dataKey="date" />
+                            </Column>
+
+                            <Column width={100} sortable fullText >
+                                <HeaderCell>Статус</HeaderCell>
+                                <Cell dataKey="order.status.name" />
                             </Column>
                             
                             </Table>

@@ -19,13 +19,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
         data['day'] = date.getDate();
         data['week'] = month[date.getMonth()];
-        data['month'] = week[date.getDay()];
+        data['month'] = week[date.getDay() - 1];
 
         let startDay = new Date();
         startDay.setHours(0, 0, 0, 1); // Начало дня.
 
         let endDay = new Date();
         endDay.setHours(23, 59, 59, 999); // Конец дня.
+
 
         const getOrders = await db.orderProducts.findMany({
             where: {
@@ -114,6 +115,23 @@ export async function GET(req: NextRequest, res: NextResponse) {
         }
 
         data['city'] = {cityCount: res.length, Warehouse, PickPoint, Transit}
+
+        let sumLenght = 0;
+        let sumDuration = 0;
+        let sumDelivery = 0;
+        let sumTotalCost = 0;
+
+        for(let i = 0; i < getOrdersAll.length; i++){
+            sumLenght += getOrdersAll[i].order.allLength!;
+            sumDuration += getOrdersAll[i].order.allDuration!;
+            sumDelivery += getOrdersAll[i].order.deliveryCost!;
+            sumTotalCost += getOrdersAll[i].order.totalCost!;
+        }
+        
+        data['medium_lenght'] = (sumLenght / getOrdersAll.length).toFixed(2)
+        data['medium_duration'] = (sumDuration / getOrdersAll.length).toFixed(2)
+        data['medium_delivery'] = (sumDelivery / getOrdersAll.length).toFixed(2)
+        data['medium_cost'] = (sumTotalCost / getOrdersAll.length).toFixed(2)
         
         // data['orders_list'] = getOrdersAll;
 

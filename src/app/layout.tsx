@@ -12,7 +12,7 @@ import { GlobalContextProvider } from "@/components/Helps/GlobalBasket";
 import { CustomProvider } from "rsuite";
 const montserrat = Montserrat({ subsets: ["latin"] });
 import "primeicons/primeicons.css";
-
+import ru_RU from 'rsuite/locales/ru_RU';
 
 export const metadata: Metadata = {
     title: "Quick Shop",
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <body className={montserrat.className}>
                 <GlobalContextProvider>
-                    <CustomProvider>
+                    <CustomProvider locale={ru_RU}>
                         <Provider>
                             <Toaster position="bottom-right" reverseOrder={false} />
                             <header>

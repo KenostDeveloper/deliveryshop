@@ -125,3 +125,22 @@ body {
     background-color: var(--main-window);
   }
 }
+
+.rs-picker-daterange{
+  width: fit-content;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: flex-end;
+
+  .rs-input-group{
+    width: fit-content;
+  }
+}
+
+
+.filtersstatistic{
+  .rs-picker{
+    width: unset;
+  }
+}
