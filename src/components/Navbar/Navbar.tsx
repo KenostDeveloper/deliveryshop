@@ -119,12 +119,12 @@ const Navbar = () => {
                         <i className={`${styles["nav__location-icon"]} pi pi-map-marker`}></i>
                         <p className={`${styles.nav__text}`}>{session?.user?.id ? userCity?.name : cityWithoutUser?.name}</p>
                     </button>
-                    <div className={`${styles.nav__search}`}>
+                    {/* <div className={`${styles.nav__search}`}>
                         <input type="text" className={`${styles["nav__search-input"]}`} placeholder="поиск" />
                         <button>
                             <i className={`${styles["nav__search-icon"]} pi pi-search`}></i>
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className={`${styles["nav__buttons-container"]}`}>
