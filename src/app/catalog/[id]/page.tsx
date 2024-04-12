@@ -26,6 +26,9 @@ export default function Catalog({ params }: any) {
     const [fetching, setFetching] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [mobileCatalog, setMobuleCatalog] = useState(false);
+
+
     const { basket, setBasket } = useBasketContext();
 
     useEffect(() => {
@@ -108,17 +111,19 @@ export default function Catalog({ params }: any) {
         return text_forms[2];
     }
 
+
     return (
         <>
             <div className={`container ${styles.container}`}>
-                <CatalogMenu params={params.id} />
+                <CatalogMenu active={mobileCatalog} setActive={setMobuleCatalog} params={params.id} />
 
                 <div className={styles.contnent}>
                     <div className={styles.title}>
                         {!loading ? (
-                            <h1>
-                                {productsCategory?.parent?.name} {productsCategory.parent ? "/" : ""} {productsCategory?.name}
-                            </h1>
+                            <div className={styles.mobileCatalogButton} onClick={() => setMobuleCatalog(!mobileCatalog)}>
+                                <i className="pi pi-align-left"></i>
+                                Каталог
+                            </div>
                         ) : (
                             <Placeholder.Graph active style={{ height: 15, width: 300 }} />
                         )}

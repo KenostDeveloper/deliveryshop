@@ -13,7 +13,7 @@
 }
 
 .width{
-    width: 250px;
+    width: 250px !important;
 }
 
 .ProductCard img{
@@ -94,4 +94,33 @@
     }
 
     font-size: clamp(14px, 1.5vw, 16px);
+}
+
+
+@media (max-width: 1000px) {
+    .ProductCard{
+        width: calc((100% - 10px) / 2);
+    }
+}
+
+@media (max-width: 768px) {
+    .ProductCardImage{
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+
+}
+
+
+@media (max-width: 450px) {
+    .ProductCard{
+        width: 100%;
+    }
+
+    .ProductCard{
+        max-width: 100%;
+        padding-top: 30px;
+    }
 }
