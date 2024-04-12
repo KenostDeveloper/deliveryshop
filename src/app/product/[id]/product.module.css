@@ -239,3 +239,58 @@
     background: var(--color-active) !important;
     color: var(--text-color)!important;
 }
+
+.photo img{
+    object-fit: contain;
+}
+
+
+@media (max-width: 1400px) {
+    .photo{
+        width: 485px;
+    }
+
+    .product{
+        width: calc(100% - calc(485px + 16px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .photo{
+        width: 320px;
+    }
+
+    .product{
+        width: calc(100% - calc(320px + 16px));
+    }
+    
+}
+
+@media (max-width: 1000px) {
+    .container{
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .photo{
+        width: 100%;
+        position: unset;
+    }
+
+    .product{
+        width: 100%;
+    }
+
+    .button{
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+}
+
+@media (max-width: 576px) {
+
+
+}

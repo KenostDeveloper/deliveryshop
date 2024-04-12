@@ -146,14 +146,14 @@ export default function Catalog({ params }: any) {
         <main className={styles.main}>
             <div className={`container ${styles.container}`}>
                 <div className={styles.photo}>
-                    <img src={`/products/${product.image}`} alt="" />
+                    <img src={`/products/${product?.image}`} alt="" />
                 </div>
 
                 <div className={styles.product}>
                     <h1>{product?.name}</h1>
 
                     <hr className={styles.hr} />
-                    <p className={styles.price}>{product.price.toLocaleString()} ₽</p>
+                    <p className={styles.price}>{product?.price?.toLocaleString()} ₽</p>
                     {session?.user.role === "BUYER" && (
                         <>
                             <div className={styles.flex}>
@@ -180,25 +180,25 @@ export default function Catalog({ params }: any) {
                     <hr className={styles.hr} />
 
                     <h2>Описание</h2>
-                    <p className={styles.description}>{product.description}</p>
+                    <p className={styles.description}>{product?.description}</p>
 
                     <h2>Характеристики</h2>
 
                     <div className={styles.property}>
                         <span>Длина</span>
-                        <span>{product.length} мм</span>
+                        <span>{product?.length} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Ширина</span>
-                        <span>{product.width} мм</span>
+                        <span>{product?.width} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Высота</span>
-                        <span>{product.height} мм</span>
+                        <span>{product?.height} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Вес</span>
-                        <span>{product.weight} кг</span>
+                        <span>{product?.weight} кг</span>
                     </div>
                 </div>
             </div>
