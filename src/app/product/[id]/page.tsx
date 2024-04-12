@@ -14,8 +14,11 @@ import Title from "@/components/UI/Title.components";
 import ProductsSwiper from "@/components/ProductsSwiper/ProductsSwiper.components";
 import { Placeholder } from "rsuite";
 import Counter from "@/components/Counter/Counter.components";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/Helps/Loading";
 
 export default function Catalog({ params }: any) {
+    const { data: session, update } = useSession();
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(1);
     const [product, setProduct] = useState<any>();
@@ -25,6 +28,12 @@ export default function Catalog({ params }: any) {
     const [similarProducts, setSimilarProducts] = useState([]);
 
     const { basket, setBasket } = useBasketContext();
+
+    useEffect(() => {
+        if(typeof(session) == "object"){
+            setLoading(false)
+        }
+    }, [session]);
 
     useEffect(() => {
         axios.get(`/api/basket`).then((res) => {
@@ -129,8 +138,8 @@ export default function Catalog({ params }: any) {
         });
     };
 
-    if (!product) {
-        return <div>404 page</div>;
+    if(loading){
+        return <Loading/>
     }
 
     return (
@@ -145,24 +154,26 @@ export default function Catalog({ params }: any) {
 
                     <hr className={styles.hr} />
                     <p className={styles.price}>{product.price.toLocaleString()} ₽</p>
-                    <div className={styles.flex}>
-                        {!isBasket ? (
-                            <>
-                                <Counter count={count} setCount={setCount} />
-                                <button className={styles.button} onClick={() => addToBasket()}>
-                                    В корзину
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                {/* {!loading? <Counter count={count} setCount={changeCount}/> : <Placeholder.Graph active style={{ height: 42, width: 114, borderRadius: 8}} />} */}
-                                <Counter count={count} setCount={changeCount} />
-                                <button className={`${styles.button} ${styles.btnActive}`}>
-                                    В корзине
-                                </button>
-                            </>
-                        )}
-                    </div>
+                    {session?.user.role === "BUYER" && (
+                        <>
+                            <div className={styles.flex}>
+                                {!isBasket ? (
+                                    <>
+                                        <Counter count={count} setCount={setCount} />
+                                        <button className={styles.button} onClick={() => addToBasket()}>
+                                            В корзину
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* {!loading? <Counter count={count} setCount={changeCount}/> : <Placeholder.Graph active style={{ height: 42, width: 114, borderRadius: 8}} />} */}
+                                        <Counter count={count} setCount={changeCount} />
+                                        <button className={`${styles.button} ${styles.btnActive}`}>В корзине</button>
+                                    </>
+                                )}
+                            </div>
+                        </>
+                    )}
                     {/* <span className={styles.priceCredit}>Товар доступен в <p>рассрочку</p> от 15 999₽</span> */}
                     {/* {!loading? <span className={styles.priceCredit}>Скоро товар будет доступен в <p>рассрочку</p> (в разработке)</span> : <Placeholder.Graph active style={{ height: 15, width: 380, marginTop: 14 }} />} */}
 
@@ -174,20 +185,20 @@ export default function Catalog({ params }: any) {
                     <h2>Характеристики</h2>
 
                     <div className={styles.property}>
-                        <span>Длинна</span>
-                        <span>{product.weight} миллиметров</span>
+                        <span>Длина</span>
+                        <span>{product.length} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Ширина</span>
-                        <span>{product.weight} грамм</span>
+                        <span>{product.width} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Высота</span>
-                        <span>{product.weight} грамм</span>
+                        <span>{product.height} мм</span>
                     </div>
                     <div className={styles.property}>
                         <span>Вес</span>
-                        <span>{product.weight} грамм</span>
+                        <span>{product.weight} кг</span>
                     </div>
                 </div>
             </div>

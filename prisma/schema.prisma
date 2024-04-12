@@ -201,6 +201,7 @@ model Orders {
     totalCost     Float?
     allDuration   Float?
     allLength     Float?
+    deliveryMethod String?
     orderProducts OrderProducts[]
     orderCancells OrderCancells[]
 }

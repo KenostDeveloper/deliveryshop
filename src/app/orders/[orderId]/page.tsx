@@ -11,6 +11,13 @@ export default function OrderPage({params}:any) {
     const { data: session, update } = useSession();
     const [order, setOrder] = useState<any>([]);
     // const [userRates, setUserRates] = useState<any>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (typeof session == "object") {
+            setLoading(false);
+        }
+    }, [session]);
 
     useEffect(() => {
         // Получение заказа
@@ -28,6 +35,10 @@ export default function OrderPage({params}:any) {
         // });
 
     }, [])
+
+    if (loading) {
+        return <Loading />;
+    }
 
     if(session?.user.role != "BUYER") {
         return <NotFound />
