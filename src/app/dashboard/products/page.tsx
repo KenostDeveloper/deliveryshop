@@ -8,6 +8,7 @@ import { Input, InputNumber, InputPicker, Toggle } from "rsuite";
 import MyButton from "@/components/UI/MyInput/MyButton";
 import axios from "axios";
 import toast from "react-hot-toast";
+import NotFound from "@/components/NotFound/NotFound";
 
 export default function Products() {
     const inputFile = useRef<any>(null);
@@ -238,6 +239,11 @@ export default function Products() {
 
     if (session == null) {
         return <div>Вы не авторизированы</div>;
+    }
+    if(session.user.role !== "SELLER") {
+        return (
+            <NotFound />
+        )
     }
 
     return (
