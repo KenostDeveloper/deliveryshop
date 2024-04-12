@@ -12,11 +12,16 @@ import { GlobalContextProvider } from "@/components/Helps/GlobalBasket";
 import { CustomProvider } from "rsuite";
 const montserrat = Montserrat({ subsets: ["latin"] });
 import "primeicons/primeicons.css";
-import ru_RU from 'rsuite/locales/ru_RU';
+import ru_RU from "rsuite/locales/ru_RU";
 
 export const metadata: Metadata = {
     title: "Quick Shop",
-    description: "internet shop",
+    description:
+        "Лучший маркетплейс, который предлагает широкий ассортимент продуктов и товаров, быструю доставку и удобную систему оплаты, а также возможность стать продавцом.",
+    icons: {
+        icon: "/qs.svg",
+    },
+    robots: "index, nofollow",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
