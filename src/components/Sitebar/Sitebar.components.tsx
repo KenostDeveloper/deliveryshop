@@ -24,6 +24,11 @@ const Sitebar = ({ active, setActive }: any) => {
             icon: "pi-cart-plus",
             link: "/orders",
         },
+        {
+            name: "Профиль",
+            icon: "pi-user",
+            link: "/profile",
+        },
     ]);
 
     const [sitebarShop, setSitebarShop] = useState([
