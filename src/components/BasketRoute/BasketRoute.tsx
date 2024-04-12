@@ -14,17 +14,11 @@ const BasketRoute = ({ products, pathResult, pathParam }: any) => {
         <div className={`${styles["basket-routes"]}`}>
             {products.map((product: any, index: number) => (
                 <article key={product?.id} className={`${styles["basket-route"]}`}>
-                    <Product
-                        product={product}
-                        setOrder={null}
-                        inBasket={true}
-                        index={index}
-                        pathResult={pathResult}
-                    />
-                    {pathResult[index]?.path ? (
-                        <BasketRoutePath pathResultItem={pathResult[index]} pathParam={pathParam} />
-                    ) : (
+                    <Product product={product} setOrder={null} inBasket={true} index={index} pathResult={pathResult} />
+                    {!pathResult[index]?.path ? (
                         <p className={`${styles["path-not-found"]}`}>Пути не найдены</p>
+                    ) : (
+                        <BasketRoutePath pathResultItem={pathResult[index]} pathParam={pathParam} />
                     )}
                     <p className={`${styles["basket-route__price-total"]}`}>
                         Итого: {(product?.product?.price * product?.quantity).toLocaleString()} ₽

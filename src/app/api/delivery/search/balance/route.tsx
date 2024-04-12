@@ -364,11 +364,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             all_length += resultBEST[q].lenghtMin
                         }
 
+                        console.log("Result path", resultPath);
+
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: resultPath.length,
-                            path: [resultPath],
+                            path: resultPath?.length ? [resultPath] : null,
                             all_duration: all_duration,
                             all_cost: all_cost,
                             all_length: all_length,
@@ -516,13 +518,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             // }
                         }
 
-
+                        console.log("Best path", mainResultBest);
 
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: 1,
-                            path: [mainResultBest],
+                            path: mainResultBest?.path?.length ? [mainResultBest] : null,
                             all_duration: mainResultBest['parameters'] ? mainResultBest['parameters'][0] : 0,
                             all_cost: mainResultBest['parameters'] ? mainResultBest['parameters'][1] : 0,
                             all_length: mainResultBest['parameters']? mainResultBest['parameters'][2] : 0,

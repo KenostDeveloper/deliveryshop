@@ -189,7 +189,7 @@ export default function Checkout() {
         return <EmptyBasket />;
     }
 
-    if (session?.user.role != "BUYER") {
+    if (session && session?.user.role != "BUYER") {
         return <NotFound />;
     }
 
