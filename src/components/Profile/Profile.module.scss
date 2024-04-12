@@ -1,0 +1,48 @@
+.profile{
+    width: 100%;
+    border-radius: 8px;
+    background: var(--main-window);
+    padding: 50px;
+    margin-top: 100px;
+    display: flex;
+    gap: 32px;
+
+    &__image{
+        width: 240px;
+        height: 280px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    &__text{
+        margin-top: 12px;
+        width: calc(100% - 272px);
+    }
+
+    &__name{
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+    }
+
+    &__desc{
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--text-color);
+        line-height: 1.2;
+    }
+
+    i{
+        margin-left: 10px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: all 0.4s;
+
+        &:hover{
+            color: var(--accent-color);
+        }
+    }
+}

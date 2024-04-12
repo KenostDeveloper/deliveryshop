@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import NotFound from '@/components/NotFound/NotFound';
 import { Modal, ButtonToolbar, Button, RadioGroup, Radio, Placeholder } from 'rsuite';
 import { Graph } from "react-d3-graph";
+import Profile from '@/components/Profile/Profile';
 
 
 export default function Settings() {
@@ -22,13 +23,6 @@ export default function Settings() {
     const {data: session, update} = useSession();
     const [open, setOpen] = React.useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [profile, setProfile] = useState<any>({
-        image: "",
-        nameShop: "QuickShop",
-        description: "Описание вашего магазина ещё нет :( Исправте это!"
-    });
-
-    const [selectedFile, setSelectedFile] = useState<File>();
 
     const [shopSelected, setShopSelected] = useState([
         {}
@@ -79,10 +73,6 @@ export default function Settings() {
         setList(nextShapes);
     }
 
-
-    const inputFile = useRef<any>(null);
-
-
     useEffect(() => {
         if(typeof(session) == "object"){
             setLoading(false)
@@ -95,17 +85,6 @@ export default function Settings() {
     })
 
     useEffect(() => {
-        axios.get(`/api/profile/settings`).then((res) => {
-            setProfile(res.data?.profile);
-            if(profile?.nameShop == null){
-                setProfile({...profile, nameShop: " "})
-            }
-
-            if(profile?.description == null){
-                setProfile({...profile, description: " "})
-            }
-        });
-
         axios.get(`/api/users`).then((res) => {
             if(res.data.success){
                 setDeliverySityUser({cost: res.data.user?.deliveryCost, time: res.data.user?.deliveryTime})
@@ -142,68 +121,12 @@ export default function Settings() {
                 value: item.id,
             })));
         });
-
-
-        
     }, [])
 
 
     useEffect(() => {
         console.log(session)
     })
-
-    const createProduct = async () => {
-        const formData = new FormData();
-        if(selectedFile){
-            formData.append("file", selectedFile);
-        }
-        formData.append("name", profile.nameShop);
-        formData.append("description", profile.description);
-
-        axios
-        .post(`/api/profile/settings`, formData)
-        .then((res) => {
-            if (res.data.success) {
-                toast.success(res.data.message);
-                setProfile(res.data.profile)
-            } else {
-                toast.error(res.data.message);
-            }
-        })
-        .finally(() => setIsEdit(false));
-    };
-
-    const createShops = async () => {
-        axios
-        .post(`/api/profile/points`, JSON.stringify({shopSelected}))
-        .then((res) => {
-            if (res.data.success) {
-                toast.success(res.data.message);
-                setProfile(res.data.profile)
-                axios.get(`/api/profile/city?way=true`).then((res) => {
-                    if(res.data.success){
-                        setCityUser(res.data?.city.map((item: any) => ({
-                            label: item.city.name,
-                            value: item.city.id,
-                        })));
-
-                        axios.get(`/api/delivery/cityway?graph=true`).then((res) => {
-                            if(res.data.success){
-                                setSityWayGraph(res.data?.cityway);
-                            }
-                        });
-                    }
-                });
-            } else {
-                toast.error(res.data.message);
-            }
-        })
-        .finally(() => setIsEdit(false));
-    }
-
-  const hendlerInput = () => {
-    inputFile.current.click();
-  };
 
     //Добавление нового маршрута
 
@@ -249,6 +172,34 @@ export default function Settings() {
       };
     
     const [loadCityWay, setLoadCityWay] = useState(false);
+
+    const createShops = async () => {
+        axios
+        .post(`/api/profile/points`, JSON.stringify({shopSelected}))
+        .then((res) => {
+            if (res.data.success) {
+                toast.success(res.data.message);
+                // setProfile(res.data.profile)
+                axios.get(`/api/profile/city?way=true`).then((res) => {
+                    if(res.data.success){
+                        setCityUser(res.data?.city.map((item: any) => ({
+                            label: item.city.name,
+                            value: item.city.id,
+                        })));
+
+                        axios.get(`/api/delivery/cityway?graph=true`).then((res) => {
+                            if(res.data.success){
+                                setSityWayGraph(res.data?.cityway);
+                            }
+                        });
+                    }
+                });
+            } else {
+                toast.error(res.data.message);
+            }
+        })
+        .finally(() => setIsEdit(false));
+    }
 
     function updateNewCityWayTransport(id: string, item: any, property: any) {
         const nextShapes = newCityWayTransport.map((characteristic: any) => {
@@ -343,36 +294,16 @@ export default function Settings() {
             <NotFound/>
         )
     }
+    if(session.user.role !== "SELLER") {
+        return (
+            <NotFound />
+        )
+    }
 
     return (
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
-                <div className={styles.profile}>
-                    <img onClick={ hendlerInput } className={styles.profile__image} src={profile?.image == null ? "/quickshopimage.png" : `/users/` + profile.image} alt="" />
-                    <div className={styles.profile__text}>
-                        {!isEdit?
-                            <>
-                                <b className={styles.profile__name}>{profile?.nameShop  == null || "" ? "QuickShop" : profile?.nameShop}<i className='pi pi-pen-to-square' onClick={() => setIsEdit(!isEdit)}></i></b>
-                                <p className={styles.profile__desc}>{profile?.description == null || "" ? "Описание вашего магазина ещё нет :( Исправте это!" : profile?.description}</p>
-                            </>
-                            :
-                            <>
-                                <input onChange={
-                                    ({target}) => {
-                                        if(target.files){
-                                            const file = target.files[0];
-                                            setSelectedFile(file)
-                                        }
-                                    }
-                                } type="file" ref={inputFile} className="hidden"/>
-                                <MyInput value={profile.nameShop  == null || "" ? "QuickShop" : profile?.nameShop}  onChange={(e: any) => setProfile({...profile, nameShop: e.target.value})}/>
-                                <MyTextArea value={profile.description == null || "" ? "Описание вашего магазина ещё нет :( Исправте это!" : profile?.description}  onChange={(e: any) => setProfile({...profile, description: e.target.value})}/>
-                                <MyButton onClick={() => createProduct()}>Сохранить</MyButton>
-                            </>
-                        }
-                        
-                    </div>
-                </div>
+                <Profile isEdit={isEdit} setIsEdit={setIsEdit} />
 
                 <div className={styles.shops}>
                     <div className="kenost-title">Мои города</div>
