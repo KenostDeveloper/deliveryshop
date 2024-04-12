@@ -3,20 +3,19 @@ import styles from "./BasketRoute.module.scss";
 
 const BasketRoutePath = ({ pathResultItem, pathParam }: any) => {
     const pathArr = pathResultItem?.path;
-    console.log(pathArr, pathArr[0], pathArr[0][0]?.parameters);
 
     return (
         <section className={`${styles["basket-route-path"]}`}>
             {pathArr[0][0]?.parameters ? (
                 <>
                     {pathArr?.map((pathArrItem: any) => (
-                        <div key={pathArrItem} className={`${styles["basket-route-path__container"]} ${styles["basket-route-path__container--column"]}`}>
-                            {console.log("Inside map", pathArr, pathArrItem)}
+                        <div
+                            key={pathArrItem}
+                            className={`${styles["basket-route-path__container"]} ${styles["basket-route-path__container--column"]}`}>
                             {pathArrItem?.map((pathItem: any, index: number) => (
                                 <div key={pathItem} className={`${styles["basket-route-path__container"]}`}>
                                     {pathItem?.path?.map((path: any, index: number, array: any) => (
                                         <>
-                                            {console.log("Inside map", pathItem, path)}
                                             {index === 0 ? (
                                                 <div key={path?.id} className={`${styles["basket-route-path__flag-container"]}`}>
                                                     <img src="/basket/flag.svg" alt="flag image" />

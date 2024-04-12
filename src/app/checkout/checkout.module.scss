@@ -285,3 +285,16 @@
         align-self: flex-end;;
     }
 }
+
+
+.spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-block: 25px;
+}
+.spinner {
+    font-size: 30px;
+    text-align: center;
+}

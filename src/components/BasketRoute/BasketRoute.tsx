@@ -1,14 +1,8 @@
-import { useEffect } from "react";
 import Product from "../OrdersList/Product";
 import styles from "./BasketRoute.module.scss";
 import BasketRoutePath from "./BasketRoutePath";
 
 const BasketRoute = ({ products, pathResult, pathParam }: any) => {
-    useEffect(() => {
-        console.log(products);
-    }, []);
-
-    console.log("products", products);
 
     return (
         <div className={`${styles["basket-routes"]}`}>

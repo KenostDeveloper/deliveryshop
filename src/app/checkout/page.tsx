@@ -30,11 +30,18 @@ export default function Checkout() {
 
     const [orderComment, setOrderComment] = useState("");
 
-    const [maxCost, setMaxCost] = useState(10000);
-    const [maxLength, setMaxLength] = useState(1000);
-    const [maxDuration, setMaxDuration] = useState(100);
+    // const [maxCost, setMaxCost] = useState(10000);
+    // const [maxLength, setMaxLength] = useState(1000);
+    // const [maxDuration, setMaxDuration] = useState(100);
+
+    const [filters, setFilters] = useState({
+        maxCost: 100000,
+        maxLength: 5000,
+        maxDuration: 100,
+    });
 
     const [loading, setLoading] = useState(true);
+    const [isPathLoading, setIsPathLoading] = useState(false);
 
     const [deliveryTransports, setDeliveryTransports] = useState<any>([
         { label: "Автомобильный", value: 1 },
@@ -91,49 +98,62 @@ export default function Checkout() {
         // });
     }, []);
 
+    let timer: any;
     useEffect(() => {
-        switch (methodDelivery) {
-            case 1:
-                fetchPath("fast");
-                setPathParam("ч");
-                break;
-            case 2:
-                fetchPath("cheap");
-                setPathParam("₽");
-                break;
-            case 3:
-                fetchPath("short");
-                setPathParam("км");
-                break;
-            case 4:
-                fetchPath("balance");
-                setPathParam("ч");
-                break;
+        async function changeSearch() {
+            
         }
-    }, [methodDelivery, basket, selectTransport, maxCost, maxLength, maxDuration]);
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        setTimeout(() => {
+            switch (methodDelivery) {
+                case 1:
+                    fetchPath("fast");
+                    setPathParam("ч");
+                    break;
+                case 2:
+                    fetchPath("cheap");
+                    setPathParam("₽");
+                    break;
+                case 3:
+                    fetchPath("short");
+                    setPathParam("км");
+                    break;
+                case 4:
+                    fetchPath("balance");
+                    setPathParam("ч");
+                    break;
+            }
+        }, 1000);
+    }, [methodDelivery, basket, selectTransport, filters]);
 
     const fetchPath = async (searchType: string) => {
+        setIsPathLoading(true);
+
         const dataToPost: any = {
             transport: selectTransport,
         };
 
         if (methodDelivery == 4) {
-            dataToPost.maxCost = maxCost;
-            dataToPost.maxLenght = maxLength;
-            dataToPost.maxDuration = maxDuration;
+            dataToPost.maxCost = filters.maxCost;
+            dataToPost.maxLenght = filters.maxLength;
+            dataToPost.maxDuration = filters.maxDuration;
         }
 
         const res = await axios.post(`/api/delivery/search/${searchType}`, { ...dataToPost });
 
         if (!res?.data?.success) {
-            if(res.data?.message != "У вас нет доступа к данной функции!"){
+            if (res.data?.message != "У вас нет доступа к данной функции!") {
                 toast.error(res.data?.message);
             }
         } else {
             setPathResult(res.data?.result);
         }
 
-        console.log("Pathresult:", res.data);
+        setIsPathLoading(false);
     };
 
     function placeOrder() {
@@ -167,7 +187,7 @@ export default function Checkout() {
                     cities: citiesToReduce,
                     allDuration: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_duration), 0),
                     allLength: pathResult.reduce((sum: number, pathItem: any) => (sum += pathItem?.all_length), 0),
-                    deliveryMethod: deliveryMethod
+                    deliveryMethod: deliveryMethod,
                 })
             )
             .then((res) => {
@@ -248,35 +268,59 @@ export default function Checkout() {
                                 </div>
                             </div>
                             <div className={`${styles["deliveryFilter"]}`}>
-                                <CheckPicker
-                                    placeholder="Способ транспортировки"
-                                    value={selectTransport}
-                                    onChange={setSelectTransport}
-                                    data={deliveryTransports}
-                                    className={`${styles["deliveryFilter--transport"]} deliveryTranspots`}
-                                />
                                 {methodDelivery == 4 && (
                                     <>
                                         <div>
                                             <p>Максимально количество часов доставки</p>
-                                            <Slider progress min={0} max={100} defaultValue={100} onChange={setMaxDuration} />
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={100}
+                                                defaultValue={100}
+                                                onChange={(value: any) => setFilters({ ...filters, maxDuration: value })}
+                                            />
                                         </div>
                                         <div>
                                             <p>Максимальная сумма доставки</p>
-                                            <Slider progress min={0} max={10000} defaultValue={10000} onChange={setMaxCost} />
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={10000}
+                                                defaultValue={10000}
+                                                onChange={(value: any) => setFilters({ ...filters, maxCost: value })}
+                                            />
                                         </div>
                                         <div>
                                             <p>Максимальная протяжённость пути (км)</p>
-                                            <Slider progress min={0} max={1000} defaultValue={1000} onChange={setMaxLength} />
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={5000}
+                                                defaultValue={5000}
+                                                onChange={(value: any) => setFilters({ ...filters, maxLength: value })}
+                                            />
                                         </div>
                                     </>
                                 )}
                             </div>
                         </div>
+                        <CheckPicker
+                            placeholder="Способ транспортировки"
+                            value={selectTransport}
+                            onChange={setSelectTransport}
+                            data={deliveryTransports}
+                            className={`${styles["deliveryFilter--transport"]} deliveryTranspots`}
+                        />
 
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
-                            <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />
+                            {isPathLoading ? (
+                                <div className={`${styles.spinnerContainer}`}>
+                                    <i className={`pi pi-spin pi-spinner ${styles.spinner}`}></i>
+                                </div>
+                            ) : (
+                                <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />
+                            )}
 
                             <p className={`${styles["basket-route__title"]} ${styles["basket-route__title--comment"]}`}>Комментарий к заказу</p>
                             <Input
