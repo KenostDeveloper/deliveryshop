@@ -179,6 +179,19 @@
 }
 
 @media screen and (width <= 1000px) {
+
+    .mobileLocation{
+        display: block;
+    }
+
+    .navDesktop{
+        display: none;
+    }
+
+    .nav__buttons-container{
+        margin: 0;
+    }
+
     .nav__search {
         display: none;
     }
@@ -199,4 +212,12 @@
 
 @media screen and (width <= 800px) {
 
+}
+
+@media (max-width: 576px) {
+    .mobileLocation {
+        .nav__text{
+            display: none;
+        }
+    }
 }

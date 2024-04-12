@@ -46,3 +46,11 @@
     font-weight: 600;
     line-height: normal;
 }
+
+@media (max-width: 576px) {
+    .ModalAuth{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

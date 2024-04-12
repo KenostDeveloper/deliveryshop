@@ -516,14 +516,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             // }
                         }
 
+
+
                         result[i] = {
                             id_product: basket[i].id_product,
                             id_basket: basket[i].id,
                             count_path: 1,
                             path: [mainResultBest],
-                            all_duration: mainResultBest['parameters'][0],
-                            all_cost: mainResultBest['parameters'][1],
-                            all_length: mainResultBest['parameters'][2],
+                            all_duration: mainResultBest['parameters'] ? mainResultBest['parameters'][0] : 0,
+                            all_cost: mainResultBest['parameters'] ? mainResultBest['parameters'][1] : 0,
+                            all_length: mainResultBest['parameters']? mainResultBest['parameters'][2] : 0,
                             quantity: basket[i].quantity,
                             product: basket[i].product
                         };

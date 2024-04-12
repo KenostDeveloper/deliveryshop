@@ -5,6 +5,7 @@
 
     width: 100%;
     height: 640px;
+    overflow: hidden;
 }
 
 .empty-basket__container {
@@ -28,6 +29,8 @@
 .empty-basket__background {
     position: absolute;
     object-fit: cover;
+    height: 100%;
+    max-width: unset;
 }
 
 .empty-basket__content {
@@ -48,4 +51,13 @@
 
     margin: 10px 0 80px 0;
     text-align: center;
+}
+
+
+
+@media (max-width: 576px) {
+    .empty-basket__container button{
+        width: 80%;
+        padding: 0;
+    }
 }

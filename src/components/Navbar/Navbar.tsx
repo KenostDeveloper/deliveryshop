@@ -115,7 +115,7 @@ const Navbar = () => {
                     </Link>
                     <button
                         onClick={() => setCityModalActive(true)}
-                        className={`${styles.nav__button} ${styles["nav__button--transparent"]} ${styles.nav__location}`}>
+                        className={`${styles.nav__button} ${styles.navDesktop} ${styles["nav__button--transparent"]} ${styles.nav__location}`}>
                         <i className={`${styles["nav__location-icon"]} pi pi-map-marker`}></i>
                         <p className={`${styles.nav__text}`}>{session?.user?.id ? userCity?.name : cityWithoutUser?.name}</p>
                     </button>
@@ -133,8 +133,6 @@ const Navbar = () => {
                         <p className={`${styles.nav__text}`}>каталог</p>
                     </button>
 
-                    {session ? userProfile() : noUser()}
-
                     <div className={styles.mobileLocation}>
                         <button
                             onClick={() => setCityModalActive(true)}
@@ -143,6 +141,8 @@ const Navbar = () => {
                             <p className={`${styles.nav__text}`}>{session?.user?.id ? userCity?.name : cityWithoutUser?.name}</p>
                         </button>
                     </div>
+
+                    {session ? userProfile() : noUser()}
 
                     {session?.user.role == "BUYER" && (
                         <Link

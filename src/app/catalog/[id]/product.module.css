@@ -129,3 +129,30 @@
     flex-wrap: wrap;
     gap: 16px 10px;
 }
+
+
+@media (max-width: 1400px) {
+    
+}
+
+@media (max-width: 1200px) {
+    .menu{
+        width: 224px;
+    }
+
+    .contnent{
+        width: calc(100% - 240px);
+    }
+}
+
+@media (max-width: 1000px) {
+
+}
+
+@media (max-width: 768px) {
+
+}
+
+@media (max-width: 576px) {
+
+}

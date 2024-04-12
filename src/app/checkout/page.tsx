@@ -126,7 +126,9 @@ export default function Checkout() {
         const res = await axios.post(`/api/delivery/search/${searchType}`, { ...dataToPost });
 
         if (!res?.data?.success) {
-            toast.error(res.data?.message);
+            if(res.data?.message != "У вас нет доступа к данной функции!"){
+                toast.error(res.data?.message);
+            }
         } else {
             setPathResult(res.data?.result);
         }
