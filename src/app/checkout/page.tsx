@@ -27,6 +27,10 @@ export default function Checkout() {
 
     const [orderComment, setOrderComment] = useState("");
 
+    const [maxCost, setMaxCost] = useState(10000);
+    const [maxLength, setMaxLength] = useState(1000);
+    const [maxDuration, setMaxDuration] = useState(100);
+
     const [deliveryTransports, setDeliveryTransports] = useState<any>([
         { label: "Автомобильный", value: 1 },
         { label: "Железнодорожный", value: 2 },
@@ -90,13 +94,26 @@ export default function Checkout() {
                 fetchPath("short");
                 setPathParam("км");
                 break;
+            case 4:
+                fetchPath("balance");
+                setPathParam("ч");
+                break;
         }
-    }, [methodDelivery, basket, selectTransport]);
+    }, [methodDelivery, basket, selectTransport, maxCost, maxLength, maxDuration]);
 
     const fetchPath = async (searchType: string) => {
-        const res = await axios.post(`/api/delivery/search/${searchType}`, {
+
+        const dataToPost: any = {
             transport: selectTransport,
-        });
+        }
+
+        if(methodDelivery == 4) {
+            dataToPost.maxCost = maxCost;
+            dataToPost.maxLenght = maxLength;
+            dataToPost.maxDuration = maxDuration;
+        }
+
+        const res = await axios.post(`/api/delivery/search/${searchType}`, {...dataToPost});
 
         if (!res?.data?.success) {
             toast.error(res.data?.message);
@@ -112,16 +129,16 @@ export default function Checkout() {
 
         // Формирование списка городов, из который нужно списывать товар
         const citiesToReduce: any = [];
-        for(let i = 0; i < pathResult.length; i++) {
+        for (let i = 0; i < pathResult.length; i++) {
             citiesToReduce[i] = [];
-            
-            for(let j = 0; j < pathResult[i]?.path.length; j++) {
+
+            for (let j = 0; j < pathResult[i]?.path.length; j++) {
                 citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j]?.path[0])[0]);
             }
         }
-        
+
         axios
-            .post(`/api/orders`, JSON.stringify({deliveryCost: deliveryCost, cities: citiesToReduce}))
+            .post(`/api/orders`, JSON.stringify({ deliveryCost: deliveryCost, cities: citiesToReduce }))
             .then((res) => {
                 if (res.data.success) {
                     toast.success(res.data.message);
@@ -180,51 +197,62 @@ export default function Checkout() {
                                     <span>Выбрать</span>
                                 </div>
                             </div>
+                            <div
+                                className={methodDelivery == 4 ? `${styles.active} ${styles.delivery}` : `${styles.delivery}`}
+                                onClick={() => setMetodDelivery(4)}>
+                                <div className={styles.deliveryTitle}>
+                                    <p>Сбалансированный маршрут</p> <i className="pi pi-filter"></i>
+                                </div>
+                                <div className={styles.deliveryBody}>
+                                    {/* <p>В магазине</p> */}
+                                    <span>Выбрать</span>
+                                </div>
+                            </div>
+                            <div className={`${styles["deliveryFilter"]}`}>
+                                <CheckPicker
+                                    placeholder="Способ транспортировки"
+                                    value={selectTransport}
+                                    onChange={setSelectTransport}
+                                    data={deliveryTransports}
+                                    className={`${styles["deliveryFilter--transport"]} deliveryTranspots`}
+                                />
+                                {methodDelivery == 4 && (
+                                    <>
+                                        <div>
+                                            <p>Максимально количество часов доставки</p>
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={100}
+                                                defaultValue={100}
+                                                onChange={setMaxDuration}
+                                            />
+                                        </div>
+                                        <div>
+                                            <p>Максимальная сумма доставки</p>
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={10000}
+                                                defaultValue={10000}
+                                                onChange={setMaxCost}
+                                            />
+                                        </div>
+                                        <div>
+                                            <p>Максимальная протяжённость пути (км)</p>
+                                            <Slider
+                                                progress
+                                                min={0}
+                                                max={1000}
+                                                defaultValue={1000}
+                                                onChange={setMaxLength}
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         </div>
-                        <CheckPicker
-                            placeholder="Способ транспортировки"
-                            value={selectTransport}
-                            onChange={setSelectTransport}
-                            data={deliveryTransports}
-                            className="deliveryTranspots"
-                        />
-                        <div>
-                            <p>Максимально количество часов доставки</p>
-                            <Slider
-                                progress
-                                min={0}
-                                max={100}
-                                defaultValue={50}
-                                onChange={value => {
-                                    console.log(value);
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <p>Максимальная сумма доставки</p>
-                            <Slider
-                                progress
-                                min={0}
-                                max={100}
-                                defaultValue={50}
-                                onChange={value => {
-                                    console.log(value);
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <p>Максимальная протяжённость пути (км)</p>
-                            <Slider
-                                progress
-                                min={0}
-                                max={100}
-                                defaultValue={50}
-                                onChange={value => {
-                                    console.log(value);
-                                }}
-                            />
-                        </div>
-                        
+
                         <section>
                             <p className={`${styles["basket-route__title"]}`}>Ваши товары</p>
                             <BasketRoute products={basket} pathResult={pathResult} pathParam={pathParam} />

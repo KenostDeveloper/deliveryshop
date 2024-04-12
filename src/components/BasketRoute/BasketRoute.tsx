@@ -24,7 +24,7 @@ const BasketRoute = ({ products, pathResult, pathParam }: any) => {
                     {pathResult[index]?.path ? (
                         <BasketRoutePath pathResultItem={pathResult[index]} pathParam={pathParam} />
                     ) : (
-                        <p>Пути не найдены</p>
+                        <p className={`${styles["path-not-found"]}`}>Пути не найдены</p>
                     )}
                     <p className={`${styles["basket-route__price-total"]}`}>
                         Итого: {(product?.product?.price * product?.quantity).toLocaleString()} ₽
