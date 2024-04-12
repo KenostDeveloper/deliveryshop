@@ -153,7 +153,11 @@ export async function GET(req: NextRequest) {
         if (category_id) {
             if (category_id == "all") {
                 const count = await db.product.count();
-                const product = await db.product.findMany();
+                const product = await db.product.findMany({
+                    where: {
+                        status: true
+                    }
+                });
 
                 return NextResponse.json({ count, product });
             }
@@ -167,6 +171,7 @@ export async function GET(req: NextRequest) {
             const product = await db.product.findMany({
                 where: {
                     idCategory: Number(category_id),
+                    status: true
                 },
             });
 

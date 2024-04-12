@@ -383,8 +383,8 @@ export default function Products() {
                             <div className={styles.addProductFlex}>
                                 <MyButton onClick={() => createProduct()}>Добавить</MyButton>
                                 <Toggle
-                                    checkedChildren="On"
-                                    unCheckedChildren="Off"
+                                    checkedChildren="Вкл"
+                                    unCheckedChildren="Выкл"
                                     checked={newProduct.status}
                                     onChange={(value) =>
                                         setNewProduct({ ...newProduct, status: value })
@@ -534,8 +534,8 @@ export default function Products() {
                                     Удалить
                                 </MyButton>
                                 <Toggle
-                                    checkedChildren="On"
-                                    unCheckedChildren="Off"
+                                    checkedChildren="Вкл"
+                                    unCheckedChildren="Выкл"
                                     checked={item.status}
                                     onChange={(value, e) =>
                                         updateProducts(item.id, "status", value)
