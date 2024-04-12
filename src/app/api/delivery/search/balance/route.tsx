@@ -325,7 +325,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             let cost = middleResult[k].reduce((acc:any, item:any) => acc+=item.costMin, 0)
                             let duration = middleResult[k].reduce((acc:any, item:any) => acc+=item.durationMin, 0)
                             let length = middleResult[k].reduce((acc:any, item:any) => acc+=item.lenghtMin, 0)
-                            if(basket[i].quantity <= count){
+                            if(basket[i].quantity <= count && data.maxLenght >= length && data.maxCost >= cost && data.maxDuration){
                                 if(bestCount >= count && bestCost >= cost && bestDuration >= duration && bestLength >= length){
                                     bestCount = count;
                                     bestCost = cost;
