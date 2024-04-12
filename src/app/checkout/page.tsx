@@ -98,17 +98,10 @@ export default function Checkout() {
         // });
     }, []);
 
-    let timer: any;
+
     useEffect(() => {
-        async function changeSearch() {
-            
-        }
-
-        if (timer) {
-            clearTimeout(timer);
-        }
-
-        setTimeout(() => {
+        
+        const Debounce = setTimeout(() => {
             switch (methodDelivery) {
                 case 1:
                     fetchPath("fast");
@@ -126,8 +119,11 @@ export default function Checkout() {
                     fetchPath("balance");
                     setPathParam("ч");
                     break;
-            }
-        }, 1000);
+            }            
+        }, 300)
+
+        return () => clearTimeout(Debounce);
+
     }, [methodDelivery, basket, selectTransport, filters]);
 
     const fetchPath = async (searchType: string) => {
