@@ -72,12 +72,20 @@
     border-radius: 8px;
     border: solid 1px #C3C3C3;
     cursor: pointer;
+
+    height: fit-content;
 }
 
 .deliveryTitle{
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 5px;
+
+    p {
+        word-break: break-all;
+    }
 }
 
 .deliveryBody{
@@ -260,5 +268,18 @@
 
     a {
         text-decoration: underline;
+    }
+}
+
+
+.deliveryFilter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding-inline: 25px;
+
+    &--transport {
+        align-self: flex-end;;
     }
 }

@@ -25,6 +25,10 @@
     gap: 10px;
     overflow-x: auto;
 
+    &--column {
+        flex-direction: column;
+    }
+
     &::-webkit-scrollbar {
         height: 4px;
         background-color: #f0f0f0; /* blue */
@@ -75,4 +79,11 @@
 
 .basket-route-path__line {
     max-width: 130px;
+}
+
+.path-not-found {
+    font-weight: bold;
+    font-size: 20px;
+    margin-block: 25px;
+    text-align: center;
 }
