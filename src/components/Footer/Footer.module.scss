@@ -104,7 +104,6 @@
 
 .nav{
     display: flex;
-    justify-content: center;
     gap: clamp(25px, 25%, 150px);
     width: 40%;
 }
@@ -157,8 +156,6 @@
 
 @media (max-width:1000px) {
     .container{
-        align-items: center;
-        flex-direction: column-reverse;
         gap: 50px;
     }
 
