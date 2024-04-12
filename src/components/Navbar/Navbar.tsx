@@ -60,7 +60,7 @@ const Navbar = () => {
         return (
             <>
                 <button
-                    className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
+                    className={`${styles.nav__button} ${styles["nav__button--yellow"]} ${styles["nav__auth-button"]}`}
                     onClick={() => {
                         setModalActive(true);
                         setAuthEmail(0);
@@ -84,7 +84,7 @@ const Navbar = () => {
             // {/* {`${session?.user?.username}`} */}
 
             <button
-                className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
+                className={`${styles.nav__button} ${styles["nav__button--yellow"]} ${styles["nav__auth-button"]}`}
                 disabled={isLoad}
                 onClick={() => {
                     Logout();

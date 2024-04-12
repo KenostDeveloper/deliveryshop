@@ -164,12 +164,19 @@
     }
 }
 
+.nav__auth-button {
+
+}
+
 @media screen and (width <= 1240px) {
     .nav__buttons-container {
         
     }
 
     .nav__catalog,
+    .nav__auth-button {
+        display: none;
+    }
 }
 
 @media screen and (width <= 1000px) {
