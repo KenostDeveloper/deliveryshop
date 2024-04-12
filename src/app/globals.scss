@@ -128,6 +128,14 @@ body {
     }
 }
 
+.padding-swiper .swiper-wrapper {
+  padding-bottom: 44px;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--accent-color) !important;
+}
+
 @media (max-width: 1400px) {
 }
 
