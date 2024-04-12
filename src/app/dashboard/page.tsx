@@ -6,6 +6,9 @@ import Loading from "@/components/Helps/Loading";
 import NotFound from '@/components/NotFound/NotFound';
 import axios from 'axios';
 
+import { Table } from 'rsuite';
+const { Column, HeaderCell, Cell } = Table;
+
 import { Chart } from 'primereact/chart';
 import { Placeholder, Tabs } from 'rsuite';
 
@@ -31,6 +34,13 @@ export default function Profile() {
                 setStatistics(res.data.data);
             }
         });
+
+        axios.get(`/api/statistics/orders`).then((res) => {
+            if(res.data.success){
+                setDataTable(res.data.data.orders);
+                console.log(res.data.data.orders)
+            }
+        });
     }, [])
 
     const data = {
@@ -52,6 +62,44 @@ export default function Profile() {
         plugins: false
     };
 
+    const [dataTable, setDataTable] = useState<any>([]);
+
+    const [sortColumn, setSortColumn] = useState();
+    const [sortType, setSortType] = useState();
+    const [loadingTable, setLoadingTable] = useState(false);
+
+    const getData = () => {
+        if (sortColumn && sortType) {
+          return dataTable.sort((a:any, b:any) => {
+            console.log(a, b, dataTable)
+            let x = a[sortColumn];
+            let y = b[sortColumn];
+
+            if (typeof x === 'string') {
+              x = x.charCodeAt();
+            }
+            if (typeof y === 'string') {
+              y = y.charCodeAt();
+            }
+            if (sortType === 'asc') {
+              return x - y;
+            } else {
+              return y - x;
+            }
+          });
+        }
+        return dataTable;
+      };
+    
+    const handleSortColumn = (sortColumn:any, sortType:any) => {
+        setLoadingTable(true);
+        setTimeout(() => {
+            setLoadingTable(false);
+            setSortColumn(sortColumn);
+            setSortType(sortType);
+        }, 500);
+    };
+
 
     if(loading){
         return <Loading/>
@@ -67,6 +115,24 @@ export default function Profile() {
             <NotFound />
         )
     }
+
+    const ImageCell = ({ rowData, dataKey, ...props }) => (
+        <Cell {...props} style={{ padding: 0 }}>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              background: '#f5f5f5',
+              borderRadius: 6,
+              marginTop: 2,
+              overflow: 'hidden',
+              display: 'inline-block'
+            }}
+          >
+            <img src={`/products/${rowData.product.image}`}/>
+          </div>
+        </Cell>
+    );
 
     return (
         <div className={`${styles.main} main`}>
@@ -116,6 +182,65 @@ export default function Profile() {
                     </div>
                     <Tabs style={{margin: '10px 0 0 0'}} defaultActiveKey="1" appearance="subtle">
                         <Tabs.Tab eventKey="1" title="Заказы">
+                        <Table
+                            height={1000}
+                            data={getData()}
+                            sortColumn={sortColumn}
+                            sortType={sortType}
+                            onSortColumn={handleSortColumn}
+                            loading={loadingTable}
+                            >
+                            <Column width={70} align="center" fixed sortable fullText>
+                                <HeaderCell>id</HeaderCell>
+                                <Cell dataKey="id" />
+                            </Column>
+
+                            {/* <Column width={40} sortable fullText>
+                                <HeaderCell>Изображение</HeaderCell>
+                                <ImageCell dataKey="product.image" />
+                            </Column> */}
+
+                            <Column width={130} sortable fullText>
+                                <HeaderCell>Название</HeaderCell>
+                                <Cell dataKey="product_name" />
+                            </Column>
+
+                            <Column width={80} sortable fullText>
+                                <HeaderCell>Количество</HeaderCell>
+                                <Cell dataKey="quantity" />
+                            </Column>
+
+                            <Column width={120} sortable fullText>
+                                <HeaderCell>Цена товара</HeaderCell>
+                                <Cell dataKey="price" />
+                            </Column>
+
+                            <Column width={100} sortable fullText>
+                                <HeaderCell>Стоимость товаров</HeaderCell>
+                                <Cell dataKey="cost" />
+                            </Column>
+
+                            {/* <Column width={100} sortable fullText>
+                                <HeaderCell>Стоимость доставки</HeaderCell>
+                                <Cell dataKey="order.deliveryCost" />
+                            </Column>
+
+                            <Column width={100} sortable fullText>
+                                <HeaderCell>Время заказа в пути (ч)</HeaderCell>
+                                <Cell dataKey="order.allDuration" />
+                            </Column>
+
+                            <Column width={100} sortable fullText>
+                                <HeaderCell>Километраж</HeaderCell>
+                                <Cell dataKey="order.allLength" />
+                            </Column> */}
+
+                            <Column width={200} sortable fullText>
+                                <HeaderCell>Дата</HeaderCell>
+                                <Cell dataKey="date" />
+                            </Column>
+                            
+                            </Table>
                         </Tabs.Tab>
                     </Tabs>
                 </div>
