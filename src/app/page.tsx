@@ -61,7 +61,7 @@ export default function Home() {
                 <Title text="Наши преимущества" margin={true} />
                 <Advantages />
 
-                <Title text="Отзывы клиентов" margin={true} />
+                {/* <Title text="Отзывы клиентов" margin={true} /> */}
                 {/* Здесь будут отзывы клиентов */}
             </div>
 

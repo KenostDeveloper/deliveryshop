@@ -1,126 +1,157 @@
 .advantages {
-	display: grid;
-	grid-template: 1fr / repeat(4, 1fr);
-	gap: 15px;
+    display: grid;
+    grid-template: 1fr / repeat(4, 1fr);
+    gap: 15px;
 }
 
 .advantages-item {
-	height: 220px;
-	position: relative;
+    width: 100%;
+    height: 220px;
+    position: relative;
 
-	border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
 
-	transition: all linear 0.3s;
+    transition: all linear 0.3s;
 
-	&:nth-child(1) {
-		background: linear-gradient(180deg, var(--green-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+    p {
+        width: 80%;
+    }
 
-		&:hover {
-			box-shadow: 0 0 50px 10px var(--green-light-color);
+    &:nth-child(1) {
+        background: linear-gradient(180deg, var(--green-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
 
-			img {
-				scale: 1.1;
-				rotate: -15deg;
-				translate: 25px -25px;
-			}
-		}
+        &:hover {
+            box-shadow: 0 0 50px 10px var(--green-light-color);
 
-		p {
-			top: 15px;
-			left: 50%;
-		}
+            img {
+                scale: 1.1;
+                rotate: -15deg;
+                translate: 25px -25px;
+            }
+        }
 
-		img {
-			bottom: 20px;
-			left: 40px;
-		}
-	}
+        p {
+            top: 15px;
+            right: 10%;
+            text-align: end;
+        }
 
-	&:nth-child(2) {
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--red-light-color) 100%);
+        img {
+            bottom: 20px;
+            left: 40px;
+        }
+    }
 
-		&:hover {
-			box-shadow: 0 0 50px 10px var(--red-light-color);
+    &:nth-child(2) {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--red-light-color) 100%);
 
-			img {
-				scale: 1.1;
-				rotate: 15deg;
-				translate: -10px -10px;
-			}
-		}
+        &:hover {
+            box-shadow: 0 0 50px 10px var(--red-light-color);
 
-		p {
-			bottom: 20px;
-			left: 20px;
-		}
+            img {
+                scale: 1.1;
+                rotate: 15deg;
+                translate: -10px -10px;
+            }
+        }
 
-		img {
-			top: 10px;
-			right: 20px;
-		}
-	}
+        p {
+            bottom: 20px;
+            left: 20px;
+        }
 
-	&:nth-child(3) {
-		background: linear-gradient(180deg, var(--blue-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
+        img {
+            top: 10px;
+            right: 20px;
+        }
+    }
 
-		&:hover {
-			box-shadow: 0 0 50px 10px var(--blue-light-color);
+    &:nth-child(3) {
+        background: linear-gradient(180deg, var(--blue-light-color) 0%, rgba(255, 255, 255, 0.25) 100%);
 
-			img {
-				scale: 1.1;
-				rotate: 10deg;
-			}
-		}
+        &:hover {
+            box-shadow: 0 0 50px 10px var(--blue-light-color);
 
-		p {
-			top: 20px;
-			left: 20px;
-		}
+            img {
+                scale: 1.1;
+                rotate: 10deg;
+            }
+        }
 
-		img {
-			bottom: 20px;
-			right: 50px;
-		}
-	}
+        p {
+            top: 20px;
+            left: 20px;
+        }
 
-	&:nth-child(4) {
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--orange-light-color) 100%);
+        img {
+            bottom: 20px;
+            right: 50px;
+        }
+    }
 
-		&:hover {
-			box-shadow: 0 0 50px 10px var(--orange-light-color);
+    &:nth-child(4) {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, var(--orange-light-color) 100%);
 
-			img {
-				scale: 1.1;
-				rotate: -15deg;
-				translate: -25px 5px;
-			}
-		}
+        &:hover {
+            box-shadow: 0 0 50px 10px var(--orange-light-color);
 
-		p {
-			bottom: 20px;
-			left: 30px;
-		}
+            img {
+                scale: 1.1;
+                rotate: -15deg;
+                translate: -25px 5px;
+            }
+        }
 
-		img {
-			top: 30px;
-			right: 45px;
-		}
-	}
+        p {
+            bottom: 20px;
+            left: 30px;
+        }
+
+        img {
+            top: 30px;
+            right: 45px;
+        }
+    }
 }
 
 .advantages-item__title {
-	font-weight: bold;
-	font-size: 24px;
-	line-height: 1.1;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 1.1;
 
-	position: absolute;
+    position: absolute;
 
-	width: 70%;
+    width: 70%;
 }
 
 .advantages-item__image {
-	height: 120px;
+    height: 120px;
 
-	position: absolute;
-	transition: all linear 0.3s;
+    position: absolute;
+    transition: all linear 0.3s;
+}
+
+@media screen and (width <= 1000px) {
+    .advantages {
+        grid-template: auto / repeat(2, 1fr);
+    }
+
+    .advantages-item {
+        &:nth-child(1) {
+            p {
+                top: 15px;
+            }
+        }
+    }
+}
+
+@media screen and (width <= 400px) {
+    .advantages {
+        grid-template: repeat(4, 1fr) / auto;
+        place-items: center;
+    }
+
+    .advantages-item {
+        width: 90%;
+    }
 }

@@ -54,19 +54,25 @@ const Navbar = () => {
             router.push("/");
             signOut();
         });
-
     };
 
     const noUser = () => {
         return (
-            <button
-                className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
-                onClick={() => {
-                    setModalActive(true);
-                    setAuthEmail(0);
-                }}>
-                Вход / Регистрация
-            </button>
+            <>
+                <button
+                    className={`${styles.nav__button} ${styles["nav__button--yellow"]}`}
+                    onClick={() => {
+                        setModalActive(true);
+                        setAuthEmail(0);
+                    }}>
+                    Вход / Регистрация
+                </button>
+                <Link
+                    href="/checkout"
+                    className={`${styles.nav__button} ${styles.nav__basket} ${styles["nav__button--transparent"]} ${styles.nav__cart}`}>
+                    <i className={`${styles["nav__cart-icon"]} pi pi-shopping-cart`}></i>
+                </Link>
+            </>
         );
     };
 

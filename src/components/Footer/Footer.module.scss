@@ -99,11 +99,14 @@
 .container{
     display: flex;
     justify-content: space-between;
+    gap: 25px;
 }
 
 .nav{
     display: flex;
-    gap: 150px;
+    justify-content: center;
+    gap: clamp(25px, 25%, 150px);
+    width: 40%;
 }
 
 .links{
@@ -153,8 +156,19 @@
 }
 
 @media (max-width:1000px) {
+    .container{
+        align-items: center;
+        flex-direction: column-reverse;
+        gap: 50px;
+    }
+
+    .nav {
+        width: 100%;
+    }
+
     .info{
-        width: 400px;
+        // width: 400px;
+        width: 100%;
     }
 
     .info p{
@@ -175,15 +189,6 @@
 @media (max-width:768px) {
     .container{
         flex-direction: column-reverse;
-    }
-
-    .logo{
-        display: none;
-    }
-    
-    .logoMobile{
-        display: block;
-        margin-bottom: 40px;
     }
 
     .links{

@@ -64,7 +64,7 @@ const ProductCard = ({ item, slider, isHomePage }: any) => {
                 </Link>
                 <div className={`${style.ProductCardPrice} ${isHomePage && style.ProductCardPrice_Home}`}>
                     <b>{(item?.price).toLocaleString()} ₽</b>
-                    {session?.user.role === "BUYER" && (
+                    {!session || session?.user.role === "BUYER" && (
                         <>
                             {!isBasket ? (
                                 <button onClick={() => addToBasket()}>В корзину</button>

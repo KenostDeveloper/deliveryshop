@@ -1,6 +1,8 @@
 .ProductCard{
-    width: calc(calc(100% - 20px) / 3);
-    max-width: 270px;
+    // width: calc(calc(100% - 20px) / 3);
+    max-width: 250px;
+    width: clamp(150px, 25vw, 225px);
+    height: 350px;
     display: flex;
     justify-content: space-between;
     background: #F8F7F5;
@@ -11,7 +13,7 @@
 }
 
 .width{
-    width: 250px;
+    // width: 250px;
 }
 
 .ProductCard img{
@@ -61,7 +63,7 @@
 }
 
 .ProductCardImage{
-    width: 200px;
+    // width: 200px;
     height: 200px;
 
     border-radius: var(--border-radius);
@@ -76,6 +78,8 @@
 .ProductCardPrice {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5px;
 
     width: 100%;
 
@@ -88,4 +92,6 @@
             margin: 0;
         }
     }
+
+    font-size: clamp(14px, 1.5vw, 16px);
 }

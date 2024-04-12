@@ -61,8 +61,10 @@ body {
 }
 
 .container{
-  max-width: 1200px;
-  width: 100%;
+//   max-width: clamp(350px, 80vw, 1200px);
+//   margin-inline: clamp(10px, 10vw, 150px);
+//   width: 100%;
+max-width: 1200px;
 }
 
 .main{
@@ -123,5 +125,33 @@ body {
   margin-top: 16px;
   .rs-picker-toggle{
     background-color: var(--main-window);
+  }
+}
+
+@media (max-width: 1400px) {
+
+}
+
+@media (max-width: 1200px) {
+  .container{
+    width: 968px;
+  }
+}
+
+@media (max-width:1000px) {
+  .container{
+    width: 730px;
+  }
+}
+  
+@media (max-width:768px) {
+  .container{
+    width: 560px;
+  }
+}
+  
+@media (max-width:576px) {
+  .container{
+    width: 96vw;
   }
 }
