@@ -279,11 +279,13 @@
 }
 
 .order__product-img {
-    border: 2px solid var(--gray-color);
+    // border: 2px solid var(--gray-color);
     border-radius: var(--border-radius);
 
     height: 140px;
     aspect-ratio: 1;
+
+    overflow: hidden;
 
     // object-fit: cover;
 

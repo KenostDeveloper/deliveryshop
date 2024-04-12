@@ -29,7 +29,7 @@ const Navbar = () => {
 
     const [cityWithoutUser, setCityWithoutUser] = useState({
         id: 0,
-        name: ""
+        name: "",
     });
 
     const [isLoad, setIsLoad] = useState(false);
@@ -49,10 +49,12 @@ const Navbar = () => {
     const Logout = async () => {
         setIsLoad(true);
 
-        axios.post(`/api/basket/delete`).finally(() => signOut());
-        router.push('/');
+        axios.post(`/api/basket/delete`).finally(() => {
+            setIsLoad(false);
+            router.push("/");
+            signOut();
+        });
 
-        setIsLoad(false);
     };
 
     const noUser = () => {
