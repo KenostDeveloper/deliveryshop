@@ -275,7 +275,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             resultPath[n] = path[middleResult[indexSumMinPath][n]["index"]];
                         }
 
-                        let tempDuration = 0;
+                        let tempDuration = [];
                         let tempCost = 0;
                         let tempLength = 0;
 
@@ -283,10 +283,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             // console.log("a: ", middleResult[indexSumMinPath][a]);
 
                             if(middleResult[indexSumMinPath][a].path.length == 1){
-                                tempDuration += basket[i].product.user.deliveryTime!
+                                tempDuration.push(basket[i].product.user.deliveryTime!);
                                 tempCost += basket[i].product.user.deliveryCost!
                             }
                             
+                            let sumDuration = 0;
                             for (let b = 0; b < middleResult[indexSumMinPath][a].path.length - 1; b++) {
                                 // console.log(middleResult[indexMinPath][a]);        
                                                                 
@@ -326,12 +327,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                                 // console.log("getInfo: ", getInfo);
     
-                                tempDuration += getInfo?.duration!;
+                                sumDuration += getInfo?.duration!;
+
+                                // tempDuration += getInfo?.duration!;
                                 tempCost += getInfo?.cost!;
                                 tempLength += getInfo?.length!;
 
-                                // console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                                console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
                             }
+                            tempDuration.push(sumDuration);
                         }
 
                         result[i] = {
@@ -339,7 +343,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             id_basket: basket[i].id,
                             count_path: resultPath.length,
                             path: resultPath,
-                            all_duration: tempDuration,
+                            all_duration: Math.max(...tempDuration),
                             all_cost: tempCost,
                             all_length: tempLength,
                             quantity: basket[i].quantity,
@@ -473,15 +477,16 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             continue;
                         }
 
-                        let tempDuration = 0;
+                        let tempDuration = [];
                         let tempCost = 0;
                         let tempLength = 0;
 
                         if(path[indexMinPath].length - 1 == 0){
-                            tempDuration += basket[i].product.user.deliveryTime!
+                            tempDuration.push(basket[i].product.user.deliveryTime!);
                             tempCost += basket[i].product.user.deliveryCost!
                         }
 
+                        let sumDuration = 0;
                         for (let b = 0; b < path[indexMinPath].length - 1; b++) {
                             const getInfoSity = await db.cityWay.findFirst({
                                 where: {
@@ -515,10 +520,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 },
                             });
 
-                            tempDuration += getInfo?.duration!;
+                            sumDuration += getInfo?.duration!;
+
+                            // tempDuration = Math.max(tempDuration, getInfo?.duration!);
                             tempCost += getInfo?.cost!;
                             tempLength += getInfo?.length!;
+
+                            console.log(tempDuration, tempCost, tempLength);
                         }
+                        tempDuration.push(sumDuration);
 
                         result[i] = {
                             id_product: basket[i].id_product,
@@ -527,7 +537,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                             path: [{ path: path[indexMinPath] }],
                             quantity: basket[i].quantity,
                             count_warehouse: sellerCityProductFit[indexMinPath].count,
-                            all_duration: tempDuration,
+                            all_duration: Math.max(...tempDuration),
                             all_cost: tempCost,
                             all_length: tempLength,
                             product: basket[i].product
