@@ -107,7 +107,7 @@ export default function Checkout() {
                     fetchPath("fast");
                     setPathParam("ч");
                     break;
-                case 2:
+                case 2:w
                     fetchPath("cheap");
                     setPathParam("₽");
                     break;
