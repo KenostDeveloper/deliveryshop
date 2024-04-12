@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaLogin } from "@/validations/userSchema";
@@ -17,7 +17,11 @@ const LoginForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
         resolver: zodResolver(schemaLogin),
     });
 
+    const [isLoad, setIsLoad] = useState(false);
+
     const handleSubmitLogin = async (data: any) => {
+        setIsLoad(true);
+
         const res = await signIn("credentials", {
             usernameOrEmail: data.usernameOrEmail,
             password: data.password,
@@ -30,6 +34,8 @@ const LoginForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
             setModalActive(false);
             toast.success("Успешная авторизация!");
         }
+
+        setIsLoad(false);
     };
 
     return (
@@ -63,7 +69,7 @@ const LoginForm = ({ authEmail, setAuthEmail, setModalActive }: any) => {
                 <p className={style.MpInputError}>{errors.password?.message?.toString()}</p>
             </div>
 
-            <MyButton type="submit">Войти</MyButton>
+            <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Войти" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
             <p className={style.notAccount}>
                 Ещё нет аккаунта? <span onClick={() => setAuthEmail(2)}>Зарегистрироваться</span>
             </p>

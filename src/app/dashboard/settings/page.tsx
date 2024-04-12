@@ -303,7 +303,7 @@ export default function Settings() {
     return (
         <div className={`${styles.main} main`}>
             <div className={`${styles.container} container`}>
-                <Profile isEdit={isEdit} setIsEdit={setIsEdit} />
+                <Profile isEdit={isEdit} setIsEdit={setIsEdit} isSeller={true} />
 
                 <div className={styles.shops}>
                     <div className="kenost-title">Мои города</div>

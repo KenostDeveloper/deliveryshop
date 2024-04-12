@@ -19,8 +19,11 @@ const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
     });
 
     const [role, setRole] = useState("BUYER");
+    const [isLoad, setIsLoad] = useState(false);
 
     const handleSubmitRegister = async (data: any) => {
+        setIsLoad(true);
+
         const res = await fetch("/api/auth/register", {
             method: "POST",
             body: JSON.stringify({
@@ -41,6 +44,8 @@ const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
             setAuthEmail(1);
             toast.success("Успешная регистрация!");
         }
+
+        setIsLoad(false);
     };
 
     return (
@@ -131,7 +136,7 @@ const RegisterForm = ({ authEmail, setAuthEmail }: any) => {
                     Компания
                 </label>
             </div> */}
-            <MyButton type="submit">Зарегистрироваться</MyButton>
+            <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Зарегистрироваться" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
             <p className={style.notAccount}>
                 Уже есть аккаунт? <span onClick={() => setAuthEmail(1)}>Войти</span>
             </p>

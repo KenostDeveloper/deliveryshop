@@ -4,9 +4,11 @@ import OrdersList from "@/components/OrdersList/OrdersList";
 import { OrderType } from "@/components/OrdersList/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {useSession} from "next-auth/react"
+import NotFound from "@/components/NotFound/NotFound";
 
 export default function Orders() {
-
+    const { data: session, update } = useSession();
     const [orders, setOrders] = useState([]);
     const [isSuccess, setIsSuccess] = useState(false);
 
@@ -23,6 +25,10 @@ export default function Orders() {
     }, [])
 
     if(!isSuccess) return <Loading />
+
+    if(session?.user.role != "BUYER") {
+        return <NotFound />
+    }
 
     return <OrdersList orders={orders} />;
 }

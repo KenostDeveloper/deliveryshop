@@ -199,6 +199,8 @@ model Orders {
     cost          Float?
     deliveryCost  Float?
     totalCost     Float?
+    allDuration   Float?
+    allLength     Float?
     orderProducts OrderProducts[]
     orderCancells OrderCancells[]
 }

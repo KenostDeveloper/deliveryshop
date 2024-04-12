@@ -252,7 +252,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                         let sumMinPath = Number.MAX_SAFE_INTEGER;
                         let indexSumMinPath = 0;
 
-                        let middleResult = getAllCombinations(path);
+                        let middleResult: any = getAllCombinations(path);
 
                         for (let x = 0; x < middleResult.length; x++) {
                             let tempSumPath = 0;
@@ -325,15 +325,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                     },
                                 });
 
-                                // console.log("getInfo: ", getInfo);
+                                if(getInfo) {
+                                    sumDuration += Number(getInfo?.duration!);
     
-                                sumDuration += getInfo?.duration!;
-
-                                // tempDuration += getInfo?.duration!;
-                                tempCost += getInfo?.cost!;
-                                tempLength += getInfo?.length!;
-
-                                console.log("tempDuration: ", tempDuration, "cost: ", tempCost, "length: ", tempLength);
+                                    // tempDuration = Math.max(tempDuration, getInfo?.duration!);
+                                    tempCost += Number(getInfo?.cost!);
+                                    tempLength += Number(getInfo?.length!);
+                                }
                             }
                             tempDuration.push(sumDuration);
                         }
@@ -519,14 +517,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                         Number(Object.values(path[indexMinPath][b])[0]),
                                 },
                             });
+                            
+                            if(getInfo) {
+                                sumDuration += Number(getInfo?.duration!);
 
-                            sumDuration += getInfo?.duration!;
-
-                            // tempDuration = Math.max(tempDuration, getInfo?.duration!);
-                            tempCost += getInfo?.cost!;
-                            tempLength += getInfo?.length!;
-
-                            console.log(tempDuration, tempCost, tempLength);
+                                // tempDuration = Math.max(tempDuration, getInfo?.duration!);
+                                tempCost += Number(getInfo?.cost!);
+                                tempLength += Number(getInfo?.length!);
+                            }
                         }
                         tempDuration.push(sumDuration);
 
