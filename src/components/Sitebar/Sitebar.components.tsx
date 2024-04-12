@@ -27,8 +27,13 @@ const Sitebar = ({ active, setActive }: any) => {
         },
         {
             name: "Заказы",
-            icon: "pi-cart-plus",
+            icon: "pi-shopping-bag",
             link: "/orders",
+        },
+        {
+            name: "Корзина",
+            icon: "pi-shopping-cart",
+            link: "/checkout",
         },
         {
             name: "Профиль",
