@@ -13,6 +13,7 @@ import { CustomProvider } from "rsuite";
 const montserrat = Montserrat({ subsets: ["latin"] });
 import "primeicons/primeicons.css";
 
+
 export const metadata: Metadata = {
     title: "Quick Shop",
     description: "internet shop",
