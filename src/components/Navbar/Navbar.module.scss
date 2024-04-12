@@ -166,14 +166,14 @@
 
 @media screen and (width <= 1240px) {
     .nav__buttons-container {
-        display: none;
+        
     }
 }
 
 @media screen and (width <= 1000px) {
-    .logo {
-        display: none;
-    }
+    // .logo {
+    //     display: none;
+    // }
 }
 
 @media screen and (width <= 800px) {
