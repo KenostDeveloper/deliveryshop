@@ -188,15 +188,6 @@ model Basket {
     quantity   Int
 }
 
-// model Orders {
-//     id            Int             @id @default(autoincrement())
-//     user          User            @relation(fields: [idUser], references: [id])
-//     idUser        Int
-//     status        String?
-//     date          DateTime?
-//     cost          Float?
-//     orderProducts OrderProducts[]
-// }
 
 model Orders {
     id            Int             @id @default(autoincrement())

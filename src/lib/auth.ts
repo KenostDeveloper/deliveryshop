@@ -9,6 +9,7 @@ import DiscordProvider from "next-auth/providers/discord"
 import type { NextAuthOptions } from "next-auth"
 import {NextResponse} from "next/server";
 import {adapter} from "next/dist/server/web/adapter";
+import YandexProvider from "next-auth/providers/yandex";
 
 import { cookies } from "next/headers"
 import { encode, decode } from "next-auth/jwt"
@@ -133,9 +134,9 @@ export const authOptions = {
                 return null
             }
         }),
-        TwitchProvider({
-            clientId: process.env.TWITCH_CLIENT_ID!,
-            clientSecret: process.env.TWITCH_CLIENT_SECRET!,
+        YandexProvider({
+            clientId: process.env.YANDEX_CLIENT_ID!,
+            clientSecret: process.env.YANDEX_CLIENT_SECRET!,
             allowDangerousEmailAccountLinking: true,
         }),
         DiscordProvider({
