@@ -8,6 +8,16 @@ export async function GET(req: NextRequest) {
         let way = req.nextUrl.searchParams.get('way') as string
         let id = req.nextUrl.searchParams.get('id') as string
 
+        if(id !== "false" && id !== "true" && id !== null) {            
+            const city = await db.city.findFirst({
+                where: {
+                    id: Number(req.nextUrl.searchParams.get('id'))
+                }
+            })
+
+            return NextResponse.json({success: true, city});
+        }
+
         if(id) {
             const session = await getServerSession(authOptions)
             if(!session){

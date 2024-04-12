@@ -27,13 +27,19 @@ const Navbar = () => {
         name: "",
     });
 
+    const [cityWithoutUser, setCityWithoutUser] = useState({
+        id: 0,
+        name: ""
+    });
+
     useState(() => {
         console.log(session);
     });
 
     useEffect(() => {
-        axios.get("/api/profile/city?id=true").then((res) => {
+        axios.get("/api/profile/city/?id=true").then((res) => {
             setUserCity(res.data.city);
+            setCityWithoutUser(res.data.city);
         });
     }, []);
 
@@ -96,7 +102,7 @@ const Navbar = () => {
                         onClick={() => setCityModalActive(true)}
                         className={`${styles.nav__button} ${styles["nav__button--transparent"]} ${styles.nav__location}`}>
                         <i className={`${styles["nav__location-icon"]} pi pi-map-marker`}></i>
-                        <p className={`${styles.nav__text}`}>{userCity?.name}</p>
+                        <p className={`${styles.nav__text}`}>{session?.user?.id ? userCity?.name : cityWithoutUser?.name}</p>
                     </button>
                     <div className={`${styles.nav__search}`}>
                         <input type="text" className={`${styles["nav__search-input"]}`} placeholder="поиск" />
@@ -129,7 +135,7 @@ const Navbar = () => {
             <ModalAuth modalActive={modalActive} setModalActive={setModalActive} authEmail={authEmail} setAuthEmail={setAuthEmail}></ModalAuth>
 
             <Modal active={cityModalActive} setActive={setCityModalActive}>
-                <CitySelectForm city={userCity} setCity={setUserCity} setActive={setCityModalActive} />
+                <CitySelectForm city={userCity} setCity={setUserCity} setActive={setCityModalActive} setCityWithoutUser={setCityWithoutUser} />
             </Modal>
         </nav>
     );
