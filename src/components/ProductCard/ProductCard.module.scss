@@ -1,7 +1,7 @@
 .ProductCard{
     // width: calc(calc(100% - 20px) / 3);
-    // max-width: 250px;
-    // width: clamp(150px, 25vw, 225px);
+    max-width: 270px;
+        // width: clamp(150px, 25vw, 225px);
     height: 350px;
     display: flex;
     justify-content: space-between;
@@ -63,7 +63,7 @@
 }
 
 .ProductCardImage{
-    // width: 200px;
+    width: 200px;
     height: 200px;
 
     border-radius: var(--border-radius);
