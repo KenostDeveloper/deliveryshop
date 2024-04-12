@@ -34,6 +34,8 @@ export default function Checkout() {
     const [maxLength, setMaxLength] = useState(1000);
     const [maxDuration, setMaxDuration] = useState(100);
 
+    const [loading, setLoading] = useState(true)
+
     const [deliveryTransports, setDeliveryTransports] = useState<any>([
         { label: "Автомобильный", value: 1 },
         { label: "Железнодорожный", value: 2 },
@@ -45,6 +47,12 @@ export default function Checkout() {
 
     const [isAgreeToCondition, setIsAgreeToCondition] = useState(false);
     const [isAllPathsExists, setIsAllPathsExists] = useState(false);
+
+    useEffect(() => {
+        if(typeof(session) == "object"){
+            setLoading(false)
+        }
+    }, [session]);
 
     useEffect(() => {
         if (basket) {
@@ -158,6 +166,10 @@ export default function Checkout() {
                 }
             })
             .finally(() => setLoad(false));
+    }
+
+    if(loading){
+        return <Loading/>
     }
 
     if (basket == null || !basket?.length) {
