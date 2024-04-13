@@ -296,7 +296,7 @@ export default function Products() {
                                         onChange={(value: any) =>
                                             setNewProduct({ ...newProduct, category: value })
                                         }
-                                        placeholder="Выберите город"
+                                        placeholder="Выберите категорию"
                                     />
                                 </div>
                             </div>
@@ -444,7 +444,7 @@ export default function Products() {
                                         onChange={(value, e) =>
                                             updateProducts(item.id, "idCategory", value)
                                         }
-                                        placeholder="Выберите город"
+                                        placeholder="Выберите категорию"
                                     />
                                 </div>
                                 <div className={styles.addProductFlexEl}>
