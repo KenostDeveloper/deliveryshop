@@ -27,7 +27,7 @@ const Footer = () => {
                         <b>Меню</b>
                         <div className={styles.links}>
                             <Link href="/">Главная</Link>
-                            <Link href="/catalog/1">Каталог</Link>
+                            <Link href="/catalog/all">Каталог</Link>
                             <Link href="/contacts">Контакты</Link>
                         </div>
                     </div>
