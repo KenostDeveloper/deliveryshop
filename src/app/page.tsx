@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import CardPost from "@/components/CardPost/CardPost";
+// import CardPost from "@/components/CardPost/CardPost";
 import Banner from "@/components/Banner/Banner";
 import CardsSlider from "@/components/CardsSlider/CardsSlider";
 import ProductsSwiper from "@/components/ProductsSwiper/ProductsSwiper.components";

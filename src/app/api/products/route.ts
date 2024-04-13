@@ -61,7 +61,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             const nameimage = uuidv4();
 
             //Путь файла
-            const path = `${process.cwd()}/public/products/${nameimage}${type}`;
+            const path = `${process.cwd()}/server_image/public/products/${nameimage}${type}`;
             //Сохраняем файл
             await writeFile(path, buffer);
 

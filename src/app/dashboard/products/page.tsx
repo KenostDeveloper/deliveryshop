@@ -419,7 +419,7 @@ export default function Products() {
                             className={styles.allProductImage}
                             src={
                                 item.image != null
-                                    ? `/products/${item.image}`
+                                    ? `${process.env.URL_IMAGE}/products/${item.image}`
                                     : `/quickshopimage.png`
                             }
                             alt=""

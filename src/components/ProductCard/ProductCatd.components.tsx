@@ -55,7 +55,7 @@ const ProductCard = ({ item, slider, isHomePage }: any) => {
     return (
         <div className={slider == true ? `${style.width} ${style.ProductCard}` : `${style.ProductCard}`}>
             <Link className={style.ProductCardImage} href={`/product/${item.id}`}>
-                <img src={`/products/${item.image}`} alt="" />
+                <img src={`${process.env.URL_IMAGE}/products/${item.image}`} alt="" />
             </Link>
 
             <div className={`${style.ProductCardText}`}>

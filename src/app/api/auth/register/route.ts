@@ -64,21 +64,23 @@ export async function POST(req: NextRequest){
                     }
                 })
 
-                const BasketToken = await db.basketToken.update({
-                    where: {
-                        id: getToken?.id
-                    },
-                    data: {
-                        idUser: newUser.id
-                    }
-                })
+                if(getToken){
+                    const BasketToken = await db.basketToken.update({
+                        where: {
+                            id: getToken?.id
+                        },
+                        data: {
+                            idUser: newUser.id
+                        }
+                    })
+                }
             }
 
             return NextResponse.json({success: true, newAccount})
         }
 
-    }catch (e){
-        return NextResponse.json({success: false, message: "Что-то пошло не так..."}, {status: 500})
+    }catch (e:any){
+        return NextResponse.json({success: false, message: "Что-то пошло не так...", e: e.message}, {status: 200})
     }
 
 }

@@ -80,7 +80,7 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
                 </label>
                 <InputPicker
                     data={cities}
-                    value={citySelected.id}
+                    value={citySelected?.id}
                     onChange={(value: any) => {
                         setCitySelected({ ...citySelected, id: value });
                     }}

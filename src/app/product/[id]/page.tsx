@@ -146,7 +146,7 @@ export default function Catalog({ params }: any) {
         <main className={styles.main}>
             <div className={`container ${styles.container}`}>
                 <div className={styles.photo}>
-                    <img src={`/products/${product?.image}`} alt="" />
+                    <img src={`${process.env.URL_IMAGE}/products/${product?.image}`} alt="" />
                 </div>
 
                 <div className={styles.product}>

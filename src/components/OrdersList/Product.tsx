@@ -41,7 +41,7 @@ const Product = ({ product, setOrder, inBasket, index, pathResult }: any) => {
             }`}>
             <Link href={`/product/${product?.product?.id}`}>
                 <img
-                    src={`/products/${product?.product?.image}`}
+                    src={`${process.env.URL_IMAGE}/products/${product?.product?.image}`}
                     alt="product image"
                     className={`${styles["orders__product-img"]} ${styles["order__product-img"]} ${
                         inBasket && `${styles["order__product-img--basket"]}`

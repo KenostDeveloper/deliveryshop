@@ -40,11 +40,6 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <img
-                    className={styles.logoMobile}
-                    src="/logo_full_two.svg"
-                    alt="Логотип айден стор"
-                />
             </div>
         </footer>
     );

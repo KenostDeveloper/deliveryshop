@@ -171,7 +171,7 @@ export default function Profile() {
               display: 'inline-block'
             }}
           >
-            <img src={`/products/${rowData.product.image}`}/>
+            <img src={`${process.env.URL_IMAGE}/products/${rowData.product.image}`}/>
           </div>
         </Cell>
     );

@@ -58,7 +58,7 @@ const Profile = ({ isEdit, setIsEdit, isSeller }: any) => {
             <img
                 onClick={isEdit ? handlerInput : () => {}}
                 className={styles.profile__image}
-                src={profile?.image == null ? "/quickshopimage.png" : `/users/` + profile.image}
+                src={profile?.image == null ? "/quickshopimage.png" : `${process.env.URL_IMAGE}/users/` + profile.image}
                 alt=""
             />
             <div className={styles.profile__text}>

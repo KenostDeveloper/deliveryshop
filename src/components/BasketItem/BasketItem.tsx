@@ -61,7 +61,7 @@ const BasketItem = ({ item }: any) => {
             <img
                 src={
                     item?.product?.image
-                        ? `/products/${item?.product?.image}`
+                        ? `${process.env.URL_IMAGE}/products/${item?.product?.image}`
                         : `/quickshopimage.png`
                 }
                 alt={`${item?.product?.name}`}

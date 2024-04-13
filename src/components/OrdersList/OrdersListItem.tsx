@@ -33,7 +33,7 @@ const OrdersListItem = ({ order }: { order: any }) => {
                     return (
                         <article className={`${styles["orders__product"]}`} key={product?.id}>
                             <img
-                                src={`/products/${product?.product?.image}`}
+                                src={`${process.env.URL_IMAGE}/products/${product?.product?.image}`}
                                 alt="product image"
                                 className={`${styles["orders__product-img"]}`}
                             />
