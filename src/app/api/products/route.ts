@@ -143,8 +143,8 @@ export async function GET(req: NextRequest) {
                 where: {
                     idUser: session?.user.id,
                 },
-                take: getLimit,
-                skip: offset,
+                // take: getLimit,
+                // skip: offset,
             });
 
             return NextResponse.json({ count, product });
