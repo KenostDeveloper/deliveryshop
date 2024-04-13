@@ -64,7 +64,7 @@ const Sitebar = ({ active, setActive }: any) => {
             link: "/dashboard/products",
         },
         {
-            name: "Стастика",
+            name: "Статистика",
             icon: "pi-chart-line",
             link: "/dashboard",
         },
