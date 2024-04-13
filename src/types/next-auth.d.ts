@@ -5,7 +5,7 @@ declare module "next-auth"{
         id: number,
         username: string,
         role: string,
-        idCity: number
+        //idCity: number
     }
 
     interface Session{
@@ -13,13 +13,13 @@ declare module "next-auth"{
             id: number,
             username: string,
             role: string,
-            idCity: number
+            //idCity: number
         }
         token: {
             id: number,
             username: string,
             role: string,
-            idCity: number
+            //idCity: number
         }
     }
 }

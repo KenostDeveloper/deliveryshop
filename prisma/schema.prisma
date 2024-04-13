@@ -69,8 +69,8 @@ model User {
     cover          String?
     about          String?
     emailVerified  DateTime?
-    idCity         Int              @default(1)
-    city           City             @relation(fields: [idCity], references: [id])
+    idCity         Int?              @default(1)
+    city           City?             @relation(fields: [idCity], references: [id])
     nameShop       String?
     description    String?
     deliveryTime   Int?             @default(4)

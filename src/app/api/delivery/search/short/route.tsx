@@ -135,10 +135,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Проверяем доставляет ли магазин выбраным транспортом
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
-                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city?.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city?.id) &&
                                 data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
-                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city?.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
@@ -201,13 +201,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                             const visited = {};
 
-                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
+                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name, visited);
 
                             if (!routeExists) {
                                 break;
                             }
                             let tempDistance = 0;
-                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
                             path.push({path: tempPath})
                             for(let q = 0; q < tempPath.length; q++){
                                 tempDistance = tempDistance + Number(Object.values(tempPath[q])[0]);
@@ -358,10 +358,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     for(let j = 0; j < basket[i].product.user.cityWay.length; j++){
                         //Проверяем доставляет ли магазин выбраным транспортом
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
-                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city?.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city?.id) &&
                                 data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
-                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city?.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
@@ -424,14 +424,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                             const visited = {};
 
-                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name, visited);
+                            routeExists = hasRoute(testGraph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name, visited);
 
                             if (!routeExists) {
                                 break;
                             }
 
                             let tempDistance = 0;
-                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let tempPath = shortPathWithDistances(graph, sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
                             path.push(tempPath)
                             for(let q = 0; q < tempPath.length; q++){
                                 tempDistance = tempDistance + Number(Object.values(tempPath[q])[0]);

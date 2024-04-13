@@ -149,7 +149,9 @@ export const authOptions = {
         async linkAccount({user}){
             //Верификация email, если заходишь через соц сеть
             await db.user.update({
-                where: {id: user.id},
+                where: {
+                    id: Number(user.id)
+                },
                 data: {
                     emailVerified: new Date()
                 }
@@ -164,14 +166,14 @@ export const authOptions = {
 
                     if(isUsername){
                         await db.user.update({
-                            where: {id: user.id},
+                            where: {id: Number(user.id)},
                             data: {
                                 username: "user" + (new Date()).getTime()
                             }
                         })
                     }else {
                         await db.user.update({
-                            where: {id: user.id},
+                            where: {id: Number(user.id)},
                             data: {
                                 username: user.name
                             }
@@ -187,7 +189,7 @@ export const authOptions = {
         }
     },
     callbacks: {
-        async session({session, user}){
+        async session({session, user}: any){
             session.user = user
             return session
         },
@@ -212,7 +214,7 @@ export const authOptions = {
                 await db.session.create({
                     data: {
                         sessionToken: sessionToken,
-                        userId: user.id,
+                        userId: Number(user.id),
                         expires: sessionExpiry,
                     },
                 })

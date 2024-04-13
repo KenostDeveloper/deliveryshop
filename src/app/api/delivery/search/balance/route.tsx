@@ -121,10 +121,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Проверяем доставляет ли магазин выбраным транспортом
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
-                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city?.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city?.id) &&
                                 data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
-                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city?.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
@@ -203,9 +203,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Находим все кротчайшие маршруты до всех складов
                         for(let e = 0; e < sellerCityProductFit.length; e++){
-                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
+                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
+                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
 
                             mainGraph[e] = mergePaths([paths, paths2, paths3]);
                         }
@@ -271,7 +271,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                                 })
 
                                 name = Object.keys(mainGraph[z][x]['path'][0])[0];
-                                if(getUserCity?.city.name == name){
+                                if(getUserCity?.city?.name == name){
                                     const getDeliveryInfo = await db.user.findUnique({
                                         where: {
                                             id: basket[i].product.user.id
@@ -397,10 +397,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     for(let j = 0; j < basket[i].product.user.cityWay.length; j++){
                         //Проверяем доставляет ли магазин выбраным транспортом
                         for(let v = 0; v < basket[i].product.user.cityWay[j].cityWayTransport.length; v++){
-                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city.id ||
-                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city.id) &&
+                            if ((basket[i].product.user.cityWay[j].idCity1 == cityUser?.city?.id ||
+                                basket[i].product.user.cityWay[j].idCity2 == cityUser?.city?.id) &&
                                 data.transport.includes(basket[i].product.user.cityWay[j].cityWayTransport[v].idTransport) &&
-                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city.id && item.typePoint == "PickPoint")
+                                basket[i].product.user.sellerSity.find((item:any) => item.idCity == cityUser?.city?.id && item.typePoint == "PickPoint")
                             ) {
                                 isDeliveryProduct = true;
                             }
@@ -471,9 +471,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
                         //Находим все кротчайшие маршруты до всех складов
                         for(let e = 0; e < sellerCityProductFit.length; e++){
-                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
-                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city.name);
+                            let paths = findPathsAndSums(convertGraphFormat(graph), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
+                            let paths2 = findPathsAndSums(convertGraphFormat(graph2), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
+                            let paths3 = findPathsAndSums(convertGraphFormat(graph3), sellerCityProductFit[e].sellerCity.city.name, cityUser?.city?.name);
 
                             mainGraph = mergePaths([paths, paths2, paths3]);
                         }
