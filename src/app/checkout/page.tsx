@@ -98,9 +98,7 @@ export default function Checkout() {
         // });
     }, []);
 
-
     useEffect(() => {
-        
         const Debounce = setTimeout(() => {
             switch (methodDelivery) {
                 case 1:
@@ -119,11 +117,10 @@ export default function Checkout() {
                     fetchPath("balance");
                     setPathParam("ч");
                     break;
-            }            
-        }, 300)
+            }
+        }, 300);
 
         return () => clearTimeout(Debounce);
-
     }, [methodDelivery, basket, selectTransport, filters]);
 
     const fetchPath = async (searchType: string) => {
@@ -161,7 +158,9 @@ export default function Checkout() {
             citiesToReduce[i] = [];
 
             for (let j = 0; j < pathResult[i]?.path.length; j++) {
-                citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j]?.path[0])[0]);
+                for (let k = 0; k < pathResult[i]?.path[j].length; k++) {
+                    citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j][k]?.path[0])[0]);
+                }
             }
         }
 
@@ -173,7 +172,7 @@ export default function Checkout() {
                 ? "Самая дешевая"
                 : methodDelivery == 3
                 ? "Короткий маршрут"
-                : "Сбаланссированный маршрут";
+                : "Сбалансированный маршрут";
 
         axios
             .post(
@@ -194,7 +193,13 @@ export default function Checkout() {
                     toast.error(res.data.message);
                 }
             })
-            .finally(() => setLoad(false));
+            .catch((err) => {
+                toast.error(err.message);
+                setLoad(false);
+            })
+            .finally(() => {
+                setLoad(false);
+            });
     }
 
     if (loading) {

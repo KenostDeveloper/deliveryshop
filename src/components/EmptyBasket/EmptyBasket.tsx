@@ -15,7 +15,7 @@ const EmptyBasket = () => {
                 <div className={`${styles["empty-basket__content"]}`}>
                     <img src="/empty-basket/empty-basket-image.png" alt="basket image" className={`${styles["empty-basket__img"]}`} />
                     <p className={`${styles["empty-basket__text"]}`}>Ваша корзина на данный<br/>момент пуста</p>
-                    <MyButton onClick={() => router.push("/catalog/1")}>Перейти в каталог</MyButton>
+                    <MyButton onClick={() => router.push("/catalog/all")}>Перейти в каталог</MyButton>
                 </div>
             </div>
         </section>

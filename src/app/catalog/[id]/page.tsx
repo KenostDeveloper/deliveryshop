@@ -50,7 +50,8 @@ export default function Catalog({ params }: any) {
             axios
                 .get(`/api/products?category_id=${params.id}&limit=24&page=${currentPage}`)
                 .then((res) => {
-                    setProducts([...products, ...res.data?.product]);
+                    // setProducts([...products, ...res.data?.product]);
+                    setProducts([...res.data?.product]);
                     setCount(res.data?.count);
                     setTotalCount(res.data?.count);
                     setCurrentPage(currentPage + 1);
