@@ -41,28 +41,34 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 where: {
                     id_token: basketToken?.id
                 },
-            })            
+            })
         }
 
-        // Добавление новых товаров в корзину
-        // products.forEach(async (product: any) => {
-        //     await db.basket.create({
-        //         data: {
-        //             id_token: Number(basketToken?.id),
-        //             id_product: product?.product?.id,
-        //             quantity: product?.count
-        //         }
-        //     })
-        //     console.log("Продукт добавлен", product);
+        // Сформированная корзина
+        let basket: any = null;
+        products.forEach(async (product: any) => {
+            // Получение общего количества товаров на складах
+            const citiesWithProducts = await db.sellerCityProducts.findMany({
+                where: {
+                    idProduct: product.idProduct
+                }
+            });
             
-        // })
-        const basket = await db.basket.createMany({
-            data: products.map((product: any) => ({
-                id_token: basketToken?.id,
-                id_product: product?.product?.id,
-                quantity: product?.quantity
-            })),
-        })
+            // Подсчет общего количества товаров на складах
+            const totalSumProduct = citiesWithProducts.reduce((sum, city) => sum += city.count!, 0);
+            console.log("total sum product", totalSumProduct, citiesWithProducts);
+
+            // Добавление товаров в корзину
+            if(totalSumProduct != 0) {
+                basket = await db.basket.create({
+                    data: {
+                        id_token: basketToken?.id,
+                        id_product: product?.product?.id,
+                        quantity: Math.min(product?.quantity, totalSumProduct)
+                    }
+                })
+            }
+        });
 
         return NextResponse.json({ success: true, message: "Корзина пересоздана!", basket });
     } catch (e) {
