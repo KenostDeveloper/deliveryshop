@@ -83,12 +83,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     totalCost: cost + deliveryCost,
                     allDuration: allDuration,
                     allLength: allLength,
-                    deliveryMethod: deliveryMethod
+                    deliveryMethod: deliveryMethod,
                 },
             });
 
             //Добавляем товары в заказ
-            for (let i = 0; i < basket.length; i++) {
+            for (let i = 0; i < basket.length; i++) {                
                 //Добавляем товары к заказу
                 const orderProduct = await db.orderProducts.create({
                     data: {
@@ -105,11 +105,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     //Поиск города склада
                     const cityWarehouse = await db.sellerCityProducts.findFirst({
                         where: {
-                            sellerCity: {
-                                city: {
-                                    name: city,
+                            AND: [
+                                {
+                                    sellerCity: {
+                                        city: {
+                                            name: city,
+                                        },
+                                    },
                                 },
-                            },
+                                {
+                                    idProduct: basket[i].id_product,
+                                },
+                            ],
                         },
                     });
 
@@ -119,8 +126,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     //Количество к списанию со склада
                     const countToReduce = quantityToReduce > cityWarehouse!.count! ? cityWarehouse!.count! : quantityToReduce;
 
+                    let cityFindedUpdated: any = null;
                     //Списывание товара с найденного склада
-                    await db.sellerCityProducts.update({
+                    cityFindedUpdated = await db.sellerCityProducts.update({
                         where: {
                             id: cityWarehouse!.id,
                         },

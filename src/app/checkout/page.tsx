@@ -158,9 +158,7 @@ export default function Checkout() {
             citiesToReduce[i] = [];
 
             for (let j = 0; j < pathResult[i]?.path.length; j++) {
-                for (let k = 0; k < pathResult[i]?.path[j].length; k++) {
-                    citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j][k]?.path[0])[0]);
-                }
+                citiesToReduce[i].push(Object.keys(pathResult[i]?.path[j]?.path[0])[0]);
             }
         }
 
