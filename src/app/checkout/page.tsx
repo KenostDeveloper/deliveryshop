@@ -98,9 +98,7 @@ export default function Checkout() {
         // });
     }, []);
 
-
     useEffect(() => {
-        
         const Debounce = setTimeout(() => {
             switch (methodDelivery) {
                 case 1:
@@ -119,11 +117,10 @@ export default function Checkout() {
                     fetchPath("balance");
                     setPathParam("ч");
                     break;
-            }            
-        }, 300)
+            }
+        }, 300);
 
         return () => clearTimeout(Debounce);
-
     }, [methodDelivery, basket, selectTransport, filters]);
 
     const fetchPath = async (searchType: string) => {
@@ -173,7 +170,7 @@ export default function Checkout() {
                 ? "Самая дешевая"
                 : methodDelivery == 3
                 ? "Короткий маршрут"
-                : "Сбаланссированный маршрут";
+                : "Сбалансированный маршрут";
 
         axios
             .post(
@@ -193,8 +190,8 @@ export default function Checkout() {
                 } else {
                     toast.error(res.data.message);
                 }
-            })
-            .finally(() => setLoad(false));
+            });
+        setLoad(false);
     }
 
     if (loading) {

@@ -18,6 +18,10 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
     const [isLoad, setIsLoad] = useState(false);
 
     useEffect(() => {
+        setCitySelected(city);
+    }, [city]);
+
+    useEffect(() => {
         axios.get(`/api/profile/city`).then((res) => {
             setCities(
                 res.data?.city.map((item: any) => ({
@@ -34,16 +38,17 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
         e.preventDefault();
 
         console.log(session);
-        
+
         if (!session?.user?.id) {
             const res = await axios.get(`/api/profile/city/?id=${citySelected.id}`);
-            if(!res.data?.success) {
+            if (!res.data?.success) {
                 toast.error(res.data?.message);
                 return;
             }
             setCityWithoutUser(res.data?.city);
             toast.success("Город изменен");
             setActive(false);
+            setIsLoad(false);
             return;
         }
 
@@ -53,6 +58,7 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
 
         if (!res.data.success) {
             toast.error(res.data?.message);
+            setIsLoad(false);
             return;
         }
         toast.success(res.data?.message);
@@ -80,7 +86,9 @@ const CitySelectForm = ({ city, setCity, setActive, setCityWithoutUser }: any) =
                     }}
                     placeholder="Выберите город"
                 />
-                <MyButton type="submit" disabled={isLoad}>{!isLoad ? "Сохранить" : <i className="pi pi-spin pi-spinner"></i>}</MyButton>
+                <MyButton type="submit" disabled={isLoad}>
+                    {!isLoad ? "Сохранить" : <i className="pi pi-spin pi-spinner"></i>}
+                </MyButton>
             </div>
         </form>
     );
