@@ -22,7 +22,7 @@ const CatalogMenu = ({params, active, setActive}: any) => {
                 {/* <Link key={item.id} href={`/catalog/${item.id}`}><img src={`/catalogMenu/${item.id}.svg`} alt="" /> */}
                 <Link
                     href={`/catalog/all`}
-                    className={params.params == `all` ? `${styles.active}` : ``}>
+                    className={params == `all` ? `${styles.active}` : ``}>
                     <img src={`/catalogMenu/all.svg`} alt="" />
                     Все товары
                 </Link>
@@ -30,7 +30,7 @@ const CatalogMenu = ({params, active, setActive}: any) => {
                     <Link
                         key={item.id}
                         href={`/catalog/${item.id}`}
-                        className={params.params == `${item.id}` ? `${styles.active}` : ``}>
+                        className={params == `${item?.id}` ? `${styles.active}` : ``}>
                         <img src={`/catalogMenu/${item.id}.svg`} alt="" />
                         {item.name}
                     </Link>

@@ -117,7 +117,6 @@ export default function Catalog({ params }: any) {
         <>
             <div className={`container ${styles.container}`}>
                 <CatalogMenu active={mobileCatalog} setActive={setMobuleCatalog} params={params.id} />
-
                 <div className={styles.contnent}>
                     <div className={styles.title}>
                         {!loading ? (
