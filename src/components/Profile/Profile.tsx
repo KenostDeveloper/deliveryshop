@@ -23,21 +23,6 @@ const Profile = ({ isEdit, setIsEdit, isSeller }: any) => {
     useEffect(() => {
         axios.get(`/api/profile/settings`).then((res) => {
             setProfile(res.data?.profile);
-            // if (Boolean(profile?.nameShop) == false) {
-            //     setProfile({ ...profile, nameShop: "" });
-            // }
-
-            // if (Boolean(profile?.description) == false) {
-            //     setProfile({ ...profile, description: "" });
-            // }
-
-            // if (Boolean(!profile?.name) == false) {
-            //     setProfile({ ...profile, name: "" });
-            // }
-
-            // if (Boolean(!profile?.email) == false) {
-            //     setProfile({ ...profile, email: "" });
-            // }
         });
     }, []);
 

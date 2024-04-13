@@ -192,8 +192,14 @@ export default function Checkout() {
                 } else {
                     toast.error(res.data.message);
                 }
+            })
+            .catch((err) => {
+                toast.error(err.message);
+                setLoad(false);
+            })
+            .finally(() => {
+                setLoad(false);
             });
-        setLoad(false);
     }
 
     if (loading) {
