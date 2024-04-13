@@ -20,6 +20,7 @@ export default function Home() {
     const { data: session, update } = useSession();
 
     const [products, setProducts] = useState([]);
+    const [products2, setProducts2] = useState([]);
 
     useEffect(() => {
         console.log(session);
@@ -31,6 +32,13 @@ export default function Home() {
             .then((res) => res.data)
             .then((data) => {
                 setProducts(data?.product);                
+            });
+
+        axios
+            .get("/api/products?limit=10&page=2")
+            .then((res) => res.data)
+            .then((data) => {
+                setProducts2(data?.product);                
             });
     }, []);
 
@@ -56,7 +64,7 @@ export default function Home() {
                 <Catalog />
 
                 <Title text="Акции" margin={true} />
-                <ProductsSwiper products={products} isHomePage={true} />
+                <ProductsSwiper products={products2} isHomePage={true} />
 
                 <Title text="Наши преимущества" margin={true} />
                 <Advantages />

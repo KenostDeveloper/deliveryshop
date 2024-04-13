@@ -225,22 +225,22 @@ export default function Profile() {
                     <div className={`${styles.flex} ${styles.margin}`}>
                         <div className={styles.widget}>
                             <p>Средний километраж</p>
-                            <b>~{statistics?.medium_lenght?.toLocaleString()} км</b>
+                            <b>~{statistics?.medium_lenght == "NaN" ? "0" : statistics?.medium_lenght?.toLocaleString()} км</b>
                             <span><i className='pi pi-compass'></i></span>
                         </div>
                         <div className={styles.widget}>
                             <p>Среднее время в пути</p>
-                            <b>~{statistics?.medium_duration?.toLocaleString()} ч</b>
+                            <b>~{statistics?.medium_duration == "NaN" ? "0" :statistics?.medium_duration?.toLocaleString()} ч</b>
                             <span> <i className='pi pi-clock'></i></span>
                         </div>
                         <div className={styles.widget}>
                             <p>Средняя стоимость доставки</p>
-                            <b>~{statistics?.medium_delivery?.toLocaleString()} ₽</b>
+                            <b>~{statistics?.medium_delivery == "NaN" ? "0" : statistics?.medium_delivery?.toLocaleString()} ₽</b>
                             <span><i className='pi pi-truck'></i></span>
                         </div>
                         <div className={styles.widget}>
                             <p>Средняя стоимость заказа</p>
-                            <b>~{statistics?.medium_cost?.toLocaleString()} ₽</b>
+                            <b>~{statistics?.medium_cost == "NaN" ? "0" : statistics?.medium_cost?.toLocaleString()} ₽</b>
                             <span><i className='pi pi-box'></i></span>
                         </div>
                     </div>
