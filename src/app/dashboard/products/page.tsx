@@ -461,7 +461,7 @@ export default function Products() {
                             </div>
                             <div className={styles.addProductFlex}>
                                 <div className={styles.addProductFlexEl}>
-                                    <p className={styles.label}>Длина</p>
+                                    <p className={styles.label}>Длина (мм)</p>
                                     <InputNumber
                                         placeholder="Длина (мм)"
                                         value={item.length}         
@@ -472,7 +472,7 @@ export default function Products() {
                                     />
                                 </div>
                                 <div className={styles.addProductFlexEl}>
-                                    <p className={styles.label}>Ширина</p>
+                                    <p className={styles.label}>Ширина (мм)</p>
                                     <InputNumber
                                         placeholder="Ширина (мм)"
                                         value={item.width}
@@ -483,7 +483,7 @@ export default function Products() {
                                     />
                                 </div>
                                 <div className={styles.addProductFlexEl}>
-                                    <p className={styles.label}>Высота</p>
+                                    <p className={styles.label}>Высота (мм)</p>
                                     <InputNumber
                                         placeholder="Высота (мм)"
                                         value={item.height}
@@ -494,7 +494,7 @@ export default function Products() {
                                     />
                                 </div>
                                 <div className={styles.addProductFlexEl}>
-                                    <p className={styles.label}>Вес</p>
+                                    <p className={styles.label}>Вес (г)</p>
                                     <InputNumber
                                         placeholder="Вес (г)"
                                         value={item.weight}

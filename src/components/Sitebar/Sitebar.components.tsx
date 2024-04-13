@@ -56,12 +56,17 @@ const Sitebar = ({ active, setActive }: any) => {
         {
             name: "Настройки компании",
             icon: "pi-cog",
-            link: "/dashboard/settings/",
+            link: "/dashboard/settings",
         },
         {
             name: "Товары компании",
             icon: "pi-barcode",
-            link: "/dashboard/products/",
+            link: "/dashboard/products",
+        },
+        {
+            name: "Стастика",
+            icon: "pi-chart-line",
+            link: "/dashboard",
         },
     ]);
 

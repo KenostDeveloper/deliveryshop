@@ -198,7 +198,7 @@ export default function Catalog({ params }: any) {
                     </div>
                     <div className={styles.property}>
                         <span>Вес</span>
-                        <span>{product?.weight} кг</span>
+                        <span>{product?.weight} г</span>
                     </div>
                 </div>
             </div>
